@@ -1,0 +1,7 @@
+﻿.env
+.env.*
+*.pyc
+__pycache__/
+guide-assets/crop_wizard.py
+guide-assets/_*.png
+guide-assets/capture_*.py
