@@ -191,6 +191,7 @@
     border-radius: 10px;
     overflow: hidden;
     background: #fff;
+    max-width: 560px; /* 가이드 캡처 공통 너비 */
   }
   .shot img {
     display: block;
@@ -204,7 +205,7 @@
     width: 100%;
   }
   .shot.shot-md {
-    max-width: 680px;
+    max-width: 560px;
   }
   .shot-cap {
     font-size: 12.5px;
@@ -1218,7 +1219,7 @@
       이 보입니다. 지금은 <b>1</b>이 활성화된 상태입니다.
     </p>
 
-    <div class="shot">
+    <div class="shot shot-md">
       <img src="guide-assets/plan-02-detail-parent.png" alt="부모사업 선택 모달">
       <div class="shot-cap">그림 14. Step1에서도 동일 — 부모사업 선택 팝업</div>
     </div>
@@ -1242,7 +1243,7 @@
       </table>
     </div>
 
-    <div class="shot">
+    <div class="shot shot-md">
       <img src="guide-assets/plan-01-basic.png" alt="기본 정보 입력 필드">
       <div class="shot-cap">그림 15. 기본 정보 — 사업명, 연도, 재원, 기간, 부서, 담당자 등</div>
     </div>
