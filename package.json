@@ -1,0 +1,9 @@
+{
+  "name": "aion-plan-guide",
+  "private": true,
+  "version": "1.0.0",
+  "description": "AION 사업계획 작성 가이드",
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.1"
+  }
+}

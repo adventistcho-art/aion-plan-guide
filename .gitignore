@@ -2,6 +2,10 @@
 .env.*
 *.pyc
 __pycache__/
+node_modules/
+.vercel
 guide-assets/crop_wizard.py
 guide-assets/_*.png
 guide-assets/capture_*.py
+_capture_kpi.py
+_step3_new.html

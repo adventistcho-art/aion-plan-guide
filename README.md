@@ -4,8 +4,32 @@
 
 ## 바로 보기
 
-https://adventistcho-art.github.io/aion-plan-guide/
+- GitHub Pages: https://adventistcho-art.github.io/aion-plan-guide/
+- Vercel: (배포 후 URL이 여기에 갱신됩니다)
+
+## 스택
+
+| 구분 | 용도 |
+|------|------|
+| GitHub | 소스 저장소 (`adventistcho-art/aion-plan-guide`) |
+| Vercel | 정적 가이드 + `/api/visit` 서버리스 배포 |
+| Neon | PostgreSQL — 가이드 방문 로그 (`guide_visits`) |
 
 ## 로컬
 
-`index.html` 또는 `AION_사업계획_가이드.html`을 브라우저에서 엽니다. `guide-assets/` 폴더가 같은 위치에 있어야 이미지가 보입니다.
+`index.html` 또는 `AION_사업계획_가이드.html`을 브라우저에서 엽니다.  
+`guide-assets/` 폴더가 같은 위치에 있어야 이미지가 보입니다.
+
+```bash
+npm install
+npx vercel dev
+```
+
+## Neon 연결
+
+1. [Neon Console](https://console.neon.tech)에서 프로젝트 생성
+2. Connection string을 복사
+3. Vercel 프로젝트 → Settings → Environment Variables에 `DATABASE_URL` 등록
+4. (선택) `sql/schema.sql`을 Neon SQL Editor에서 실행 — API가 없을 경우에도 테이블을 미리 만들 수 있음
+
+`DATABASE_URL`이 없으면 가이드 HTML은 그대로 열리고, 방문 API만 503을 반환합니다.
