@@ -4,8 +4,10 @@
 
 ## 바로 보기
 
+- Vercel: https://aion-plan-guide.vercel.app
 - GitHub Pages: https://adventistcho-art.github.io/aion-plan-guide/
-- Vercel: (배포 후 URL이 여기에 갱신됩니다)
+- GitHub: https://github.com/adventistcho-art/aion-plan-guide
+- Neon: project `aion-plan-guide` (방문 로그 `guide_visits`)
 
 ## 스택
 
