@@ -9,6 +9,12 @@
 - GitHub: https://github.com/adventistcho-art/aion-plan-guide
 - Neon: project `aion-plan-guide` (방문 로그 `guide_visits`)
 
+### 설명회 발표자료
+
+- Vercel: https://aion-plan-guide.vercel.app/briefing
+- GitHub Pages: https://adventistcho-art.github.io/aion-plan-guide/briefing.html
+- 로컬: `AION_설명회_발표자료.html` (또는 `briefing.html`로 접속)
+
 ## 스택
 
 | 구분 | 용도 |
