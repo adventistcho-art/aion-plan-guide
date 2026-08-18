@@ -552,7 +552,7 @@
     <span>로그인 · 대시보드 · 작성방식</span>
     <span>위자드 ①분류 → ②부모사업 → ③사업명 → ④조건 → ⑤예산 → ⑥목적 → ⑦AI생성 → ⑧편집전환</span>
     <span>Step1~5 계획서 확인·보완</span>
-    <span>제출 → 내부기안</span>
+    <span>제출 → 내부공문(기획처)</span>
   </div>
 </section>
 
@@ -572,14 +572,14 @@
       <span><b>2 상세 계획</b>개요 · 목적 · PDCA</span>
       <span><b>3 성과 지표</b>직접 · 연계 KPI</span>
       <span><b>4 예산 계획</b>계정과목별 산정</span>
-      <span><b>5 검토 제출</b>제출 → 내부기안</span>
+      <span><b>5 검토 제출</b>제출 → 내부공문(기획처)</span>
     </div>
     <div class="cols-3">
       <div class="card"><h4><span class="icon-circle ic-blue">A</span>시작하기</h4><p>로그인 → 대시보드 → 새 사업 → 작성 방식 선택(보통 AI 위자드)</p></div>
       <div class="card"><h4><span class="icon-circle ic-purple">B</span>위자드 → 5단계</h4><p>분류·부모사업·사업명·조건·예산·목적 → AI초안 → Step1~5 검수·보완 · <b>임시저장</b></p></div>
-      <div class="card"><h4><span class="icon-circle ic-green">C</span>제출과 그 다음</h4><p>Step5 검토·제출 → <b>내부기안 작성</b> → 그룹웨어 결재 승인 후 사업 진행</p></div>
+      <div class="card"><h4><span class="icon-circle ic-green">C</span>제출과 그 다음</h4><p>Step5 검토·제출 → <b>내부공문 작성</b> → <b>사업승인 결과에 따른 원인행위(해당위원회 안건제출, 내부기안)</b> → <b>사업진행</b></p></div>
     </div>
-    <div class="callout warn"><b>임시저장 ≠ 제출.</b> 임시저장은 중간 저장일 뿐입니다. <b>제출</b>해야 승인용 내부기안 흐름으로 넘어갑니다.</div>
+    <div class="callout warn"><b>임시저장 ≠ 제출.</b> 임시저장은 중간 저장일 뿐입니다. <b>제출</b>해야 승인용 내부공문(기획처) 흐름으로 넘어갑니다.</div>
   </div>
 </section>
 
@@ -648,7 +648,7 @@
             <li><b>성과관리</b> — 실적 입력률·예산 집행률, 중점관리 대표사업</li>
           </ul>
         </div>
-        <div class="callout info" style="font-size:12.5px">새 사업: 좌측 메뉴 <b>사업관리 → 새 사업</b> (경로 <b>/projects/create</b>)</div>
+        <div class="callout info" style="font-size:12.5px">새 사업: 좌측 메뉴 <b>사업관리 → 새 사업</b></div>
       </div>
     </div>
   </div>
@@ -706,7 +706,7 @@
         <div class="note-box">
           <h5>화면 세 칸의 역할</h5>
           <ul>
-            <li><b>왼쪽</b> — 사업 분류 선택 (지금 손댈 곳)</li>
+            <li><b>왼쪽</b> — 사업 분류 선택</li>
             <li><b>가운데</b> — AI 대화창</li>
             <li><b>오른쪽</b> — 진행상태 ①분류 → ②부모사업 → ③사업명 → ④조건 → ⑤예산 → ⑥목적 → ⑦AI생성 → ⑧편집전환</li>
           </ul>
@@ -745,7 +745,7 @@
       <div class="notes">
         <ol class="steps-list">
           <li><span class="n">1</span><span>검색창에 <b>사업명 또는 사업코드</b> 입력</span></li>
-          <li><span class="n">2</span><span>목록에서 해당 예산사업의 <b>라디오 버튼</b> 클릭<br><span style="color:var(--muted); font-size:12px">예: 2026000746 · 대학생 유학생 마약류 예방교육</span></span></li>
+          <li><span class="n">2</span><span>목록에서 해당 예산사업 체크</span></li>
           <li><span class="n">3</span><span>우측 하단 <b>[선택]</b> 클릭 → "선택 완료" 카드 표시</span></li>
           <li><span class="n">4</span><span>잘못 골랐으면 카드 옆 <b>[수정]</b>으로 다시 선택</span></li>
         </ol>
@@ -937,7 +937,7 @@
             <li><b>시작일 / 종료일 *</b></li>
             <li><b>책임 부서 *</b> · <b>사업 대상 *</b></li>
             <li><b>지출원인행위 구분 *</b> — 원인행위 필수 / 고정비(의무지출)</li>
-            <li><b>주담당자 *</b> · 부담당자</li>
+            <li>주담당자 및 부담당자 입력</li>
           </ul>
         </div>
         <div class="callout ok" style="font-size:12.5px"><b>연차사업 여부</b>를 체크하고 환류 대상 사업을 선택하면, <b>전년도 미흡요인·성과지표 참고자료가 자동 연동</b>됩니다.</div>
@@ -964,11 +964,11 @@
       <div class="notes">
         <div class="note-box">
           <h5>사업 개요 *</h5>
-          <p>누가·무엇을·언제·어떻게 하는 사업인지 전체 그림. <b>추진 배경·필요성</b>도 함께 씁니다. (2~4문단)</p>
+          <p>누가·무엇을·언제·어떻게 하는 사업인지 전체 그림. <b>추진 배경·필요성</b>도 함께 작성합니다. (2~4문단)</p>
         </div>
         <div class="note-box">
           <h5>사업 목적 *</h5>
-          <p>"왜"가 아니라 <b>무엇을 이룰지</b>. 이 사업으로 달성하려는 상태를 씁니다.</p>
+          <p>"왜"가 아니라 <b>무엇을 이룰지</b>. 이 사업으로 달성하려는 상태를 작성합니다.</p>
         </div>
         <div class="note-box">
           <h5>추진 방법 *</h5>
@@ -1095,7 +1095,7 @@
       <div class="notes">
         <ol class="steps-list">
           <li><span class="n">1</span><span><b>관련 성과지표 체계 선택</b><br><span style="color:var(--muted); font-size:12px">내부: 중장기발전계획 · 대학혁신지원사업 · SW중심대학 · 글로컬 · 자체평가 · 핵심역량평가 · 전공교육성과평가<br>외부: 기관인증평가 · 국제화역량진단 · QS지표</span></span></li>
-          <li><span class="n">2</span><span><b>보조할 구성지표 선택</b> — 라디오로 하나 선택 (하위지표는 참고용 표시)</span></li>
+          <li><span class="n">2</span><span><b>보조할 구성지표 선택</b> — 체크로 하나 선택 (하위지표는 참고용 표시)</span></li>
           <li><span class="n">3</span><span><b>보조지표명 자동 표시</b> — 선택한 지수·구성지표명이 자동 입력됩니다</span></li>
           <li><span class="n">4</span><span><b>보조 실적 설명 · 단위 · 목표 실적</b> 입력<br><span style="color:var(--muted); font-size:12px">예: 예방교육 이수율 / % / 90</span></span></li>
         </ol>
@@ -1157,15 +1157,15 @@
   </div>
 </section>
 
-<!-- ============ 28. 제출 후 내부기안 ============ -->
+<!-- ============ 28. 제출 후 내부공문(기획처) ============ -->
 <section class="slide">
   <div class="topline">
     <span class="badge-part p4">PART 4 · 사용방법</span>
-    <span class="brandmark"><span class="dot"></span>제출 직후 · 내부기안</span>
+    <span class="brandmark"><span class="dot"></span>제출 직후 · 내부공문(기획처)</span>
   </div>
   <div class="slide-head">
-    <div class="slide-title">제출 직후 — <b>내부기안</b>까지 이어가야 끝납니다</div>
-    <p class="slide-sub">사업계획 "작성"은 제출로 끝나지만, <b>승인</b>을 받으려면 내부기안 결재를 올려야 합니다.</p>
+    <div class="slide-title">제출 직후 — <b>내부공문(기획처)</b>까지 이어가야 끝납니다</div>
+    <p class="slide-sub">사업계획 "작성"은 제출로 끝나지만, <b>승인</b>을 받으려면 내부공문(기획처) 결재를 올려야 합니다.</p>
   </div>
   <div class="content">
     <div class="use-layout">
@@ -1178,11 +1178,11 @@
           <p>제출된 사업 상세 화면으로 갑니다. 내용을 다시 보거나 나중에 기안할 때 사용합니다.</p>
         </div>
         <div class="note-box" style="border-color:#93c5fd; background:#f8fbff;">
-          <h5 style="color:var(--accent)">[내부기안 작성] ← 바로 결재를 올리려면 이것</h5>
-          <p>사업계획 승인용 내부기안 작성 화면으로 이동합니다. 작성 후 그룹웨어에서 결재가 진행됩니다.</p>
+          <h5 style="color:var(--accent)">[내부공문(기획처) 작성] ← 바로 결재를 올리려면 이것</h5>
+          <p>사업계획 승인용 내부공문(기획처) 작성 화면으로 이동합니다. 작성 후 그룹웨어에서 결재가 진행됩니다.</p>
         </div>
         <div class="callout ok" style="font-size:12.5px"><b>결재 루프.</b> AION에서 문서 작성 → 그룹웨어에서 결재 → 승인/반려 결과가 다시 AION 사업 상태에 반영됩니다. 반려되면 사유를 확인해 보완 후 재제출합니다.</div>
-        <div class="callout warn" style="font-size:12.5px">아직 기안을 안 썼다면 사업 상세 상단에 <b>「내부기안 작성필요」</b> 노란 배너가 남아 있습니다.</div>
+        <div class="callout warn" style="font-size:12.5px">아직 기안을 안 썼다면 사업 상세 상단에 <b>「내부공문 작성필요」</b> 노란 배너가 남아 있습니다.</div>
       </div>
     </div>
   </div>
@@ -1219,7 +1219,7 @@
       <li><span class="num">5</span>추진계획을 <b>PDCA</b>로 자세히 나눠 쓴다</li>
       <li><span class="num">6</span>Step3에서 <b>직접/연계</b> 지표를 구분해 등록한다</li>
       <li><span class="num">7</span>Step4 예산을 계정과목·산출근거까지 산정한다</li>
-      <li><span class="num">8</span>Step5 제출 후 <b>내부기안</b>을 올려 승인까지 받는다</li>
+      <li><span class="num">8</span>Step5 제출 후 <b>내부공문(기획처)</b>을 올려 승인까지 받는다</li>
     </ul>
     <div class="callout warn" style="margin-top:14px">자주 <b>임시저장</b>하세요. 그리고 <b>제출 ≠ 승인</b>이라는 점을 꼭 기억하세요.</div>
   </div>
@@ -1236,15 +1236,15 @@
   </div>
   <div class="content">
     <div class="cols-2" style="flex:1; min-height:0;">
-      <div class="faq-item"><div class="q">Q. 임시저장만 했는데 사업이 승인되나요?</div><div class="a">아니요. <b>제출</b>하고 <b>내부기안 결재 승인</b>까지 받아야 합니다.</div></div>
+      <div class="faq-item"><div class="q">Q. 임시저장만 했는데 사업이 승인되나요?</div><div class="a">아니요. <b>제출</b>하고 <b>내부공문(기획처) 결재 승인</b>까지 받아야 합니다.</div></div>
       <div class="faq-item"><div class="q">Q. 부모사업을 꼭 연결해야 하나요?</div><div class="a">예. 예산·집행을 사업과 함께 보려면 SU-WINGS 예산사업을 부모로 연결해야 합니다.</div></div>
       <div class="faq-item"><div class="q">Q. ①직접지표와 ②연계지표를 둘 다 등록할 수 있나요?</div><div class="a">가능합니다. 다만 <b>같은 지표를 두 곳에 중복</b>해서 넣지 마세요.</div></div>
       <div class="faq-item"><div class="q">Q. AI가 써 준 내용을 그대로 제출해도 되나요?</div><div class="a">AI 결과는 초안입니다. 사실관계·예산·일정·성과지표는 담당자가 최종 확인·수정해야 합니다.</div></div>
       <div class="faq-item"><div class="q">Q. 지출청구도 AION에서 끝나나요?</div><div class="a">아닙니다. 실제 예산·청구는 SU-WINGS·그룹웨어 흐름을 따릅니다.</div></div>
-      <div class="faq-item"><div class="q">Q. 승인 후 예산을 크게 바꾸려면?</div><div class="a">Major 수정으로 새 버전을 만들고 <b>수정 내부기안</b>을 다시 올려야 합니다.</div></div>
+      <div class="faq-item"><div class="q">Q. 승인 후 예산을 크게 바꾸려면?</div><div class="a">새 버전을 만들고 <b>수정 내부공문(기획처)</b>을 다시 올려야 합니다.</div></div>
     </div>
     <div class="callout ok" style="text-align:center; font-size:14.5px;">
-      문의 · <b>[담당부서명]</b> · <b>[내선/이메일]</b> &nbsp;|&nbsp; 상세 안내 · <b>AION_사업계획_가이드.html</b> &nbsp;|&nbsp; 시스템 · <b>suai.cloud</b>
+      문의: 기획처 [내선/이메일: 3395(adventistcho@syu.ac.kr), 3396(syu9121@syu.ac.kr)]
     </div>
   </div>
 </section>
