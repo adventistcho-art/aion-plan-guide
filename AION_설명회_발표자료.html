@@ -135,7 +135,12 @@
     background:#fff; border:1px solid var(--line); border-radius: 12px; padding: 10px;
     box-shadow: var(--shadow); position:relative;
   }
-  .shot-frame img { max-width:100%; max-height:100%; object-fit:contain; display:block; border-radius:6px; }
+  .shot-frame img {
+    max-width:100%; max-height:100%; width:auto; height:auto;
+    object-fit:contain; object-position:center top;
+    display:block; border-radius:6px;
+    image-rendering: auto;
+  }
   .shot-tag {
     position:absolute; top:-10px; left:14px; background:var(--ink); color:#fff;
     font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; z-index:3;
@@ -222,7 +227,19 @@
   .nav-center { flex:1; display:flex; align-items:center; justify-content:center; gap:14px; }
   .progress-track { width: 400px; height:5px; background:#e5e7eb; border-radius:999px; overflow:hidden; }
   .progress-fill { height:100%; background:var(--accent); width:0%; transition: width .25s ease; }
-  .counter { font-size:12.5px; color:var(--muted); font-weight:700; min-width:60px; text-align:center; }
+  .page-jump {
+    display:inline-flex; align-items:center; gap:5px;
+    font-size:12.5px; color:var(--muted); font-weight:700;
+  }
+  .page-jump input {
+    width:42px; height:28px; padding:0 4px; text-align:center;
+    border:1px solid var(--line); border-radius:7px; background:#fff;
+    font-size:12.5px; font-weight:700; color:var(--ink); font-family:inherit;
+  }
+  .page-jump input:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+  .page-jump input::-webkit-outer-spin-button,
+  .page-jump input::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
+  .page-jump input[type=number] { -moz-appearance:textfield; appearance:textfield; }
   .nav-hint { position:fixed; right:24px; bottom:66px; font-size:11px; color:#94a3b8; z-index:20; }
 
   @media print {
@@ -998,7 +1015,7 @@
       <div class="pdca-mini"><span class="phase a">A</span><h5>성과·환류</h5><p>성과보고회, 개선 반영, 매뉴얼 정비, 차년도 고도화 계획</p></div>
     </div>
     <div class="shot-frame" style="flex:1; min-height:0;"><span class="shot-tag">실제 화면 · 추진계획 활동 행</span>
-      <img src="guide-assets/plan-02-detail-pdca-rows.png" alt="Step2 추진계획 PDCA 활동 행 입력 화면">
+      <img src="guide-assets/plan-02-detail-pdca-rows.jpg" alt="Step2 추진계획 PDCA 활동 행 입력 화면">
     </div>
     <div class="cols-2">
       <div class="callout info" style="font-size:12.5px">한 행에 <b>PDCA · 기간 · 행정요건 · 원인행위 · 금액 · 내용</b>을 입력합니다. 같은 단계라도 활동이 다르면 행을 나눕니다.</div>
@@ -1117,7 +1134,7 @@
   </div>
   <div class="content">
     <div class="shot-frame" style="flex:1; min-height:0;"><span class="shot-tag">실제 화면 · Step4 예산 소요 계획</span>
-      <img src="guide-assets/plan-04-budget.png" alt="Step4 예산 소요 계획 입력 화면">
+      <img src="guide-assets/plan-04-budget.jpg" alt="Step4 예산 소요 계획 입력 화면">
     </div>
     <div class="cols-4">
       <div class="note-box"><h5>계정과목</h5><p>교원각종수당, 직원각종수당, 회의비, 소모품비, 통신비 등</p></div>
@@ -1142,7 +1159,7 @@
   <div class="content">
     <div class="use-layout wide-shot">
       <div class="shot-frame"><span class="shot-tag">실제 화면 · Step5 검토 및 제출</span>
-        <img src="guide-assets/plan-05-review-submit.png" alt="Step5 검토 및 제출 화면">
+        <img src="guide-assets/plan-05-review-submit.jpg" alt="Step5 검토 및 제출 화면">
       </div>
       <div class="notes">
         <ol class="steps-list">
@@ -1255,31 +1272,51 @@
   <button class="nav-btn" id="prevBtn">‹ 이전</button>
   <div class="nav-center">
     <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
-    <span class="counter" id="counter">1 / 31</span>
+    <form class="page-jump" id="pageJumpForm" autocomplete="off">
+      <input type="number" id="pageJump" min="1" step="1" inputmode="numeric" aria-label="이동할 페이지 번호">
+      <span id="pageTotal">/ 31</span>
+    </form>
   </div>
   <button class="nav-btn" id="nextBtn">다음 ›</button>
 </div>
-<div class="nav-hint">← → 방향키로 이동 · F11 전체화면</div>
+<div class="nav-hint">← → 방향키 · 번호 입력 후 Enter · F11 전체화면</div>
 
 <script>
   const slides = document.querySelectorAll('.slide');
   const total = slides.length;
+  const jumpInput = document.getElementById('pageJump');
   let idx = 0;
+
+  jumpInput.max = String(total);
+  document.getElementById('pageTotal').textContent = '/ ' + total;
 
   function show(i) {
     idx = Math.max(0, Math.min(total - 1, i));
     slides.forEach((s, n) => s.classList.toggle('active', n === idx));
-    document.getElementById('counter').textContent = (idx + 1) + ' / ' + total;
+    if (document.activeElement !== jumpInput) jumpInput.value = String(idx + 1);
     document.getElementById('progress-fill').style.width = ((idx + 1) / total * 100) + '%';
     document.getElementById('prevBtn').disabled = idx === 0;
     document.getElementById('nextBtn').disabled = idx === total - 1;
     location.hash = 'p' + (idx + 1);
   }
 
+  function goToTypedPage() {
+    const n = parseInt(jumpInput.value, 10);
+    if (Number.isInteger(n)) show(n - 1);
+    else jumpInput.value = String(idx + 1);
+    jumpInput.blur();
+  }
+
   document.getElementById('nextBtn').addEventListener('click', () => show(idx + 1));
   document.getElementById('prevBtn').addEventListener('click', () => show(idx - 1));
+  document.getElementById('pageJumpForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    goToTypedPage();
+  });
+  jumpInput.addEventListener('blur', goToTypedPage);
 
   window.addEventListener('keydown', (e) => {
+    if (e.target === jumpInput) return;
     if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(idx + 1); }
     else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); show(idx - 1); }
     else if (e.key === 'Home') { show(0); }
