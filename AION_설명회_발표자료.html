@@ -251,6 +251,16 @@
     display:inline-flex; padding:4px 9px; border-radius:999px; background:#fff;
     border:1px solid #dbe3ef; font-size:11.5px; color:#334155; font-weight:650;
   }
+  .cls-modal-panel.fit { height:auto; max-height:min(780px, calc(100vh - 110px)); }
+  .cls-modal-body { flex:1; overflow:auto; padding:16px 22px 22px; display:flex; flex-direction:column; gap:14px; }
+  .cls-modal-body .slide-sub { max-width:none; }
+  .ref-btn {
+    display:flex; align-items:center; justify-content:center; width:100%;
+    margin-top:8px; padding:9px 12px; border:1px solid #93c5fd; border-radius:10px;
+    background:var(--accent-soft); color:#163a8a; font:inherit; font-size:12.5px; font-weight:800;
+    cursor:pointer;
+  }
+  .ref-btn:hover, .ref-btn:focus-visible { background:#dbeafe; outline:none; }
 
   .pdca-mini-grid { display:grid; grid-template-columns: repeat(4,1fr); gap:10px; flex-shrink:0; }
   .pdca-mini { border:1px solid var(--line); border-radius:10px; padding:11px 13px; background:#fff; }
@@ -859,6 +869,7 @@
           <li><span class="n">4</span><span>잘못 골랐으면 카드 옆 <b>[수정]</b>으로 다시 선택</span></li>
         </ol>
         <div class="callout warn" style="font-size:12.5px"><b>왜 필요한가.</b> 부모사업을 연결해야 편성액·집행액·잔액을 이 사업에서 볼 수 있습니다. 예산의 최종 기준은 항상 SU-WINGS입니다.</div>
+        <button type="button" class="ref-btn" data-pc-open>부모–자녀 구조 다시 보기 ›</button>
       </div>
     </div>
   </div>
@@ -1439,6 +1450,38 @@
   </div>
 </div>
 
+<div id="pcModal" class="cls-modal" aria-hidden="true">
+  <div class="cls-modal-bg" data-cls-close></div>
+  <div class="cls-modal-panel fit" role="dialog" aria-modal="true" aria-labelledby="pcModalTitle">
+    <div class="cls-modal-head">
+      <div>
+        <h3 id="pcModalTitle">부모사업 ↔ 자녀사업 — 가장 헷갈리기 쉬운 개념</h3>
+        <p>11페이지 · 부모–자녀 구조</p>
+      </div>
+      <button type="button" class="cls-close" data-cls-close aria-label="닫기">×</button>
+    </div>
+    <div class="cls-modal-body">
+      <p class="hl-kicker"><mark>부모–자녀 구조로 예산 중층화를 원천 차단</mark></p>
+      <p class="slide-sub">AION에서 만드는 실행 사업(자녀사업)은 SU-WINGS 예산 사업(부모사업) <b>하나</b>에 반드시 연결됩니다.</p>
+      <div class="pc-diagram" style="align-items:center; padding:8px 0;">
+        <div class="pc-parent">
+          <div class="t">SU-WINGS 예산 사업 (부모)</div>
+          <div class="n">2026000746<br>대학생 유학생 마약류 예방교육</div>
+        </div>
+        <div style="font-size:20px; color:var(--muted)">◀ 연결</div>
+        <div class="pc-children">
+          <div class="pc-child"><b>자녀사업 A</b> — 유학생 대상 예방교육 운영</div>
+          <div class="pc-child"><b>자녀사업 B</b> — 예방교육 콘텐츠 개발</div>
+          <div class="pc-child"><b>자녀사업 C</b> — 캠퍼스 안전문화 캠페인</div>
+        </div>
+      </div>
+      <div class="callout warn" style="margin:0">
+        <b>중요.</b> 자녀사업 총액의 <b>합계 = 부모사업(SU-WINGS) 예산</b>입니다. 총액은 Step2에서 P/D로, Step4에서 계정과목으로 쪼갭니다. 세부사업 예산을 느슨하게 쓰면 부모사업 전체가 흔들립니다.
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="nav-bar">
   <button class="nav-btn" id="prevBtn">‹ 이전</button>
   <div class="nav-center">
@@ -1609,22 +1652,35 @@
     clsTree.innerHTML = `<div class="cls-gname" style="font-size:15px;margin-bottom:12px">${esc(data.title)}</div>` + data.items.map((n) => renderNode(n, 1)).join('');
     clsTree.scrollTop = 0;
   }
+  function closeAllModals() {
+    document.querySelectorAll('.cls-modal.open').forEach((el) => {
+      el.classList.remove('open');
+      el.setAttribute('aria-hidden', 'true');
+    });
+  }
   function clsOpen(key) {
+    closeAllModals();
     renderCls(key || 'C1');
     clsModal.classList.add('open');
     clsModal.setAttribute('aria-hidden', 'false');
   }
   function clsClose() {
-    clsModal.classList.remove('open');
-    clsModal.setAttribute('aria-hidden', 'true');
+    closeAllModals();
   }
   function clsIsOpen() {
-    return clsModal.classList.contains('open');
+    return !!document.querySelector('.cls-modal.open');
+  }
+  function pcOpen() {
+    closeAllModals();
+    const modal = document.getElementById('pcModal');
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
   }
 
   document.addEventListener('click', (e) => {
     const openBtn = e.target.closest('.cls-open');
     if (openBtn) { e.preventDefault(); clsOpen(openBtn.dataset.cls); return; }
+    if (e.target.closest('[data-pc-open]')) { e.preventDefault(); pcOpen(); return; }
     const tabBtn = e.target.closest('[data-cls-tab]');
     if (tabBtn) { clsOpen(tabBtn.getAttribute('data-cls-tab')); return; }
     if (e.target.closest('[data-cls-close]')) clsClose();
@@ -1634,15 +1690,15 @@
     if (e.target === jumpInput) return;
     if (clsIsOpen()) {
       if (e.key === 'Escape') { e.preventDefault(); clsClose(); }
-      else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      else if (clsModal.classList.contains('open') && (e.key === 'ArrowRight' || e.key === 'ArrowDown')) {
         e.preventDefault();
         clsOpen(clsOrder[(clsOrder.indexOf(clsKey) + 1) % clsOrder.length]);
       }
-      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      else if (clsModal.classList.contains('open') && (e.key === 'ArrowLeft' || e.key === 'ArrowUp')) {
         e.preventDefault();
         clsOpen(clsOrder[(clsOrder.indexOf(clsKey) + clsOrder.length - 1) % clsOrder.length]);
       }
-      else if (['PageDown',' ','PageUp'].includes(e.key)) e.preventDefault();
+      else if (['PageDown',' ','PageUp','ArrowRight','ArrowDown','ArrowLeft','ArrowUp'].includes(e.key)) e.preventDefault();
       return;
     }
     if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(idx + 1); }
