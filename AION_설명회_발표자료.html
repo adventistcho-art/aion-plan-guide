@@ -130,6 +130,7 @@
   .use-layout { flex:1; min-height:0; display:grid; grid-template-columns: 1.25fr 1fr; gap: 20px; }
   .use-layout.wide-shot { grid-template-columns: 1.75fr 1fr; }
   .use-layout.narrow-shot { grid-template-columns: 1fr 1.1fr; }
+  .use-layout.shot-right { grid-template-columns: 0.82fr 1.48fr; }
   .shot-frame {
     min-height:0; display:flex; align-items:center; justify-content:center;
     background:#fff; border:1px solid var(--line); border-radius: 12px; padding: 10px;
@@ -140,6 +141,14 @@
     object-fit:contain; object-position:center top;
     display:block; border-radius:6px;
     image-rendering: auto;
+  }
+  .shot-frame.tall { align-items:flex-start; }
+  .shot-frame.tall img {
+    width: 100%;
+    max-height: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: top center;
   }
   .shot-tag {
     position:absolute; top:-10px; left:14px; background:var(--ink); color:#fff;
@@ -1020,21 +1029,31 @@
   </div>
   <div class="slide-head">
     <div class="slide-title">Step 2. 추진 계획은 <b>PDCA</b>로 나눠 씁니다</div>
-    <p class="slide-sub">단순 일정 나열이 아니라, 계획(P) → 운영·시행(D) → 평가(C) → 성과·환류(A) 흐름으로 실제 업무와 기안이 보이도록 작성합니다.</p>
+    <p class="slide-sub">총예산을 P/D 활동 행에 나누고, C·A는 비예산으로 둡니다. 합계가 총예산과 같아야 다음으로 갑니다.</p>
   </div>
   <div class="content">
-    <div class="pdca-mini-grid">
-      <div class="pdca-mini"><span class="phase p">P</span><h5>계획</h5><p>사업계획 승인, 원인행위 기안, 입찰·계약 준비, 설계·범위 확정</p></div>
-      <div class="pdca-mini"><span class="phase d">D</span><h5>운영·시행</h5><p>홍보·모집, 교육·프로그램 운영, 구축·개발, 시범운영</p></div>
-      <div class="pdca-mini"><span class="phase c">C</span><h5>평가</h5><p>만족도 조사, 준공검사·검수, 중간점검, 성과지표(KPI) 측정</p></div>
-      <div class="pdca-mini"><span class="phase a">A</span><h5>성과·환류</h5><p>성과보고회, 개선 반영, 매뉴얼 정비, 차년도 고도화 계획</p></div>
-    </div>
-    <div class="shot-frame" style="flex:1; min-height:0;"><span class="shot-tag">실제 화면 · 추진계획 활동 행</span>
-      <img src="guide-assets/plan-02-detail-pdca-rows.jpg" alt="Step2 추진계획 PDCA 활동 행 입력 화면">
-    </div>
-    <div class="cols-2">
-      <div class="callout info" style="font-size:12.5px">한 행에 <b>PDCA · 기간 · 행정요건 · 원인행위 · 금액 · 내용</b>을 입력합니다. 같은 단계라도 활동이 다르면 행을 나눕니다.</div>
-      <div class="callout danger" style="font-size:12.5px"><b>금액은 P(계획)·D(실행) 행에만 입력합니다.</b> C(평가)·A(환류)는 보통 금액이 없습니다. 다음 장에서 예산 쪼개기를 자세히 봅니다.</div>
+    <div class="use-layout shot-right">
+      <div class="notes">
+        <div class="pdca-mini-grid" style="grid-template-columns:1fr 1fr;">
+          <div class="pdca-mini"><span class="phase p">P</span><h5>계획</h5><p>진단·조사·기안. 금액이 없으면 0천원</p></div>
+          <div class="pdca-mini"><span class="phase d">D</span><h5>실행</h5><p>공사·조성·홍보 등 실제 집행</p></div>
+          <div class="pdca-mini"><span class="phase c">C</span><h5>점검</h5><p>이용 현황·만족도. 비예산 단계</p></div>
+          <div class="pdca-mini"><span class="phase a">A</span><h5>환류</h5><p>성과보고·개선. 보통 비예산</p></div>
+        </div>
+        <div class="note-box">
+          <h5>이 화면에서 볼 것</h5>
+          <ul>
+            <li>상단 <b>계획 예산 현황</b> — 총예산 50 · P 0 · D 50 · 남은 0</li>
+            <li><b>Plan</b> 행은 있어도 금액은 0천원</li>
+            <li><b>Do</b> 행에만 금액 — 15 + 25 + 10 = 50천원</li>
+            <li><b>Check</b>는 「비예산」. 금액을 넣지 않습니다</li>
+          </ul>
+        </div>
+        <div class="callout danger" style="font-size:12.5px"><b>규칙.</b> 금액은 P·D에만 입력합니다. P합 + D합 = 총예산이어야 다음 단계로 갈 수 있습니다. 단위는 <b>천원</b>입니다.</div>
+      </div>
+      <div class="shot-frame tall"><span class="shot-tag">실제 화면 · 추진계획 · 계획 예산 현황</span>
+        <img src="guide-assets/plan-02-detail-pdca-budget.png" alt="Step2 추진계획 — 총예산 50천원을 P/D 활동 행에 나눈 화면">
+      </div>
     </div>
   </div>
 </section>
