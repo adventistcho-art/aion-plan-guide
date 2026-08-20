@@ -199,14 +199,58 @@
   .c-table th, .c-table td { border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top; }
   .c-table th { background:#f8fafc; font-weight:700; color:var(--ink); }
   .c-table td { color: var(--ink-soft); }
-  .cls-table { width:100%; border-collapse:collapse; table-layout:fixed; font-size:12.5px; background:#fff; }
-  .cls-table th, .cls-table td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; line-height:1.45; }
-  .cls-table thead th { background:#1e3a6e; color:#fff; font-size:12px; font-weight:800; text-align:center; }
-  .cls-table tbody th { width:58px; text-align:center; background:var(--accent-soft); color:var(--accent); font-size:16px; font-weight:800; }
-  .cls-table td { color: var(--ink-soft); }
-  .cls-table td b { color: var(--ink); }
-  .cls-table .name { width:18%; font-weight:750; color:var(--ink); }
-  .cls-table .q { width:22%; }
+  .cls-launch { list-style:none; padding:0; margin:0; }
+  .cls-launch li { margin:0; }
+  .cls-open {
+    display:flex; align-items:center; gap:6px; width:100%;
+    padding:5px 8px; margin:1px 0; border:0; border-radius:8px;
+    background:transparent; text-align:left; cursor:pointer;
+    font: inherit; font-size:12.5px; color:var(--ink-soft); line-height:1.45;
+  }
+  .cls-open:hover, .cls-open:focus-visible { background:var(--accent-soft); color:var(--ink); outline:none; }
+  .cls-open b { color:var(--accent); min-width:1.8em; }
+  .cls-open .hint { margin-left:auto; font-size:10.5px; font-weight:700; color:var(--accent); opacity:.85; }
+  .cls-modal {
+    position:fixed; inset:0; z-index:80; display:none;
+    align-items:center; justify-content:center; padding:24px 28px 78px;
+  }
+  .cls-modal.open { display:flex; }
+  .cls-modal-bg { position:absolute; inset:0; background:rgba(11,18,32,.55); }
+  .cls-modal-panel {
+    position:relative; width:min(1080px, 96vw); height:min(780px, calc(100vh - 110px));
+    display:flex; flex-direction:column; background:#fff; border-radius:16px;
+    box-shadow:0 24px 60px rgba(11,18,32,.28); overflow:hidden;
+  }
+  .cls-modal-head {
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:16px 20px 12px; border-bottom:1px solid var(--line); flex-shrink:0;
+  }
+  .cls-modal-head h3 { margin:0; font-size:18px; font-weight:800; color:var(--ink); }
+  .cls-modal-head p { margin:3px 0 0; font-size:12.5px; color:var(--muted); }
+  .cls-close {
+    width:36px; height:36px; border:1px solid var(--line); border-radius:10px;
+    background:#fff; font-size:20px; line-height:1; cursor:pointer; color:var(--ink-soft);
+  }
+  .cls-close:hover { background:#f8fafc; color:var(--ink); }
+  .cls-tabs { display:flex; gap:6px; padding:10px 16px; border-bottom:1px solid var(--line); flex-shrink:0; background:#f8fafc; }
+  .cls-tab {
+    flex:1; padding:8px 6px; border:1px solid var(--line); border-radius:9px;
+    background:#fff; cursor:pointer; font:inherit; font-size:12px; font-weight:700; color:var(--ink-soft);
+  }
+  .cls-tab.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .cls-tree { flex:1; overflow:auto; padding:14px 18px 20px; }
+  .cls-group { margin:0 0 10px; }
+  .cls-gname { font-size:13px; font-weight:800; color:var(--ink); margin:0 0 6px; }
+  .cls-group.d1 { margin:0 0 14px; padding:12px 14px; border:1px solid var(--line); border-radius:12px; background:#fafbfc; }
+  .cls-group.d2 { margin:8px 0 0; padding:8px 0 0; border:0; background:transparent; }
+  .cls-group.d2 > .cls-gname { font-size:12.5px; color:#1e3a6e; }
+  .cls-group.d3 { margin:6px 0 0 10px; }
+  .cls-group.d3 > .cls-gname, .cls-group.d4 > .cls-gname { font-size:12px; font-weight:700; color:var(--ink-soft); }
+  .cls-leaves { display:flex; flex-wrap:wrap; gap:6px; }
+  .cls-leaf {
+    display:inline-flex; padding:4px 9px; border-radius:999px; background:#fff;
+    border:1px solid #dbe3ef; font-size:11.5px; color:#334155; font-weight:650;
+  }
 
   .pdca-mini-grid { display:grid; grid-template-columns: repeat(4,1fr); gap:10px; flex-shrink:0; }
   .pdca-mini { border:1px solid var(--line); border-radius:10px; padding:11px 13px; background:#fff; }
@@ -287,7 +331,7 @@
 
   @media print {
     .slide { position:relative; opacity:1 !important; visibility:visible !important; height:100vh; page-break-after: always; }
-    .nav-bar, .nav-hint { display:none; }
+    .nav-bar, .nav-hint, .cls-modal { display:none; }
   }
 </style>
 </head>
@@ -779,98 +823,20 @@
         </div>
         <div class="note-box">
           <h5>C1~C5는 무엇인가</h5>
-          <ul>
-            <li><b>C1</b> 대상(내부·외부 주체)</li>
-            <li><b>C2</b> 환경 및 지역 특성</li>
-            <li><b>C3</b> 시점 및 주기</li>
-            <li><b>C4</b> 목적(정책·지표 방어)</li>
-            <li><b>C5</b> 사업 방법</li>
+          <ul class="cls-launch">
+            <li><button type="button" class="cls-open" data-cls="C1"><b>C1</b> 대상(내부·외부 주체)<span class="hint">전체 보기 ›</span></button></li>
+            <li><button type="button" class="cls-open" data-cls="C2"><b>C2</b> 환경 및 지역 특성<span class="hint">전체 보기 ›</span></button></li>
+            <li><button type="button" class="cls-open" data-cls="C3"><b>C3</b> 시점 및 주기<span class="hint">전체 보기 ›</span></button></li>
+            <li><button type="button" class="cls-open" data-cls="C4"><b>C4</b> 목적(정책·지표 방어)<span class="hint">전체 보기 ›</span></button></li>
+            <li><button type="button" class="cls-open" data-cls="C5"><b>C5</b> 사업 방법<span class="hint">전체 보기 ›</span></button></li>
           </ul>
         </div>
-        <div class="callout ok" style="font-size:12.5px">▶ 를 눌러 펼치고 <b>해당되는 항목을 모두 체크</b>합니다. 시점·목적·방법까지 맞춰두면 AI 초안과 지표 제안 품질이 좋아집니다.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ 19. 분류세부 표 ============ -->
-<section class="slide">
-  <div class="topline">
-    <span class="badge-part p4">PART 4 · 사용방법</span>
-    <span class="brandmark"><span class="dot"></span>위자드 1단계 · 분류세부</span>
-  </div>
-  <div class="slide-head">
-    <div class="slide-title">C1~C5 분류세부 — 무엇을 체크하는가</div>
-    <p class="slide-sub">이 사업이 <b>누구를 위해</b>, <b>어떤 환경에서</b>, <b>언제</b>, <b>무슨 목적</b>으로, <b>어떤 방법</b>으로 하는지를 대학 공통 코드로 찍습니다.</p>
-  </div>
-  <div class="content">
-    <table class="cls-table">
-      <thead>
-        <tr>
-          <th>코드</th>
-          <th>이름</th>
-          <th>질문으로 이해하기</th>
-          <th>주요 하위 항목(예시)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>C1</th>
-          <td class="name">대상 1: 내부 및 외부 주체</td>
-          <td class="q">이 사업의 <b>사람(대상)</b>은 누구인가?</td>
-          <td>
-            · 내부 기본 신분: 외국인, 신입생, 재학생, 휴학생, 졸업생(미취업), 전임/비전임교원, 강사, 조교, 직원(정규·계약), 외부인<br>
-            · 학년/과정: 1~4학년, 초과학기, 석·박사, 한국어연수<br>
-            · 외부 협력 주체: 산업체, 지자체, 교회/교단, 타 대학, 정부부처, 지역사회기관 등
-          </td>
-        </tr>
-        <tr>
-          <th>C2</th>
-          <td class="name">대상 2: 환경 및 지역 특성</td>
-          <td class="q">대상이 놓인 <b>환경·지역·상황</b>은?</td>
-          <td>
-            · 거주 환경: 기숙사(에덴관·시온관 등), 지역(서울·구리·남양주·경기·지방)<br>
-            · 행정적 특성: SDA 교인, 학사경고자, 미적응자, 리더학생, 가계곤란자, 장애학생, 금연/금주 희망자 등
-          </td>
-        </tr>
-        <tr>
-          <th>C3</th>
-          <td class="name">시점 및 주기</td>
-          <td class="q"><b>언제</b>, <b>얼마나 자주</b> 하는 사업인가?</td>
-          <td>
-            · 학사 타임라인: 학기 전 / 학기 초 / 학기 중 / 학기 말 / 방학 중<br>
-            · 사업 주기: 매일, 매주, 매월, 학기별, 상시, 단회
-          </td>
-        </tr>
-        <tr>
-          <th>C4</th>
-          <td class="name">목적: 정책 및 지표 방어</td>
-          <td class="q">이 사업이 지키는·올리는 <b>대학 정책·성과지표</b>는?</td>
-          <td>
-            · 대학 정체성: 교인 학생 관리, 선교, ESG, 금연·금주, 인성교육(SU-MVP+) 등<br>
-            · 국제화 인증(IES): 유학생 체류·중도탈락·TOPIK·의무교육 등<br>
-            · 학생충원: 재학생 충원율, 신입 충원율, 기숙사 수용률 등<br>
-            · 교육 및 취업: 취업률, 장학, 교육비 환원, 도서관 인프라 등
-          </td>
-        </tr>
-        <tr>
-          <th>C5</th>
-          <td class="name">사업 방법</td>
-          <td class="q">실제로 <b>어떤 수단·프로그램 유형</b>으로 하는가?</td>
-          <td>
-            · I. 교육 혁신 및 품질 (전공교육, 교과목 개발·운영 등)<br>
-            · II. 학생 성취 및 성장<br>
-            · III. 연구 및 산학 협력<br>
-            · IV. 행정 자원 및 인프라 고도화
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="callout info" style="font-size:12.5px; margin:0">화면에 보이는 항목 이름이 표와 조금 다르면 <b>화면에 나온 이름</b>을 기준으로 고르면 됩니다. 해당되는 항목은 모두 체크합니다.</div>
-  </div>
-</section>
-
-<!-- ============ 20. 부모사업 연결 ============ -->
+<!-- ============ 19. 부모사업 연결 ============ -->
 <section class="slide">
   <div class="topline">
     <span class="badge-part p4">PART 4 · 사용방법</span>
@@ -1458,6 +1424,21 @@
 
 </div>
 
+<div id="clsModal" class="cls-modal" aria-hidden="true">
+  <div class="cls-modal-bg" data-cls-close></div>
+  <div class="cls-modal-panel" role="dialog" aria-modal="true" aria-labelledby="clsModalTitle">
+    <div class="cls-modal-head">
+      <div>
+        <h3 id="clsModalTitle">사업 분류기준 전체</h3>
+        <p>위자드 왼쪽에서 체크하는 C1~C5 하위 항목입니다. 탭을 눌러 전체를 확인하세요.</p>
+      </div>
+      <button type="button" class="cls-close" data-cls-close aria-label="닫기">×</button>
+    </div>
+    <div class="cls-tabs" id="clsTabs"></div>
+    <div class="cls-tree" id="clsTree"></div>
+  </div>
+</div>
+
 <div class="nav-bar">
   <button class="nav-btn" id="prevBtn">‹ 이전</button>
   <div class="nav-center">
@@ -1505,8 +1486,165 @@
   });
   jumpInput.addEventListener('blur', goToTypedPage);
 
+  const CLASS_TREE = {
+    C1: {
+      tab: 'C1 대상',
+      title: 'C1 대상 1: 내부 및 외부 주체',
+      items: [
+        { n: '내부 기본 신분', c: ['외국인','신입생','재학생','휴학생','졸업생(미취업)','전임교원','비전임교원','강사','조교','직원(정규직)','직원(계약직)','외부인'] },
+        { n: '학년/과정', c: ['1학년(신입)','2학년','3학년','4학년(졸업예정)','초과학기생','석사과정','박사과정','한국어연수과정'] },
+        { n: '외부 협력 주체', c: ['산업체','지자체(서울시)','지자체(남양주시)','지자체(구리시)','교회/교단','타 대학','정부부처','지역사회기관'] }
+      ]
+    },
+    C2: {
+      tab: 'C2 환경',
+      title: 'C2 대상 2: 환경 및 지역 특성',
+      items: [
+        { n: '거주 환경', c: [
+          { n: '기숙사', c: ['에덴관','신학숙관','시온관','살렘관','브니엘관'] },
+          { n: '지역', c: ['서울','구리','남양주','경기권','지방거주'] }
+        ]},
+        { n: '행정적 특성', c: ['SDA 교인','학사경고자','미적응자','리더학생','가계곤란자','장애학생','금연/금주 희망자'] }
+      ]
+    },
+    C3: {
+      tab: 'C3 시점',
+      title: 'C3 시점 및 주기',
+      items: [
+        { n: '학사 타임라인', c: ['학기 전','학기 초','학기 중','학기 말','방학 중'] },
+        { n: '사업 주기', c: ['매일(Daily)','매주(Weekly)','매월(Monthly)','학기별','상시','단회'] }
+      ]
+    },
+    C4: {
+      tab: 'C4 목적',
+      title: 'C4 목적: 정책 및 지표 방어',
+      items: [
+        { n: '대학 정체성', c: ['교인 학생 관리','선교 및 복음 전파','ESG 경영','금연·금주 및 건강','인성 교육 (SU-MVP+)'] },
+        { n: '국제화 인증(IES)', c: ['유학생 불법 체류율','유학생 중도탈락률','유학생 언어능력 (TOPIK)','의무 교육 (성폭력/법령)','유학생 상담/보험/만족도'] },
+        { n: '학생충원', c: ['재학생 충원율','신입학 수시 경쟁률','기숙사 수용률','신입생 충원율'] },
+        { n: '교육 및 취업', c: ['졸업생 취업률','장학금 지급률','교육비 환원율','도서관 인프라'] }
+      ]
+    },
+    C5: {
+      tab: 'C5 방법',
+      title: 'C5 사업 방법',
+      items: [
+        { n: 'I. 교육 혁신 및 품질', c: [
+          { n: '전공 교육 (Major)', c: [
+            { n: '단일전공 과정', c: ['교과목 신규개발','운영 및 관리','졸업'] },
+            { n: '다전공(융합)과정', c: ['신규개발','운영 및 관리','제도'] },
+            { n: '전공인프라', c: ['실험실습 환경 구축','시스템'] },
+            { n: '전공 성과 및 품질 관리', c: ['인증','CQI','강의 만족도'] }
+          ]},
+          { n: '교양 교육 (General)', c: [
+            { n: '핵심 및 기초교양', c: ['교과목 신규개발','운영 및 관리','시스템'] },
+            { n: '채플 및 인성 (Identity)', c: ['채플','인성교육'] }
+          ]},
+          { n: '비교과 교육', c: [
+            { n: '비교과 교육', c: ['학습역량지원','진로지원','상담지원','취업지원','창업지원','학생활동지원','시스템','인증'] }
+          ]}
+        ]},
+        { n: 'II. 학생 가치 및 지원', c: [
+          { n: '학생 서비스 및 복지', c: [
+            { n: '상담 및 장학', c: ['장학금(내부)','장학금(외부)','심리상담','진로상담'] },
+            { n: '생활 및 환경 지원', c: ['식당(학교)','식당(외주)','학생 편의시설','교내 안전'] }
+          ]}
+        ]},
+        { n: 'III. 연구 및 산학 협력', c: [
+          { n: '연구 성과 (IP)', c: [
+            { n: '논문', c: ['연구재단 등재지(후보포함)','SCI급/SCOPUS','저역서'] },
+            { n: '연구', c: ['교내연구비','연구소 운영','위원회 및 센터 운영','연구윤리'] }
+          ]}
+        ]},
+        { n: 'IV. 인적 자원 및 행정 고도화', c: [
+          { n: '교원역량강화', c: ['교수지원','교수교육'] },
+          { n: '교원임용처우', c: ['채용','보수','환경(연구실 등)'] },
+          { n: '직원조직관리', c: ['인사','교육','보수'] },
+          { n: '직원조직문화', c: ['복지','환경(소모품 포함)'] },
+          { n: '보안관리', c: ['보안','관리(네트워크, 소프트웨어 등)'] },
+          { n: '내부거버넌스', c: [{ n: '내부거버넌스', c: ['위원회 운영'] }] },
+          { n: '외부거버넌스', c: [{ n: '외부거버넌스', c: ['대외협력','동문회'] }] },
+          { n: '정보화 시스템', c: [{ n: '정보화 시스템', c: ['시스템 고도화','유지보수'] }] },
+          { n: '브랜드 관리', c: [
+            { n: '대내외홍보', c: ['대외 홍보물 제작','미디어 광고','교단 홍보','홈페이지'] },
+            { n: '기부자 관리', c: ['기부자 관리'] },
+            { n: '재정지원사업 추진', c: ['재정지원사업 추진'] }
+          ]},
+          { n: '캠퍼스 환경 조성', c: [
+            { n: '건축물', c: ['유지보수','건축 및 재건축','리모델링'] },
+            { n: '교육기자재', c: ['구매','유지보수'] },
+            { n: '제세공과금', c: ['전기','수도','가스','기타'] },
+            { n: '환경미화', c: ['청소','조경'] },
+            { n: '안전관리', c: ['교육','보안시스템','개인정보보안'] }
+          ]}
+        ]}
+      ]
+    }
+  };
+
+  const clsModal = document.getElementById('clsModal');
+  const clsTabs = document.getElementById('clsTabs');
+  const clsTree = document.getElementById('clsTree');
+  const clsOrder = ['C1','C2','C3','C4','C5'];
+  let clsKey = 'C1';
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  }
+  function isLeafList(arr) {
+    return arr.length && arr.every((x) => typeof x === 'string');
+  }
+  function renderNode(node, depth) {
+    if (typeof node === 'string') return `<span class="cls-leaf">${esc(node)}</span>`;
+    const kids = node.c || [];
+    if (isLeafList(kids)) {
+      return `<div class="cls-group d${depth}"><div class="cls-gname">${esc(node.n)}</div><div class="cls-leaves">${kids.map((k) => `<span class="cls-leaf">${esc(k)}</span>`).join('')}</div></div>`;
+    }
+    return `<div class="cls-group d${depth}"><div class="cls-gname">${esc(node.n)}</div><div class="cls-kids">${kids.map((k) => renderNode(k, depth + 1)).join('')}</div></div>`;
+  }
+  function renderCls(key) {
+    clsKey = CLASS_TREE[key] ? key : 'C1';
+    const data = CLASS_TREE[clsKey];
+    clsTabs.innerHTML = clsOrder.map((k) => `<button type="button" class="cls-tab${k===clsKey?' on':''}" data-cls-tab="${k}">${esc(CLASS_TREE[k].tab)}</button>`).join('');
+    clsTree.innerHTML = `<div class="cls-gname" style="font-size:15px;margin-bottom:12px">${esc(data.title)}</div>` + data.items.map((n) => renderNode(n, 1)).join('');
+    clsTree.scrollTop = 0;
+  }
+  function clsOpen(key) {
+    renderCls(key || 'C1');
+    clsModal.classList.add('open');
+    clsModal.setAttribute('aria-hidden', 'false');
+  }
+  function clsClose() {
+    clsModal.classList.remove('open');
+    clsModal.setAttribute('aria-hidden', 'true');
+  }
+  function clsIsOpen() {
+    return clsModal.classList.contains('open');
+  }
+
+  document.addEventListener('click', (e) => {
+    const openBtn = e.target.closest('.cls-open');
+    if (openBtn) { e.preventDefault(); clsOpen(openBtn.dataset.cls); return; }
+    const tabBtn = e.target.closest('[data-cls-tab]');
+    if (tabBtn) { clsOpen(tabBtn.getAttribute('data-cls-tab')); return; }
+    if (e.target.closest('[data-cls-close]')) clsClose();
+  });
+
   window.addEventListener('keydown', (e) => {
     if (e.target === jumpInput) return;
+    if (clsIsOpen()) {
+      if (e.key === 'Escape') { e.preventDefault(); clsClose(); }
+      else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        clsOpen(clsOrder[(clsOrder.indexOf(clsKey) + 1) % clsOrder.length]);
+      }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        clsOpen(clsOrder[(clsOrder.indexOf(clsKey) + clsOrder.length - 1) % clsOrder.length]);
+      }
+      else if (['PageDown',' ','PageUp'].includes(e.key)) e.preventDefault();
+      return;
+    }
     if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(idx + 1); }
     else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); show(idx - 1); }
     else if (e.key === 'Home') { show(0); }
