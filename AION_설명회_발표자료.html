@@ -63,6 +63,17 @@
   .slide-title b { color: var(--accent); }
   .slide-title .tag-live { font-size:11.5px; font-weight:800; color:#fff; background:var(--danger); padding:3px 9px; border-radius:999px; vertical-align:middle; margin-left:8px; }
   .slide-sub { font-size: 14px; color: var(--ink-soft); max-width: 92ch; line-height:1.55; margin:0; }
+  .hl-kicker { margin: 0 0 8px; font-size: 15px; line-height: 1.45; }
+  mark, .hl {
+    background: #fde68a;
+    color: #1a1f2e;
+    padding: 0.05em 0.28em;
+    border-radius: 4px;
+    font-weight: 800;
+    font-style: normal;
+    box-decoration-break: clone;
+  }
+  .callout .fn { display:block; margin-top:7px; font-size:11px; font-weight:600; line-height:1.45; opacity:.92; }
 
   .content { flex: 1; min-height:0; display:flex; flex-direction:column; gap:12px; }
   .content.scroll { overflow:auto; }
@@ -354,17 +365,17 @@
     <div class="cols-3" style="flex:1; min-height:0;">
       <div class="card">
         <h4><span class="icon-circle ic-blue">1</span>타당성 검토 부재</h4>
-        <p>사업의 효과성·수요자 중심성·지표 연관성을 따지지 않고, "작년에도 했으니까" 관행적으로 예산을 신청합니다.</p>
+        <p>사업의 효과성·수요자 중심성·지표 연관성을 따지지 않고, <mark>"작년에도 했으니까"</mark> 관행적으로 예산을 신청합니다.</p>
         <div class="cap">→ 내용적 타당성이 아니라 <b>예산액 규모</b> 중심의 단편적 검토만 반복</div>
       </div>
       <div class="card">
         <h4><span class="icon-circle ic-purple">2</span>사업–지표 인과관계 단절</h4>
         <p>사업은 사업대로, 지표는 지표대로 겉돕니다. 이 사업이 어떤 지표에 얼마나 기여했는지 추적할 데이터가 없습니다.</p>
-        <div class="cap">→ 사후 검증조차 어려운 구조적 모순</div>
+        <div class="cap">→ <mark>사후 검증조차 어려운 구조적 모순</mark></div>
       </div>
       <div class="card">
         <h4><span class="icon-circle ic-red">3</span>중층 사업구조</h4>
-        <p>하나의 예산사업 안에 여러 세부사업을 임의로 쪼개 운영하면서 예산 전용·혼용이 심해집니다.</p>
+        <p>하나의 예산사업 안에 여러 세부사업을 임의로 쪼개 운영하면서 <mark>예산 전용·혼용이 심해집니다.</mark></p>
         <div class="cap">→ 승인받은 사업의 목적이 흐려지고 <b>책임 소재</b>가 사라짐</div>
       </div>
     </div>
@@ -389,7 +400,7 @@
     </div>
     <div style="flex:1; background:rgba(255,255,255,.15); border-radius:12px; padding:16px 18px; border:1px solid rgba(255,255,255,.32)">
       <div style="font-size:12px; color:#bbf7d0; font-weight:800; margin-bottom:8px; letter-spacing:.08em;">AFTER · AION</div>
-      <div style="font-size:14px; color:#fff; line-height:1.7;">사업–지표 인과관계 필수 입력<br>대내외 지표를 통합 DB로 일원화<br>부모–자식 예산 구조로 목적 명확화</div>
+      <div style="font-size:14px; color:#fff; line-height:1.7;">사업–지표 인과관계 필수 입력<br>대내외 지표를 통합 DB로 일원화<br>부모–자녀 예산 구조로 목적 명확화</div>
     </div>
   </div>
 </section>
@@ -425,7 +436,7 @@
       <div class="card">
         <h4><span class="icon-circle ic-purple">2</span></h4>
         <p><b>대내외 지표 통합 DB</b></p>
-        <div class="cap">중장기발전계획 12개 지수 + 기관평가인증 4개 영역을 하나로</div>
+        <div class="cap">중장기발전계획 12개 지수, 기관평가인증 4개 영역 및 국고사업성과관리지표 등을 하나로</div>
       </div>
       <div class="card">
         <h4><span class="icon-circle ic-green">3</span></h4>
@@ -464,9 +475,12 @@
       <img src="guide-assets/intro-system-diagram.png" alt="AION 시스템 관계도">
     </div>
     <div class="cols-3">
-      <div class="callout info">예산 정보가 다르면 <b>기준은 항상 SU-WINGS</b></div>
-      <div class="callout info">결재는 <b>그룹웨어</b>에서 진행 → 결과가 AION에 반영</div>
-      <div class="callout info">지출청구 자체는 AION의 범위가 아님</div>
+      <div class="callout info">예산 정보가 다르면 <b>기준은 항상 SU-WINGS</b>
+        <span class="fn">*신규부모사업의 경우 예산팀에 공문발송을 통해 신설필요</span></div>
+      <div class="callout info">결재는 <b>그룹웨어</b>에서 진행 → 결과가 AION에 반영
+        <span class="fn">*현재 연동준비 중이며, 예산신청, 사업계획 수정 및 향후 모든 공문에 대한 작성가능예정</span></div>
+      <div class="callout info">지출청구 자체는 AION의 범위가 아님
+        <span class="fn">* 예산 신청에 따른 지출청구 기능 확대 예정</span></div>
     </div>
   </div>
 </section>
@@ -478,7 +492,7 @@
   <div class="rule"></div>
   <div class="agenda">
     <span>전체 구조 4층위</span>
-    <span>부모사업 ↔ 자식사업</span>
+    <span>부모사업 ↔ 자녀사업</span>
     <span>성과지표 이원화 로직</span>
   </div>
 </section>
@@ -495,7 +509,7 @@
   </div>
   <div class="content">
     <div class="flow-row">
-      <div class="flow-step"><div class="n">1</div><strong>예산 연동 구조</strong><span>부모(SU-WINGS)–자식(AION)</span></div>
+      <div class="flow-step"><div class="n">1</div><strong>예산 연동 구조</strong><span>부모(SU-WINGS)–자녀(AION)</span></div>
       <div class="flow-arrow">→</div>
       <div class="flow-step"><div class="n">2</div><strong>사업계획 5단계</strong><span>기본정보 ~ 검토·제출</span></div>
       <div class="flow-arrow">→</div>
@@ -507,7 +521,7 @@
       <div class="card">
         <h4>왜 이렇게 설계했나</h4>
         <ul>
-          <li>부모–자식 구조로 <b>예산 중층화</b>를 원천 차단</li>
+          <li>부모–자녀 구조로 <b>예산 중층화</b>를 원천 차단</li>
           <li>5단계 순서로 <b>목적 → 방법 → 지표 → 예산</b>이 자연히 연결</li>
           <li>직접/연계 구분으로 <b>사업의 목적성</b>을 사전에 명확화</li>
           <li>PDCA 순환으로 <b>성과가 다음 계획에 재투입</b>되는 환류 체계 확보</li>
@@ -516,7 +530,7 @@
       <div class="card">
         <h4>오늘 설명 순서</h4>
         <ul>
-          <li>이어지는 두 장에서 <b>①부모–자식 구조</b>와 <b>③지표 이원화 로직</b>을 조금 더 자세히</li>
+          <li>이어지는 두 장에서 <b>①부모–자녀 구조</b>와 <b>③지표 이원화 로직</b>을 조금 더 자세히</li>
           <li>그다음 <b>PART 4 사용방법</b>에서 실제 화면으로 5단계를 처음부터 끝까지 따라갑니다</li>
         </ul>
       </div>
@@ -524,15 +538,16 @@
   </div>
 </section>
 
-<!-- ============ 11. 부모-자식 ============ -->
+<!-- ============ 11. 부모-자녀 ============ -->
 <section class="slide">
   <div class="topline">
     <span class="badge-part p3">PART 3 · 사업관리 구조</span>
     <span class="brandmark"><span class="dot"></span>AION 통합 성과관리 체계</span>
   </div>
   <div class="slide-head">
-    <div class="slide-title">부모사업 ↔ 자식사업 — 가장 헷갈리기 쉬운 개념</div>
-    <p class="slide-sub">AION에서 만드는 실행 사업(자식사업)은 SU-WINGS 예산 사업(부모사업) <b>하나</b>에 반드시 연결됩니다.</p>
+    <p class="hl-kicker"><mark>부모–자녀 구조로 예산 중층화를 원천 차단</mark></p>
+    <div class="slide-title">부모사업 ↔ 자녀사업 — 가장 헷갈리기 쉬운 개념</div>
+    <p class="slide-sub">AION에서 만드는 실행 사업(자녀사업)은 SU-WINGS 예산 사업(부모사업) <b>하나</b>에 반드시 연결됩니다.</p>
   </div>
   <div class="content">
     <div class="pc-diagram" style="flex:1; min-height:0; align-items:center;">
@@ -542,13 +557,13 @@
       </div>
       <div style="font-size:20px; color:var(--muted)">◀ 연결</div>
       <div class="pc-children">
-        <div class="pc-child"><b>자식사업 A</b> — 유학생 대상 예방교육 운영</div>
-        <div class="pc-child"><b>자식사업 B</b> — 예방교육 콘텐츠 개발</div>
-        <div class="pc-child"><b>자식사업 C</b> — 캠퍼스 안전문화 캠페인</div>
+        <div class="pc-child"><b>자녀사업 A</b> — 유학생 대상 예방교육 운영</div>
+        <div class="pc-child"><b>자녀사업 B</b> — 예방교육 콘텐츠 개발</div>
+        <div class="pc-child"><b>자녀사업 C</b> — 캠퍼스 안전문화 캠페인</div>
       </div>
     </div>
     <div class="callout warn">
-      <b>중요.</b> 자식사업 총액의 <b>합계 = 부모사업(SU-WINGS) 예산</b>입니다. 총액은 Step2에서 P/D로, Step4에서 계정과목으로 쪼갭니다. 세부사업 예산을 느슨하게 쓰면 부모사업 전체가 흔들립니다.
+      <b>중요.</b> 자녀사업 총액의 <b>합계 = 부모사업(SU-WINGS) 예산</b>입니다. 총액은 Step2에서 P/D로, Step4에서 계정과목으로 쪼갭니다. 세부사업 예산을 느슨하게 쓰면 부모사업 전체가 흔들립니다.
     </div>
   </div>
 </section>
@@ -560,6 +575,7 @@
     <span class="brandmark"><span class="dot"></span>AION 통합 성과관리 체계</span>
   </div>
   <div class="slide-head">
+    <p class="hl-kicker"><mark>직접/연계 구분으로 사업의 목적성을 사전에 명확화</mark></p>
     <div class="slide-title">성과지표 이원화 로직</div>
     <p class="slide-sub">모든 사업은 성과지표 등록 시, 딱 한 번 아래 질문에 답하면 됩니다.</p>
   </div>
@@ -777,7 +793,7 @@
   </div>
   <div class="slide-head">
     <div class="slide-title">⑤ 부모사업 연결 — 예산의 기준을 정하는 단계</div>
-    <p class="slide-sub">SU-WINGS 예산사업을 검색해 하나 선택합니다. <b>자식 사업은 부모 사업 하나에만 연결</b>됩니다.</p>
+    <p class="slide-sub">SU-WINGS 예산사업을 검색해 하나 선택합니다. <b>자녀 사업은 부모 사업 하나에만 연결</b>됩니다.</p>
   </div>
   <div class="content">
     <div class="use-layout">
@@ -866,7 +882,7 @@
   </div>
   <div class="slide-head">
     <div class="slide-title">⑧ 예산 규모 선택 — AI 제안 카드 또는 직접 입력</div>
-    <p class="slide-sub">여기서는 이 자식사업의 <b>총액</b>만 잡습니다. 이후 Step2에서 P/D로 나누고, Step4에서 계정과목으로 쪼갭니다.</p>
+    <p class="slide-sub">여기서는 이 자녀사업의 <b>총액</b>만 잡습니다. 이후 Step2에서 P/D로 나누고, Step4에서 계정과목으로 쪼갭니다.</p>
   </div>
   <div class="content">
     <div class="use-layout">
@@ -879,7 +895,7 @@
           <li><span class="n">2</span><span>마음에 안 들면 <b>[다시 제안받기]</b></span></li>
           <li><span class="n">3</span><span>카드에 없는 금액이면 <b>[직접 입력]</b></span></li>
         </ol>
-        <div class="callout info" style="font-size:12.5px"><b>흐름.</b> 자식 총액(여기) → Step2 P/D 단계별 금액 → Step4 계정과목 산출내역 → 자식 합계 = 부모사업(SU-WINGS) 예산. 단위는 <b>천원</b>입니다.</div>
+        <div class="callout info" style="font-size:12.5px"><b>흐름.</b> 자녀 총액(여기) → Step2 P/D 단계별 금액 → Step4 계정과목 산출내역 → 자녀 합계 = 부모사업(SU-WINGS) 예산. 단위는 <b>천원</b>입니다.</div>
         <div class="note-box">
           <h5>예시</h5>
           <p>보수적 2,000만 / 표준 4,000만 / 적극적 7,000만 / 최대 1억 중 선택</p>
@@ -1067,17 +1083,17 @@
   </div>
   <div class="slide-head">
     <div class="slide-title">예산은 이렇게 쪼갭니다 <span class="tag-live">핵심</span></div>
-    <p class="slide-sub">자식사업 총액 → PDCA 단계별(기간별) 금액 → Step4에서 P/D 계정과목 산출 → 자식 합계가 부모사업 예산과 맞아야 합니다. 금액 단위는 <b>천원</b>입니다.</p>
+    <p class="slide-sub">자녀사업 총액 → PDCA 단계별(기간별) 금액 → Step4에서 P/D 계정과목 산출 → 자녀 합계가 부모사업 예산과 맞아야 합니다. 금액 단위는 <b>천원</b>입니다.</p>
   </div>
   <div class="content">
     <div class="flow-row">
-      <div class="money-box"><div class="n">1</div><strong>자식 총예산</strong><span>위자드·기본정보에서<br>잡은 이 사업의 총액</span></div>
+      <div class="money-box"><div class="n">1</div><strong>자녀 총예산</strong><span>위자드·기본정보에서<br>잡은 이 사업의 총액</span></div>
       <div class="flow-arrow">→</div>
       <div class="money-box"><div class="n">2</div><strong>P / D 단계별 금액</strong><span>Step2 추진계획에서<br>기간·활동별로 배분</span></div>
       <div class="flow-arrow">→</div>
       <div class="money-box"><div class="n">3</div><strong>P / D 산출내역</strong><span>Step4에서 계정과목<br>·산출근거까지 쪼개기</span></div>
       <div class="flow-arrow">→</div>
-      <div class="money-box"><div class="n">4</div><strong>부모사업 예산</strong><span>자식사업 합계 =<br>SU-WINGS 부모 예산</span></div>
+      <div class="money-box"><div class="n">4</div><strong>부모사업 예산</strong><span>자녀사업 합계 =<br>SU-WINGS 부모 예산</span></div>
     </div>
     <div class="stat-grid">
       <div class="stat-card"><div class="k">총예산</div><div class="v">50천원</div></div>
@@ -1101,7 +1117,7 @@
           <li>2단계에서 나눈 <b>P 계획 / D 계획</b> 금액이 그대로 내려옵니다.</li>
           <li>Plan 표 · Do 표를 <b>따로</b> 열어 계정과목·산출근거·신청예산을 적습니다.</li>
           <li><b>P 편성 = P 계획</b>, <b>D 편성 = D 계획</b>이어야 편성 완료입니다.</li>
-          <li>자식 총액의 합이 부모사업(SU-WINGS) 예산과 맞아야 합니다.</li>
+          <li>자녀 총액의 합이 부모사업(SU-WINGS) 예산과 맞아야 합니다.</li>
         </ul>
       </div>
     </div>
@@ -1230,7 +1246,7 @@
         </table>
       </div>
     </div>
-    <div class="callout danger">한 줄 규칙: <b>P 계정과목 합 = P 계획</b>, <b>D 계정과목 합 = D 계획</b>, <b>자식 총액 합 = 부모사업 예산</b>. 차이가 0이 아니면 다음 단계로 갈 수 없습니다. 행마다 계정과목·예산신청내용·산출근거·신청예산(천원)을 채웁니다.</div>
+    <div class="callout danger">한 줄 규칙: <b>P 계정과목 합 = P 계획</b>, <b>D 계정과목 합 = D 계획</b>, <b>자녀 총액 합 = 부모사업 예산</b>. 차이가 0이 아니면 다음 단계로 갈 수 없습니다. 행마다 계정과목·예산신청내용·산출근거·신청예산(천원)을 채웁니다.</div>
   </div>
 </section>
 
@@ -1342,7 +1358,7 @@
   <div class="content">
     <div class="cols-2" style="flex:1; min-height:0;">
       <div class="faq-item"><div class="q">Q. 임시저장만 했는데 사업이 승인되나요?</div><div class="a">아니요. <b>제출</b>하고 <b>내부공문(기획처) 결재 승인</b>까지 받아야 합니다.</div></div>
-      <div class="faq-item"><div class="q">Q. 부모사업을 꼭 연결해야 하나요?</div><div class="a">예. SU-WINGS 예산사업을 부모로 연결합니다. <b>자식사업 총액의 합</b>이 부모사업 예산과 맞아야 합니다.</div></div>
+      <div class="faq-item"><div class="q">Q. 부모사업을 꼭 연결해야 하나요?</div><div class="a">예. SU-WINGS 예산사업을 부모로 연결합니다. <b>자녀사업 총액의 합</b>이 부모사업 예산과 맞아야 합니다.</div></div>
       <div class="faq-item"><div class="q">Q. 평가/성과관리지표와 연계지표를 둘 다 등록할 수 있나요?</div><div class="a">가능합니다. 다만 <b>같은 내용을 두 방식에 중복</b>해서 넣지 마세요.</div></div>
       <div class="faq-item"><div class="q">Q. AI가 써 준 내용을 그대로 제출해도 되나요?</div><div class="a">AI 결과는 초안입니다. 사실관계·예산·일정·성과지표는 담당자가 최종 확인·수정해야 합니다.</div></div>
       <div class="faq-item"><div class="q">Q. 지출청구도 AION에서 끝나나요?</div><div class="a">아닙니다. 실제 예산·청구는 SU-WINGS·그룹웨어 흐름을 따릅니다.</div></div>

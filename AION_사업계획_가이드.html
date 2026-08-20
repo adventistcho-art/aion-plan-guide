@@ -880,6 +880,7 @@
     font-size: 14.5px;
   }
   .callout b { color: inherit; }
+  .callout .fn { display:block; margin-top:7px; font-size:12px; font-weight:600; line-height:1.5; opacity:.92; }
   .callout.info { background: var(--accent-soft); color: #163a8a; }
   .callout.ok { background: var(--ok-soft); color: #0b5c38; }
   .callout.warn { background: var(--warn-soft); color: #7a5200; }
@@ -1482,7 +1483,7 @@
       <h4>부모사업 선택</h4>
       <p>
         <b>부모사업</b>은 SU-WINGS에 있는 <b>예산 사업</b>입니다.
-        AION에서 만드는 실행 사업(자식사업)은 부모사업 하나에 연결됩니다.
+        AION에서 만드는 실행 사업(자녀사업)은 부모사업 하나에 연결됩니다.
       </p>
       <div class="shot shot-lg">
         <img src="guide-assets/plan-02-detail-parent.png" alt="부모사업 검색·선택 팝업">
@@ -1502,7 +1503,7 @@
         <thead><tr><th>버튼·표시</th><th>역할</th></tr></thead>
         <tbody>
           <tr><th>검색칸</th><td>사업명 또는 사업코드로 부모사업을 찾습니다.</td></tr>
-          <tr><th>목록 라디오/행</th><td>연결할 예산사업을 고릅니다. (자식 1개당 부모 1개)</td></tr>
+          <tr><th>목록 라디오/행</th><td>연결할 예산사업을 고릅니다. (자녀 1개당 부모 1개)</td></tr>
           <tr><th><span class="btn-label blue">선택</span></th><td>고른 부모사업을 확정합니다.</td></tr>
           <tr><th><span class="btn-label light">닫기</span></th><td>팝업만 닫습니다.</td></tr>
           <tr><th><span class="btn-label light">수정</span></th><td>이미 고른 부모사업을 바꿉니다.</td></tr>
@@ -1511,6 +1512,7 @@
       <div class="callout warn">
         <b>왜 필요한가?</b> 부모사업을 연결해야 편성액·집행액·잔액 같은 예산 정보를 사업에 붙여 볼 수 있습니다.
         예산의 최종 기준은 항상 SU-WINGS입니다.
+        <span class="fn">*신규부모사업의 경우 예산팀에 공문발송을 통해 신설필요</span>
       </div>
       <div class="example">
         <div class="label">EXAMPLE</div>
@@ -1596,7 +1598,7 @@
     <div class="step">
       <div class="num">AI-5</div>
       <h4>예산 규모 선택</h4>
-      <p>이 자식사업의 <b>총예산</b>을 AI 제안 카드에서 고르거나 직접 입력합니다. 이후 Step2에서 P/D로 나누고, Step4에서 계정과목으로 쪼갭니다.</p>
+      <p>이 자녀사업의 <b>총예산</b>을 AI 제안 카드에서 고르거나 직접 입력합니다. 이후 Step2에서 P/D로 나누고, Step4에서 계정과목으로 쪼갭니다.</p>
       <div class="shot">
         <img src="guide-assets/wizard-05-budget-full.png" alt="위자드 예산 규모 선택 화면">
         <div class="shot-cap">그림 10. 예산 규모 — 보수적/표준/적극적/최대 카드, 다시 제안받기, 직접 입력</div>
@@ -1762,7 +1764,7 @@
         <tr><th>기간</th><td>시작일~종료일. Step1 사업 기간 안에 들어오게.</td></tr>
         <tr><th>행정요건</th><td>없음 / 행정위원회 / 혁신운영위원회 / 내부공문 / 기타 — 실제 필요한 절차를 선택.</td></tr>
         <tr><th>원인행위</th><td>예산 사용 근거 기안이 필요하면 「필수」 체크.</td></tr>
-        <tr><th>금액</th><td><b>P(계획)·D(실행) 행에만</b> 입력합니다. 단위는 <b>천원</b>. C(평가)·A(환류)는 보통 비웁니다. P 합 + D 합이 자식사업 총예산과 같아야 다음으로 갑니다.</td></tr>
+        <tr><th>금액</th><td><b>P(계획)·D(실행) 행에만</b> 입력합니다. 단위는 <b>천원</b>. C(평가)·A(환류)는 보통 비웁니다. P 합 + D 합이 자녀사업 총예산과 같아야 다음으로 갑니다.</td></tr>
         <tr><th>내용</th><td>누가 봐도 알 수 있게 구체적으로. “사업 진행” X → “운영자 교육 및 시범 서비스 운영” O</td></tr>
       </tbody>
     </table>
@@ -1856,16 +1858,16 @@
     <h3 id="budget-split">계획 예산 현황 — 금액을 P/D에만 나누기</h3>
     <p class="lead" style="margin-top:0">
       추진계획 화면 위(또는 옆)에 <b>계획 예산 현황</b> 카드가 있습니다.
-      자식사업 <b>총예산</b>을 먼저 잡고, 그 돈을 활동 행의 기간별로 <b>P 계획 / D 계획</b>에만 나눕니다.
+      자녀사업 <b>총예산</b>을 먼저 잡고, 그 돈을 활동 행의 기간별로 <b>P 계획 / D 계획</b>에만 나눕니다.
     </p>
     <div class="budget-flow" aria-hidden="true">
-      <div class="bf"><b>1. 자식 총액</b><span>위자드·기본정보에서 이 사업의 총예산을 잡습니다</span></div>
+      <div class="bf"><b>1. 자녀 총액</b><span>위자드·기본정보에서 이 사업의 총예산을 잡습니다</span></div>
       <div class="arr">→</div>
       <div class="bf"><b>2. P/D 단계별 금액</b><span>Step2에서 기간·활동 행에 천원 단위로 배분합니다</span></div>
       <div class="arr">→</div>
       <div class="bf"><b>3. 단계별 산출내역</b><span>Step4에서 P표·D표로 계정과목까지 쪼갭니다</span></div>
       <div class="arr">→</div>
-      <div class="bf"><b>4. 부모사업 예산</b><span>자식사업 총액의 합 = SU-WINGS 부모 예산</span></div>
+      <div class="bf"><b>4. 부모사업 예산</b><span>자녀사업 총액의 합 = SU-WINGS 부모 예산</span></div>
     </div>
     <div class="callout warn">
       <b>핵심 규칙.</b> 금액은 <b>P와 D 계획에만</b> 입력합니다. C(평가)·A(환류) 행에는 보통 금액을 넣지 않습니다.
@@ -1882,7 +1884,7 @@
     <table class="btn-table">
       <thead><tr><th>카드</th><th>뜻</th></tr></thead>
       <tbody>
-        <tr><th>총예산</th><td>이 자식사업의 전체 예산. 위자드·기본정보에서 잡은 총액입니다.</td></tr>
+        <tr><th>총예산</th><td>이 자녀사업의 전체 예산. 위자드·기본정보에서 잡은 총액입니다.</td></tr>
         <tr><th>P 계획</th><td>Plan(준비·기안·설계·입찰) 행에 적어 둔 금액의 합.</td></tr>
         <tr><th>D 계획</th><td>Do(홍보·구축·운영 등 실행) 행에 적어 둔 금액의 합.</td></tr>
         <tr><th>남은 예산</th><td>총예산 − (P 계획 + D 계획). <b>0천원</b>이 되어야 합니다.</td></tr>
@@ -1898,8 +1900,8 @@
     </div>
     <div class="callout info">
       <b>한 줄로 기억.</b>
-      자식 총액 → Step2에서 기간별 P/D 금액 → Step4에서 P/D 계정과목 산출내역 →
-      자식사업 합계가 <b>부모사업(SU-WINGS) 예산액</b>과 맞아야 합니다.
+      자녀 총액 → Step2에서 기간별 P/D 금액 → Step4에서 P/D 계정과목 산출내역 →
+      자녀사업 합계가 <b>부모사업(SU-WINGS) 예산액</b>과 맞아야 합니다.
     </div>
 
     <h3>기대효과 · 대학발전계획 연계 · 첨부 파일</h3>
@@ -2167,15 +2169,15 @@
 
     <div class="callout info">
       <b>예산이 내려오는 순서.</b><br>
-      ① 자식사업 <b>총예산</b>을 잡는다 →
+      ① 자녀사업 <b>총예산</b>을 잡는다 →
       ② Step2 추진계획에서 <b>기간별 P/D 금액</b>으로 나눈다 (P합+D합=총예산) →
       ③ Step4에서 P·D 각각 <b>계정과목 산출내역</b>으로 쪼갠다 (P편성=P계획, D편성=D계획) →
-      ④ 자식사업 총액의 합이 <b>부모사업 예산액</b>과 같아야 한다.
+      ④ 자녀사업 총액의 합이 <b>부모사업 예산액</b>과 같아야 한다.
     </div>
 
     <p style="margin:0 0 10px;font-size:15px;line-height:1.7;color:var(--ink)">
-      AION에서 작성하는 사업은 대개 <b>세부사업(자식사업)</b>입니다.
-      자식사업 예산을 느슨하게 쓰면 부모사업(SU-WINGS) 전체 예산도 흔들립니다.
+      AION에서 작성하는 사업은 대개 <b>세부사업(자녀사업)</b>입니다.
+      자녀사업 예산을 느슨하게 쓰면 부모사업(SU-WINGS) 전체 예산도 흔들립니다.
     </p>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.7">
       <b style="color:#dc2626">기존(계속) 사업이라면 지난해 사업 지출 총금액을 기준으로 예산을 짜세요.</b>
@@ -2186,7 +2188,7 @@
     <table class="btn-table">
       <thead><tr><th>카드</th><th>뜻 · 맞춰야 하는 것</th></tr></thead>
       <tbody>
-        <tr><th>총예산</th><td>자식사업 총액 (Step2와 동일)</td></tr>
+        <tr><th>총예산</th><td>자녀사업 총액 (Step2와 동일)</td></tr>
         <tr><th>P 편성 / 계획</th><td>Plan 표 합계 / Step2 P 계획. <b>두 숫자가 같아야</b> 초록(편성 완료)</td></tr>
         <tr><th>D 편성 / 계획</th><td>Do 표 합계 / Step2 D 계획. 역시 <b>같아야</b> 다음 단계</td></tr>
         <tr><th>전체 편성 차이</th><td>편성 합 − 총예산. <b>0천원</b>이어야 합니다</td></tr>
@@ -2362,6 +2364,7 @@
 
     <div class="callout ok">
       <b>결재 루프.</b> AION에서 문서 작성 → 그룹웨어에서 결재 → 승인/반려 결과가 다시 AION에 반영됩니다.
+      <span class="fn">*현재 연동준비 중이며, 예산신청, 사업계획 수정 및 향후 모든 공문에 대한 작성가능예정</span>
     </div>
   </section>
 
@@ -2402,7 +2405,7 @@
       <li><b>부모사업 먼저</b> — 예산 연결 없이 본문만 쓰면 나중에 다시 맞추느라 시간이 듭니다.</li>
       <li><b>AI는 초안</b> — 사업명·KPI·예산·본문은 담당자가 최종 확인합니다.</li>
       <li><b>제출 ≠ 승인</b> — 제출 후 반드시 내부기안 결재까지 가세요.</li>
-      <li><b>숫자 일치</b> — Step2 P+D = 총예산, Step4 P편성=P계획·D편성=D계획, 자식 합계 = 부모사업 예산. 단위는 천원.</li>
+      <li><b>숫자 일치</b> — Step2 P+D = 총예산, Step4 P편성=P계획·D편성=D계획, 자녀 합계 = 부모사업 예산. 단위는 천원.</li>
     </ul>
   </section>
 
@@ -2461,10 +2464,10 @@
     <p>아니요. <b>제출</b>하고 <b>내부기안 결재 승인</b>까지 받아야 합니다.</p>
 
     <h3>Q. 부모사업을 꼭 연결해야 하나요?</h3>
-    <p>예산·집행을 사업과 같이 보려면 연결하는 것이 맞습니다. SU-WINGS 예산사업을 부모로 둡니다. 자식 사업들의 총액 합이 부모사업 예산 안에서 맞아야 합니다.</p>
+    <p>예산·집행을 사업과 같이 보려면 연결하는 것이 맞습니다. SU-WINGS 예산사업을 부모로 둡니다. 자녀 사업들의 총액 합이 부모사업 예산 안에서 맞아야 합니다.</p>
 
     <h3>Q. 예산은 어디에 얼마를 넣나요?</h3>
-    <p>자식 총예산 → 2단계에서 P·D에만 금액(합계=총예산) → 4단계에서 P표·D표로 계정과목 쪼개기(각 표 합계=그 단계 계획액). C·A는 금액이 없습니다. 단위는 천원입니다.</p>
+    <p>자녀 총예산 → 2단계에서 P·D에만 금액(합계=총예산) → 4단계에서 P표·D표로 계정과목 쪼개기(각 표 합계=그 단계 계획액). C·A는 금액이 없습니다. 단위는 천원입니다.</p>
 
     <h3>Q. AI가 써 준 내용을 그대로 내도 되나요?</h3>
     <p>초안용입니다. 사실관계·예산·일정·성과지표는 담당자가 수정·확정해야 합니다.</p>
@@ -2474,6 +2477,7 @@
 
     <h3>Q. 지출청구도 AION에서 끝나나요?</h3>
     <p>아닙니다. AION은 사업 맥락·문서 연결·증빙 관리 중심이고, 실제 예산·청구는 SU-WINGS/그룹웨어 흐름을 따릅니다.</p>
+    <p style="margin-top:-8px;font-size:13px;color:var(--ink-soft)">* 예산 신청에 따른 지출청구 기능 확대 예정</p>
   </section>
 
   <section class="block">
