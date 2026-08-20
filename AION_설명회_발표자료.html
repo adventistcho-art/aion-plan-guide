@@ -203,6 +203,21 @@
   .pc-child { border:1px solid var(--line); border-radius:10px; padding:9px 16px; background:#fff; font-size:12.5px; color:var(--ink-soft); min-width:250px; }
   .pc-child b { color:var(--ink); }
 
+  .stat-grid { display:grid; grid-template-columns: repeat(4,1fr); gap:10px; flex-shrink:0; }
+  .stat-card { background:#fff; border:1px solid var(--line); border-radius:10px; padding:10px 12px; }
+  .stat-card .k { font-size:11px; color:var(--muted); font-weight:700; }
+  .stat-card .v { margin-top:4px; text-align:right; font-size:16px; font-weight:800; font-variant-numeric: tabular-nums; color:var(--ink); }
+  .stat-card .v.ok { color: var(--ok); }
+  .money-box { flex:1; background:#fff; border:1px solid var(--line); border-radius:12px; padding:12px 10px; text-align:center; box-shadow: var(--shadow); }
+  .money-box .n { display:inline-flex; width:22px; height:22px; border-radius:50%; background:var(--accent); color:#fff; align-items:center; justify-content:center; font-size:11px; font-weight:800; margin-bottom:6px; }
+  .money-box strong { display:block; font-size:13px; color:var(--ink); margin-bottom:3px; }
+  .money-box span { font-size:11px; color:var(--muted); line-height:1.45; }
+  .pd-table { width:100%; border-collapse:collapse; font-size:12px; background:#fff; }
+  .pd-table th { background:#f8fafc; padding:7px 8px; text-align:left; font-size:11px; color:#6b7280; border-bottom:1px solid var(--line); }
+  .pd-table td { padding:7px 8px; border-bottom:1px solid #f1f5f9; color:#111827; }
+  .pd-table .r { text-align:right; font-variant-numeric: tabular-nums; font-weight:700; }
+  .pd-head { font-size:12.5px; font-weight:800; color:var(--ink); margin:0 0 6px; display:flex; justify-content:space-between; align-items:center; }
+
   .checklist { display:grid; grid-template-columns: 1fr 1fr; gap: 4px 22px; list-style:none; margin:0; padding:0; }
   .checklist li { display:flex; align-items:flex-start; gap:10px; font-size:13.5px; color:var(--ink-soft); padding:8px 0; border-bottom:1px dashed var(--line); }
   .checklist li .num { flex-shrink:0; width:21px; height:21px; border-radius:50%; background:var(--accent-soft); color:var(--accent); font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; }
@@ -523,7 +538,7 @@
       </div>
     </div>
     <div class="callout warn">
-      <b>중요.</b> 세부사업(자식사업)별 예산 항목의 <b>합계가 곧 부모사업의 예산 규모</b>가 됩니다. 세부사업 예산을 느슨하게 쓰면 부모사업 전체 예산도 흔들립니다. → 앞서 본 <b>문제 3(중층구조)</b>의 해결책이 바로 이 구조입니다.
+      <b>중요.</b> 자식사업 총액의 <b>합계 = 부모사업(SU-WINGS) 예산</b>입니다. 총액은 Step2에서 P/D로, Step4에서 계정과목으로 쪼갭니다. 세부사업 예산을 느슨하게 쓰면 부모사업 전체가 흔들립니다.
     </div>
   </div>
 </section>
@@ -841,7 +856,7 @@
   </div>
   <div class="slide-head">
     <div class="slide-title">⑧ 예산 규모 선택 — AI 제안 카드 또는 직접 입력</div>
-    <p class="slide-sub">여기서는 <b>총액 규모</b>만 잡습니다. 계정과목별 세부 예산은 나중에 Step4에서 쪼갭니다.</p>
+    <p class="slide-sub">여기서는 이 자식사업의 <b>총액</b>만 잡습니다. 이후 Step2에서 P/D로 나누고, Step4에서 계정과목으로 쪼갭니다.</p>
   </div>
   <div class="content">
     <div class="use-layout">
@@ -854,7 +869,7 @@
           <li><span class="n">2</span><span>마음에 안 들면 <b>[다시 제안받기]</b></span></li>
           <li><span class="n">3</span><span>카드에 없는 금액이면 <b>[직접 입력]</b></span></li>
         </ol>
-        <div class="callout info" style="font-size:12.5px"><b>주의.</b> 위자드에서 고른 총액은 초안입니다. Step4에서 계정과목·산출근거까지 구체화한 뒤, 부모사업 규모와 크게 어긋나지 않게 맞춥니다.</div>
+        <div class="callout info" style="font-size:12.5px"><b>흐름.</b> 자식 총액(여기) → Step2 P/D 단계별 금액 → Step4 계정과목 산출내역 → 자식 합계 = 부모사업(SU-WINGS) 예산. 단위는 <b>천원</b>입니다.</div>
         <div class="note-box">
           <h5>예시</h5>
           <p>보수적 2,000만 / 표준 4,000만 / 적극적 7,000만 / 최대 1억 중 선택</p>
@@ -1019,7 +1034,56 @@
     </div>
     <div class="cols-2">
       <div class="callout info" style="font-size:12.5px">한 행에 <b>PDCA · 기간 · 행정요건 · 원인행위 · 금액 · 내용</b>을 입력합니다. 같은 단계라도 활동이 다르면 행을 나눕니다.</div>
-      <div class="callout danger" style="font-size:12.5px"><b>이후 일정 변경 시 수정 가능하니, 최대한 자세하게 작성하세요.</b> 기안·공문·위원회가 필요하면 「행정요건」·「원인행위」에 반영합니다.</div>
+      <div class="callout danger" style="font-size:12.5px"><b>금액은 P(계획)·D(실행) 행에만 입력합니다.</b> C(평가)·A(환류)는 보통 금액이 없습니다. 다음 장에서 예산 쪼개기를 자세히 봅니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 예산 편성 방법 (PDCA 다음) ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>STEP 2·4 · 예산 편성</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">예산은 이렇게 쪼갭니다 <span class="tag-live">핵심</span></div>
+    <p class="slide-sub">자식사업 총액 → PDCA 단계별(기간별) 금액 → Step4에서 P/D 계정과목 산출 → 자식 합계가 부모사업 예산과 맞아야 합니다. 금액 단위는 <b>천원</b>입니다.</p>
+  </div>
+  <div class="content">
+    <div class="flow-row">
+      <div class="money-box"><div class="n">1</div><strong>자식 총예산</strong><span>위자드·기본정보에서<br>잡은 이 사업의 총액</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="money-box"><div class="n">2</div><strong>P / D 단계별 금액</strong><span>Step2 추진계획에서<br>기간·활동별로 배분</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="money-box"><div class="n">3</div><strong>P / D 산출내역</strong><span>Step4에서 계정과목<br>·산출근거까지 쪼개기</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="money-box"><div class="n">4</div><strong>부모사업 예산</strong><span>자식사업 합계 =<br>SU-WINGS 부모 예산</span></div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="k">총예산</div><div class="v">50천원</div></div>
+      <div class="stat-card"><div class="k">P 계획 (준비·기안)</div><div class="v">0천원</div></div>
+      <div class="stat-card"><div class="k">D 계획 (실행)</div><div class="v">50천원</div></div>
+      <div class="stat-card"><div class="k">남은 예산</div><div class="v ok">0천원</div></div>
+    </div>
+    <div class="cols-2">
+      <div class="note-box">
+        <h5>Step 2에서 하는 일</h5>
+        <ul>
+          <li>화면 상단 <b>계획 예산 현황</b>에 총예산이 보입니다.</li>
+          <li>추진계획 행의 <b>금액</b>은 <b>P와 D에만</b> 넣습니다. (C·A는 평가·환류)</li>
+          <li><b>P 합계 + D 합계 = 총예산</b>이어야 다음 단계로 갈 수 있습니다.</li>
+          <li>남음이 0이 될 때까지 활동 행 금액을 맞춥니다.</li>
+        </ul>
+      </div>
+      <div class="note-box">
+        <h5>Step 4에서 하는 일</h5>
+        <ul>
+          <li>2단계에서 나눈 <b>P 계획 / D 계획</b> 금액이 그대로 내려옵니다.</li>
+          <li>Plan 표 · Do 표를 <b>따로</b> 열어 계정과목·산출근거·신청예산을 적습니다.</li>
+          <li><b>P 편성 = P 계획</b>, <b>D 편성 = D 계획</b>이어야 편성 완료입니다.</li>
+          <li>자식 총액의 합이 부모사업(SU-WINGS) 예산과 맞아야 합니다.</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -1129,20 +1193,39 @@
     <span class="brandmark"><span class="dot"></span>STEP 4 · 예산 계획</span>
   </div>
   <div class="slide-head">
-    <div class="slide-title">Step 4. 예산 소요 계획 — 예산서를 여기서 함께 작성</div>
-    <p class="slide-sub">예전에 SU-WINGS에서 따로 쓰던 예산서를 이 화면에서 사업계획과 함께 작성합니다. 총액이 아니라 <b>항목별로</b> 구체화합니다.</p>
+    <div class="slide-title">Step 4. 예산 소요 계획 — <b>P/D 계정과목</b>으로 편성</div>
+    <p class="slide-sub">2단계에서 나눈 P·D 계획 금액에 맞춰, 계정과목을 <b>Plan 표 / Do 표</b>에 따로 적습니다. 금액은 <b>천원</b> 단위입니다.</p>
   </div>
   <div class="content">
-    <div class="shot-frame" style="flex:1; min-height:0;"><span class="shot-tag">실제 화면 · Step4 예산 소요 계획</span>
-      <img src="guide-assets/plan-04-budget.jpg" alt="Step4 예산 소요 계획 입력 화면">
+    <div class="stat-grid">
+      <div class="stat-card"><div class="k">총예산</div><div class="v">50천원</div></div>
+      <div class="stat-card"><div class="k">P 편성 / 계획</div><div class="v ok">0천원 / 0천원</div></div>
+      <div class="stat-card"><div class="k">D 편성 / 계획</div><div class="v ok">50천원 / 50천원</div></div>
+      <div class="stat-card"><div class="k">전체 편성 차이</div><div class="v ok">0천원</div></div>
     </div>
-    <div class="cols-4">
-      <div class="note-box"><h5>계정과목</h5><p>교원각종수당, 직원각종수당, 회의비, 소모품비, 통신비 등</p></div>
-      <div class="note-box"><h5>예산신청내용</h5><p>정부 재정지원 사업 지원(교수위원수당), 사무용 문구류 구입 등</p></div>
-      <div class="note-box"><h5>산출근거</h5><p>300,000원 × 5개월 × 10명 / 20,000원 × 50부</p></div>
-      <div class="note-box"><h5>신청예산(원)</h5><p>15,000,000 / 1,000,000 등 — 합계가 자동 계산</p></div>
+    <div class="cols-2" style="flex:1; min-height:0;">
+      <div>
+        <div class="pd-head">Plan · 계획 계정과목 <span style="font-size:11.5px;color:var(--ok);font-weight:700;">계획 0 · 편성 0 · 완료</span></div>
+        <table class="pd-table">
+          <thead><tr><th>계정과목</th><th>예산신청내용</th><th class="r">천원</th></tr></thead>
+          <tbody><tr><td colspan="3" style="text-align:center;color:#94a3b8;padding:14px 8px;">P 계획이 0이면 행을 넣지 않아도 됩니다</td></tr></tbody>
+        </table>
+      </div>
+      <div>
+        <div class="pd-head">Do · 실행 계정과목 <span style="font-size:11.5px;color:var(--ok);font-weight:700;">계획 50 · 편성 50 · 완료</span></div>
+        <table class="pd-table">
+          <thead><tr><th>계정과목</th><th>예산신청내용</th><th class="r">천원</th></tr></thead>
+          <tbody>
+            <tr><td>스마트 그린공간 조성</td><td>식재·그늘·야외학습 좌석</td><td class="r">22</td></tr>
+            <tr><td>휴게·편의 시설 개선</td><td>벤치·테이블·파라솔</td><td class="r">12</td></tr>
+            <tr><td>스마트 조경·안전 인프라</td><td>관수·조명·안내 사인</td><td class="r">6</td></tr>
+            <tr><td>학생 참여 및 의견수렴</td><td>수요조사·홍보물</td><td class="r">4</td></tr>
+            <tr><td>유지관리 및 성과관리</td><td>하자보수·만족도조사</td><td class="r">6</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div class="callout danger"><b>기존(계속) 사업이라면 지난해 사업 지출 총금액을 기준으로 예산을 짜세요.</b> 신규 사업은 추진계획(PDCA)·과업 규모에 맞춰 산출근거를 분명히 둡니다. 세부사업 예산의 합계가 곧 부모사업 예산 규모가 됩니다.</div>
+    <div class="callout danger">한 줄 규칙: <b>P 계정과목 합 = P 계획</b>, <b>D 계정과목 합 = D 계획</b>, <b>자식 총액 합 = 부모사업 예산</b>. 차이가 0이 아니면 다음 단계로 갈 수 없습니다. 행마다 계정과목·예산신청내용·산출근거·신청예산(천원)을 채웁니다.</div>
   </div>
 </section>
 
@@ -1233,9 +1316,9 @@
       <li><span class="num">2</span>사업관리 → 새 사업 → <b>AI 위자드</b>를 고른다</li>
       <li><span class="num">3</span>위자드: 분류(C1~C5) → 부모사업 → 사업명 → 조건 → 예산규모 → 목적 → AI생성</li>
       <li><span class="num">4</span>편집 전환 후 Step1~2에서 위자드 값을 검수·보완한다</li>
-      <li><span class="num">5</span>추진계획을 <b>PDCA</b>로 자세히 나눠 쓴다</li>
+      <li><span class="num">5</span>추진계획을 <b>PDCA</b>로 쓰고, P/D 금액 합이 총예산과 같게 맞춘다</li>
       <li><span class="num">6</span>Step3에서 <b>직접/연계</b> 지표를 구분해 등록한다</li>
-      <li><span class="num">7</span>Step4 예산을 계정과목·산출근거까지 산정한다</li>
+      <li><span class="num">7</span>Step4에서 P/D 계정과목 편성 합을 각 계획액과 맞춘다</li>
       <li><span class="num">8</span>Step5 제출 후 <b>내부공문(기획처)</b>을 올려 승인까지 받는다</li>
     </ul>
     <div class="callout warn" style="margin-top:14px">자주 <b>임시저장</b>하세요. 그리고 <b>제출 ≠ 승인</b>이라는 점을 꼭 기억하세요.</div>
@@ -1254,10 +1337,11 @@
   <div class="content">
     <div class="cols-2" style="flex:1; min-height:0;">
       <div class="faq-item"><div class="q">Q. 임시저장만 했는데 사업이 승인되나요?</div><div class="a">아니요. <b>제출</b>하고 <b>내부공문(기획처) 결재 승인</b>까지 받아야 합니다.</div></div>
-      <div class="faq-item"><div class="q">Q. 부모사업을 꼭 연결해야 하나요?</div><div class="a">예. 예산·집행을 사업과 함께 보려면 SU-WINGS 예산사업을 부모로 연결해야 합니다.</div></div>
+      <div class="faq-item"><div class="q">Q. 부모사업을 꼭 연결해야 하나요?</div><div class="a">예. SU-WINGS 예산사업을 부모로 연결합니다. <b>자식사업 총액의 합</b>이 부모사업 예산과 맞아야 합니다.</div></div>
       <div class="faq-item"><div class="q">Q. ①직접지표와 ②연계지표를 둘 다 등록할 수 있나요?</div><div class="a">가능합니다. 다만 <b>같은 지표를 두 곳에 중복</b>해서 넣지 마세요.</div></div>
       <div class="faq-item"><div class="q">Q. AI가 써 준 내용을 그대로 제출해도 되나요?</div><div class="a">AI 결과는 초안입니다. 사실관계·예산·일정·성과지표는 담당자가 최종 확인·수정해야 합니다.</div></div>
       <div class="faq-item"><div class="q">Q. 지출청구도 AION에서 끝나나요?</div><div class="a">아닙니다. 실제 예산·청구는 SU-WINGS·그룹웨어 흐름을 따릅니다.</div></div>
+      <div class="faq-item"><div class="q">Q. P와 D 금액 합이 총예산과 다르면?</div><div class="a">다음 단계로 갈 수 없습니다. Step2에서 P+D=총예산, Step4에서 P편성=P계획·D편성=D계획이 되어야 합니다. 단위는 <b>천원</b>입니다.</div></div>
       <div class="faq-item"><div class="q">Q. 승인 후 예산을 크게 바꾸려면?</div><div class="a">새 버전을 만들고 <b>수정 내부공문(기획처)</b>을 다시 올려야 합니다.</div></div>
     </div>
     <div class="callout ok" style="text-align:center; font-size:14.5px;">
@@ -1274,7 +1358,7 @@
     <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
     <form class="page-jump" id="pageJumpForm" autocomplete="off">
       <input type="number" id="pageJump" min="1" step="1" inputmode="numeric" aria-label="이동할 페이지 번호">
-      <span id="pageTotal">/ 31</span>
+      <span id="pageTotal">/ 37</span>
     </form>
   </div>
   <button class="nav-btn" id="nextBtn">다음 ›</button>
