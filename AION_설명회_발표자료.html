@@ -199,6 +199,14 @@
   .c-table th, .c-table td { border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top; }
   .c-table th { background:#f8fafc; font-weight:700; color:var(--ink); }
   .c-table td { color: var(--ink-soft); }
+  .cls-table { width:100%; border-collapse:collapse; table-layout:fixed; font-size:12.5px; background:#fff; }
+  .cls-table th, .cls-table td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; line-height:1.45; }
+  .cls-table thead th { background:#1e3a6e; color:#fff; font-size:12px; font-weight:800; text-align:center; }
+  .cls-table tbody th { width:58px; text-align:center; background:var(--accent-soft); color:var(--accent); font-size:16px; font-weight:800; }
+  .cls-table td { color: var(--ink-soft); }
+  .cls-table td b { color: var(--ink); }
+  .cls-table .name { width:18%; font-weight:750; color:var(--ink); }
+  .cls-table .q { width:22%; }
 
   .pdca-mini-grid { display:grid; grid-template-columns: repeat(4,1fr); gap:10px; flex-shrink:0; }
   .pdca-mini { border:1px solid var(--line); border-radius:10px; padding:11px 13px; background:#fff; }
@@ -785,7 +793,84 @@
   </div>
 </section>
 
-<!-- ============ 19. 부모사업 연결 ============ -->
+<!-- ============ 19. 분류세부 표 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>위자드 1단계 · 분류세부</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">C1~C5 분류세부 — 무엇을 체크하는가</div>
+    <p class="slide-sub">이 사업이 <b>누구를 위해</b>, <b>어떤 환경에서</b>, <b>언제</b>, <b>무슨 목적</b>으로, <b>어떤 방법</b>으로 하는지를 대학 공통 코드로 찍습니다.</p>
+  </div>
+  <div class="content">
+    <table class="cls-table">
+      <thead>
+        <tr>
+          <th>코드</th>
+          <th>이름</th>
+          <th>질문으로 이해하기</th>
+          <th>주요 하위 항목(예시)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>C1</th>
+          <td class="name">대상 1: 내부 및 외부 주체</td>
+          <td class="q">이 사업의 <b>사람(대상)</b>은 누구인가?</td>
+          <td>
+            · 내부 기본 신분: 외국인, 신입생, 재학생, 휴학생, 졸업생(미취업), 전임/비전임교원, 강사, 조교, 직원(정규·계약), 외부인<br>
+            · 학년/과정: 1~4학년, 초과학기, 석·박사, 한국어연수<br>
+            · 외부 협력 주체: 산업체, 지자체, 교회/교단, 타 대학, 정부부처, 지역사회기관 등
+          </td>
+        </tr>
+        <tr>
+          <th>C2</th>
+          <td class="name">대상 2: 환경 및 지역 특성</td>
+          <td class="q">대상이 놓인 <b>환경·지역·상황</b>은?</td>
+          <td>
+            · 거주 환경: 기숙사(에덴관·시온관 등), 지역(서울·구리·남양주·경기·지방)<br>
+            · 행정적 특성: SDA 교인, 학사경고자, 미적응자, 리더학생, 가계곤란자, 장애학생, 금연/금주 희망자 등
+          </td>
+        </tr>
+        <tr>
+          <th>C3</th>
+          <td class="name">시점 및 주기</td>
+          <td class="q"><b>언제</b>, <b>얼마나 자주</b> 하는 사업인가?</td>
+          <td>
+            · 학사 타임라인: 학기 전 / 학기 초 / 학기 중 / 학기 말 / 방학 중<br>
+            · 사업 주기: 매일, 매주, 매월, 학기별, 상시, 단회
+          </td>
+        </tr>
+        <tr>
+          <th>C4</th>
+          <td class="name">목적: 정책 및 지표 방어</td>
+          <td class="q">이 사업이 지키는·올리는 <b>대학 정책·성과지표</b>는?</td>
+          <td>
+            · 대학 정체성: 교인 학생 관리, 선교, ESG, 금연·금주, 인성교육(SU-MVP+) 등<br>
+            · 국제화 인증(IES): 유학생 체류·중도탈락·TOPIK·의무교육 등<br>
+            · 학생충원: 재학생 충원율, 신입 충원율, 기숙사 수용률 등<br>
+            · 교육 및 취업: 취업률, 장학, 교육비 환원, 도서관 인프라 등
+          </td>
+        </tr>
+        <tr>
+          <th>C5</th>
+          <td class="name">사업 방법</td>
+          <td class="q">실제로 <b>어떤 수단·프로그램 유형</b>으로 하는가?</td>
+          <td>
+            · I. 교육 혁신 및 품질 (전공교육, 교과목 개발·운영 등)<br>
+            · II. 학생 성취 및 성장<br>
+            · III. 연구 및 산학 협력<br>
+            · IV. 행정 자원 및 인프라 고도화
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="callout info" style="font-size:12.5px; margin:0">화면에 보이는 항목 이름이 표와 조금 다르면 <b>화면에 나온 이름</b>을 기준으로 고르면 됩니다. 해당되는 항목은 모두 체크합니다.</div>
+  </div>
+</section>
+
+<!-- ============ 20. 부모사업 연결 ============ -->
 <section class="slide">
   <div class="topline">
     <span class="badge-part p4">PART 4 · 사용방법</span>
