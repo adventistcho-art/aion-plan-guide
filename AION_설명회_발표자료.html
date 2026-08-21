@@ -312,6 +312,28 @@
   .pd-table .r { text-align:right; font-variant-numeric: tabular-nums; font-weight:700; }
   .pd-head { font-size:12.5px; font-weight:800; color:var(--ink); margin:0 0 6px; display:flex; justify-content:space-between; align-items:center; }
 
+  .pdca-ex { width:100%; border-collapse:separate; border-spacing:0; font-size:12.5px; background:#fff; border:1px solid var(--line); border-radius:12px; overflow:hidden; box-shadow:var(--shadow); }
+  .pdca-ex th { background:#f8fafc; padding:8px 10px; text-align:left; font-size:11.5px; color:#6b7280; font-weight:700; border-bottom:1px solid var(--line); }
+  .pdca-ex td { padding:5px 10px; border-bottom:1px solid #eef2f7; color:#111827; vertical-align:middle; }
+  .pdca-ex tr:last-child td { border-bottom:0; }
+  .pdca-ex .r { text-align:right; font-variant-numeric:tabular-nums; font-weight:800; white-space:nowrap; }
+  .pdca-ex .date { font-variant-numeric:tabular-nums; white-space:nowrap; color:#334155; font-weight:650; width:7.6em; }
+  .pdca-ex .ph { text-align:center; font-weight:800; color:#fff; width:3.4em; line-height:1.25; border-bottom:1px solid rgba(255,255,255,.22); }
+  .pdca-ex .ph span { display:block; font-size:15px; letter-spacing:.02em; }
+  .pdca-ex .ph small { display:block; font-size:10px; font-weight:700; opacity:.9; }
+  .pdca-ex tr.p .ph { background:#2563eb; }
+  .pdca-ex tr.d .ph { background:#0891b2; }
+  .pdca-ex tr.c .ph { background:#7c3aed; }
+  .pdca-ex tr.a .ph { background:#059669; }
+  .pdca-ex tr.p td:not(.ph) { background:#eff6ff; }
+  .pdca-ex tr.d td:not(.ph) { background:#ecfeff; }
+  .pdca-ex tr.c td:not(.ph) { background:#f5f3ff; }
+  .pdca-ex tr.a td:not(.ph) { background:#ecfdf5; }
+  .pdca-ex .yn { display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:800; }
+  .pdca-ex .yn.yes { background:#dbeafe; color:#1e40af; }
+  .pdca-ex .yn.no { background:#f1f5f9; color:#64748b; }
+  .pdca-ex .na { color:#94a3b8; font-weight:650; }
+
   .checklist { display:grid; grid-template-columns: 1fr 1fr; gap: 4px 22px; list-style:none; margin:0; padding:0; }
   .checklist li { display:flex; align-items:flex-start; gap:10px; font-size:13.5px; color:var(--ink-soft); padding:8px 0; border-bottom:1px dashed var(--line); }
   .checklist li .num { flex-shrink:0; width:21px; height:21px; border-radius:50%; background:var(--accent-soft); color:var(--accent); font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; }
@@ -1194,6 +1216,136 @@
         <img src="guide-assets/plan-02-detail-pdca-budget.png" alt="Step2 추진계획 — 총예산 50천원을 P/D 활동 행에 나눈 화면">
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ============ 22b. PDCA 작성 예시 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>STEP 2 · PDCA 예시</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">PDCA 작성 예시 — <b>일정 · 내용 · 원인행위 · 금액</b></div>
+    <p class="slide-sub">화면 열 구성과 달라도 됩니다. 활동 행마다 <b>일정, 내용, 원인행위 여부, 금액(천원)</b>은 빠지지 않게 적습니다. 아래는 2026.3~12 예시입니다.</p>
+  </div>
+  <div class="content">
+    <div class="stat-grid">
+      <div class="stat-card"><div class="k">총예산</div><div class="v">50천원</div></div>
+      <div class="stat-card"><div class="k">P 계획</div><div class="v">0천원</div></div>
+      <div class="stat-card"><div class="k">D 계획</div><div class="v ok">50천원</div></div>
+      <div class="stat-card"><div class="k">C · A</div><div class="v">비예산</div></div>
+    </div>
+    <div style="flex:1; min-height:0; overflow:auto;">
+      <table class="pdca-ex">
+        <thead>
+          <tr>
+            <th>PDCA</th>
+            <th>일정</th>
+            <th>내용</th>
+            <th>원인행위 여부</th>
+            <th class="r">금액 (천원)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="p">
+            <td class="ph" rowspan="5"><span>P</span><small>계획</small></td>
+            <td class="date">03/01–15</td>
+            <td>사업계획 · 착수공문</td>
+            <td><span class="yn yes">필수</span></td>
+            <td class="r">0</td>
+          </tr>
+          <tr class="p">
+            <td class="date">03/16–31</td>
+            <td>요구조사</td>
+            <td><span class="yn no">해당 없음</span></td>
+            <td class="r">0</td>
+          </tr>
+          <tr class="p">
+            <td class="date">04/01–20</td>
+            <td>승인 · 원인행위 기안</td>
+            <td><span class="yn yes">필수</span></td>
+            <td class="r">0</td>
+          </tr>
+          <tr class="p">
+            <td class="date">04/21–05/15</td>
+            <td>설계</td>
+            <td><span class="yn yes">필수</span></td>
+            <td class="r">0</td>
+          </tr>
+          <tr class="p">
+            <td class="date">05/16–31</td>
+            <td>준비 · 입찰</td>
+            <td><span class="yn yes">필수</span></td>
+            <td class="r">0</td>
+          </tr>
+          <tr class="d">
+            <td class="ph" rowspan="4"><span>D</span><small>실행</small></td>
+            <td class="date">06/01–20</td>
+            <td>홍보</td>
+            <td><span class="yn yes">필수</span></td>
+            <td class="r">6</td>
+          </tr>
+          <tr class="d">
+            <td class="date">06/21–08/31</td>
+            <td>구축 · 개발</td>
+            <td><span class="yn yes">필수</span></td>
+            <td class="r">28</td>
+          </tr>
+          <tr class="d">
+            <td class="date">09/01–15</td>
+            <td>운영자 교육</td>
+            <td><span class="yn no">해당 없음</span></td>
+            <td class="r">6</td>
+          </tr>
+          <tr class="d">
+            <td class="date">09/16–10/15</td>
+            <td>시범 운영</td>
+            <td><span class="yn no">해당 없음</span></td>
+            <td class="r">10</td>
+          </tr>
+          <tr class="c">
+            <td class="ph" rowspan="3"><span>C</span><small>점검</small></td>
+            <td class="date">10/16–31</td>
+            <td>피드백 · 오류점검</td>
+            <td><span class="yn no">해당 없음</span></td>
+            <td class="r na">비예산</td>
+          </tr>
+          <tr class="c">
+            <td class="date">11/01–15</td>
+            <td>만족도 · KPI</td>
+            <td><span class="yn no">해당 없음</span></td>
+            <td class="r na">비예산</td>
+          </tr>
+          <tr class="c">
+            <td class="date">11/16–25</td>
+            <td>준공검수 · 공정평가</td>
+            <td><span class="yn no">해당 없음</span></td>
+            <td class="r na">비예산</td>
+          </tr>
+          <tr class="a">
+            <td class="ph" rowspan="3"><span>A</span><small>환류</small></td>
+            <td class="date">11/26–12/05</td>
+            <td>개선 · 환류</td>
+            <td><span class="yn no">해당 없음</span></td>
+            <td class="r na">비예산</td>
+          </tr>
+          <tr class="a">
+            <td class="date">12/06–15</td>
+            <td>성과보고 · 공유회</td>
+            <td><span class="yn no">해당 없음</span></td>
+            <td class="r na">비예산</td>
+          </tr>
+          <tr class="a">
+            <td class="date">12/16–31</td>
+            <td>차년도 계획</td>
+            <td><span class="yn no">해당 없음</span></td>
+            <td class="r na">비예산</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout info">금액은 <b>P·D에만</b> 넣습니다. 이 예시에서는 P 행은 있어도 0천원이고, D 6+28+6+10 = <b>50천원</b>입니다. C·A는 비예산입니다. 단위는 <b>천원</b>.</div>
   </div>
 </section>
 
