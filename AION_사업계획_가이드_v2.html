@@ -281,9 +281,30 @@
     color: #374151;
     white-space: nowrap;
   }
+  .pdca-act-mock .budget-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 0 0 16px;
+  }
+  .pdca-act-mock .budget-bar .bb {
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 8px 10px;
+    background: #f8fafc;
+  }
+  .pdca-act-mock .budget-bar .bb .k { font-size: 11px; color: #6b7280; font-weight: 700; }
+  .pdca-act-mock .budget-bar .bb .v { margin-top: 2px; font-size: 16px; font-weight: 800; }
+  .pdca-act-mock .budget-bar .bb.on { background: #ecfeff; border-color: #a5f3fc; }
+  .pdca-act-mock .sec {
+    margin: 12px 0 6px;
+    font-size: 12.5px;
+    font-weight: 800;
+    color: #334155;
+  }
   .pdca-act-mock .cols {
     display: grid;
-    grid-template-columns: 36px 52px 210px 110px 72px 120px 1fr 28px;
+    grid-template-columns: 36px 52px 210px 110px 72px 1fr 28px;
     gap: 8px;
     padding: 0 4px 8px;
     font-size: 12px;
@@ -292,7 +313,7 @@
   }
   .pdca-act-mock .row {
     display: grid;
-    grid-template-columns: 36px 52px 210px 110px 72px 120px 1fr 28px;
+    grid-template-columns: 36px 52px 210px 110px 72px 1fr 28px;
     gap: 8px;
     align-items: center;
     margin-bottom: 8px;
@@ -1565,14 +1586,14 @@
       오른쪽 <span class="btn-label light">AI 제안</span>으로 초안을 받을 수 있으나, 받은 뒤 반드시 검수합니다.
     </div>
 
-    <h3>추진 계획 — P · D · C 세 구역만</h3>
+    <h3>추진 계획 — P는 원인행위, D는 세세한 실행, C는 결과보고</h3>
     <p class="lead" style="margin-top:0">
-      개정안에서는 활동 행을 계속 늘리지 않습니다.
-      <b>P(원인행위) → D(실행 사업계획) → C(결과보고)</b> 세 구역만 채웁니다.
-      A(환류)는 C 결과보고에 포함합니다.
+      <b>P</b>는 원인행위만 적습니다.
+      <b>D</b>는 원인행위 이후 본 사업 계획을 <b>행을 나눠 세세하게</b> 씁니다. (홍보, 운영, 결과보고회, 세금, 인건비, 청구 등)
+      <b>C</b>는 결과보고서만, 종료 후 2주 이내입니다. A(환류)는 C에 포함합니다.
     </p>
     <p style="margin:8px 0 14px;font-size:15px;line-height:1.65">
-      일정 변경은 나중에 고칠 수 있습니다. D 본문에 홍보·운영·청구 시기를 구체적으로 적으면 됩니다.
+      <b>예산만</b> 줄마다 넣지 않습니다. P에 금액 하나, D에 금액 하나, C에 금액 하나를 잡습니다.
     </p>
 
     <div class="callout warn">
@@ -1593,7 +1614,7 @@
       </div>
       <div class="pdca-card">
         <h4><span class="phase d">D</span> 실행 사업계획</h4>
-        <p style="margin:0 0 8px;font-size:13.5px;color:var(--ink-soft)">이 사업의 본문. 꼼꼼히 작성</p>
+        <p style="margin:0 0 8px;font-size:13.5px;color:var(--ink-soft)">원인행위 이후 본 사업. 행을 나눠 세세히</p>
         <ul>
           <li>사업 홍보</li>
           <li>운영</li>
@@ -1626,7 +1647,7 @@
       <thead><tr><th>구역</th><th>작성 요령</th></tr></thead>
       <tbody>
         <tr><th>P</th><td>원인행위만. 위원회 / 부서 내부기안, 안건명, 시기. 예산은 <b>한 칸</b>.</td></tr>
-        <tr><th>D</th><td>홍보·운영·결과보고회·세금·인건비·청구를 한 계획으로. 예산은 <b>한 칸</b>.</td></tr>
+        <tr><th>D</th><td>원인행위 이후 본 사업을 <b>여러 행으로 세세히</b> 작성 (홍보·운영·결과보고회·세금·인건비·청구). <b>D 예산은 한 칸</b>만.</td></tr>
         <tr><th>C</th><td>결과보고서만. 종료 후 2주 이내. 환류 포함. 예산은 필요 시 한 칸.</td></tr>
         <tr><th>합계</th><td>P 배정 + D 배정 + C 배정 = 총예산. 단위는 <b>천원</b>. 행마다 나누지 않습니다.</td></tr>
       </tbody>
@@ -1643,63 +1664,76 @@
               <span class="hd-btn">☰ 추천 목록</span>
             </div>
           </div>
+          <div class="budget-bar">
+            <div class="bb"><div class="k">P 예산 (한 칸)</div><div class="v">0천원</div></div>
+            <div class="bb on"><div class="k">D 예산 (한 칸)</div><div class="v">50천원</div></div>
+            <div class="bb"><div class="k">C 예산 (한 칸)</div><div class="v">0천원</div></div>
+            <div class="bb"><div class="k">합계 / 총예산</div><div class="v">50 / 50</div></div>
+          </div>
+          <div class="sec">P · 원인행위만</div>
           <div class="cols">
-            <span>이동</span><span>PDCA</span><span>기간</span><span>행정요건</span><span>원인행위</span><span>금액</span><span>내용</span><span></span>
-          </div>
-          <div class="row">
-            <span class="move"><span>▲</span><span>▼</span></span>
-            <span class="cell select">D</span>
-            <span class="dates"><span class="cell">2026-03-01</span><span class="sep">–</span><span class="cell">2026-03-28</span></span>
-            <span class="cell select">내부공문</span>
-            <span class="check"><i></i>필수</span>
-            <span class="cell muted">22</span>
-            <span class="cell">사업 착수, 구성원 요구 조사, 기획안 작성</span>
-            <span class="del">×</span>
-          </div>
-          <div class="row">
-            <span class="move"><span>▲</span><span>▼</span></span>
-            <span class="cell select">D</span>
-            <span class="dates"><span class="cell">2026-03-01</span><span class="sep">–</span><span class="cell">2026-05-30</span></span>
-            <span class="cell select">내부공문</span>
-            <span class="check"><i></i>필수</span>
-            <span class="cell muted">12</span>
-            <span class="cell">플랫폼 설계, 기능 범위 확정, 기획 보완</span>
-            <span class="del">×</span>
-          </div>
-          <div class="row">
-            <span class="move"><span>▲</span><span>▼</span></span>
-            <span class="cell select">D</span>
-            <span class="dates"><span class="cell">2026-06-01</span><span class="sep">–</span><span class="cell">2026-08-31</span></span>
-            <span class="cell select">내부공문</span>
-            <span class="check"><i></i>필수</span>
-            <span class="cell muted">10</span>
-            <span class="cell">핵심 기능 개발, 내부 테스트, 동작 검증</span>
-            <span class="del">×</span>
-          </div>
-          <div class="row">
-            <span class="move"><span>▲</span><span>▼</span></span>
-            <span class="cell select">D</span>
-            <span class="dates"><span class="cell">2026-09-01</span><span class="sep">–</span><span class="cell">2026-10-31</span></span>
-            <span class="cell select">내부공문</span>
-            <span class="check"><i></i>필수</span>
-            <span class="cell muted">6</span>
-            <span class="cell">시범 운영, 성과지표 측정, 개선 반영</span>
-            <span class="del">×</span>
+            <span>이동</span><span>PDCA</span><span>기간</span><span>행정요건</span><span>원인행위</span><span>내용</span><span></span>
           </div>
           <div class="row">
             <span class="move"><span>▲</span><span>▼</span></span>
             <span class="cell select">P</span>
-            <span class="dates"><span class="cell muted">yyyy-mm-dd</span><span class="sep">–</span><span class="cell muted">yyyy-mm-dd</span></span>
-            <span class="cell select">내부공문</span>
+            <span class="dates"><span class="cell">2026-03-01</span><span class="sep">–</span><span class="cell">2026-03-31</span></span>
+            <span class="cell select">위원회</span>
             <span class="check"><i></i>필수</span>
-            <span class="cell muted">0</span>
-            <span class="cell">구성원 유형별 요구 조사 및 기획</span>
+            <span class="cell">원인행위 — 위원회 또는 부서 내부기안 (500만 원·주요 안건 기준)</span>
             <span class="del">×</span>
           </div>
-          <div class="add">+ 단계 추가</div>
+          <div class="sec">D · 원인행위 이후 본 사업 계획 (행을 나눠 세세히)</div>
+          <div class="row">
+            <span class="move"><span>▲</span><span>▼</span></span>
+            <span class="cell select">D</span>
+            <span class="dates"><span class="cell">2026-04-01</span><span class="sep">–</span><span class="cell">2026-04-20</span></span>
+            <span class="cell select">없음</span>
+            <span class="check">해당 없음</span>
+            <span class="cell">사업 홍보 — 대상, 채널, 시기</span>
+            <span class="del">×</span>
+          </div>
+          <div class="row">
+            <span class="move"><span>▲</span><span>▼</span></span>
+            <span class="cell select">D</span>
+            <span class="dates"><span class="cell">2026-04-21</span><span class="sep">–</span><span class="cell">2026-08-31</span></span>
+            <span class="cell select">없음</span>
+            <span class="check">해당 없음</span>
+            <span class="cell">운영 — 일정, 장소, 인력, 진행 방식</span>
+            <span class="del">×</span>
+          </div>
+          <div class="row">
+            <span class="move"><span>▲</span><span>▼</span></span>
+            <span class="cell select">D</span>
+            <span class="dates"><span class="cell">2026-09-01</span><span class="sep">–</span><span class="cell">2026-09-15</span></span>
+            <span class="cell select">없음</span>
+            <span class="check">해당 없음</span>
+            <span class="cell">결과보고회 — 개최 여부·시기</span>
+            <span class="del">×</span>
+          </div>
+          <div class="row">
+            <span class="move"><span>▲</span><span>▼</span></span>
+            <span class="cell select">D</span>
+            <span class="dates"><span class="cell">2026-09-01</span><span class="sep">–</span><span class="cell">2026-10-15</span></span>
+            <span class="cell select">없음</span>
+            <span class="check">해당 없음</span>
+            <span class="cell">세금 납부 · 인건비 지급 · 청구 (SU-WINGS·그룹웨어)</span>
+            <span class="del">×</span>
+          </div>
+          <div class="add">+ D 활동 행 추가</div>
+          <div class="sec">C · 결과보고서만 (종료 후 2주 이내)</div>
+          <div class="row">
+            <span class="move"><span>▲</span><span>▼</span></span>
+            <span class="cell select">C</span>
+            <span class="dates"><span class="cell">2026-10-16</span><span class="sep">–</span><span class="cell">2026-10-31</span></span>
+            <span class="cell select">없음</span>
+            <span class="check">해당 없음</span>
+            <span class="cell">결과보고서 작성 · 환류·차년도 시사점 포함</span>
+            <span class="del">×</span>
+          </div>
         </div>
       </div>
-      <div class="shot-cap">그림 15-1. 추진 계획 한 줄(활동 행) — 이동 · PDCA · 기간 · 행정요건 · 원인행위 · 금액 · 내용</div>
+      <div class="shot-cap">그림 15-1. 개정 — 행에는 일정·내용을 쓰고, 금액은 위쪽 P/D/C 각 한 칸에만 둡니다. D 행은 본 사업을 세세히 나눕니다.</div>
     </div>
 
     <div class="example">
@@ -1715,7 +1749,7 @@
         </thead>
         <tbody>
           <tr><th>P</th><td>원인행위만 — 500만 원 미만·주요 안건이면 위원회, 아니면 부서 내부기안</td><td>위원회 또는 내부기안</td><td>0</td></tr>
-          <tr><th>D</th><td>홍보, 운영, 결과보고회, 세금·인건비, 청구를 한 실행 계획으로 작성</td><td>—</td><td>50</td></tr>
+          <tr><th>D</th><td>원인행위 이후 본 사업을 여러 행으로 세세히 작성 (홍보·운영·결과보고회·세금·인건비·청구). 금액은 D에 50 한 칸</td><td>—</td><td>50</td></tr>
           <tr><th>C</th><td>결과보고서 (종료 후 2주 이내). 환류·차년도 시사점 포함</td><td>—</td><td>0</td></tr>
         </tbody>
       </table>
@@ -1727,8 +1761,8 @@
 
     <h3 id="budget-split">계획 예산 현황 — P / D / C 각 한 칸</h3>
     <p class="lead" style="margin-top:0">
-      자녀사업 <b>총예산</b>을 먼저 잡고, 그 돈을 <b>P 한 칸 · D 한 칸 · C 한 칸</b>에만 나눕니다.
-      활동 행을 추가해도 금액 칸을 늘리지 않습니다.
+      자녀사업 <b>총예산</b>을 먼저 잡고, 그 돈을 <b>P 예산 하나 · D 예산 하나 · C 예산 하나</b>에만 나눕니다.
+      D 활동 행을 여러 개 추가해도 D 금액은 한 칸입니다.
     </p>
     <div class="budget-flow" aria-hidden="true">
       <div class="bf"><b>1. 자녀 총액</b><span>위자드·기본정보에서 이 사업의 총예산을 잡습니다</span></div>
@@ -2474,7 +2508,7 @@
       <li>사업관리 → 새 사업을 연다</li>
       <li>작성 방식을 고른다 (보통 AI 위자드)</li>
       <li>부모사업(예산)을 연결한다</li>
-      <li>P 원인행위 · D 실행계획 · C 결과보고를 쓰고, 예산은 각 한 칸</li>
+      <li>P 원인행위, D는 본 사업을 세세히, C 결과보고. 예산만 P/D/C 각 한 칸</li>
       <li>KPI·계정과목을 맞춘 뒤 <b>AI 분류 초안을 수정·확정</b>한다</li>
       <li>자주 임시저장한다</li>
       <li>Step5에서 검토·(가능하면) AI 분석 후 제출한다</li>
