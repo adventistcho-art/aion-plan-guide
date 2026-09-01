@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AION 통합 성과관리 체계 설명회 (개정 v2)</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root {
+    --ink: #1a1f2e;
+    --ink-soft: #3d4658;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --bg: #f4f6f9;
+    --card: #ffffff;
+    --accent: #1e4fd6;
+    --accent-soft: #e8effc;
+    --ok: #0f7a4a;
+    --ok-soft: #e8f7ef;
+    --warn: #9a6700;
+    --warn-soft: #fff8e6;
+    --danger: #b42318;
+    --danger-soft: #fef3f2;
+    --purple: #6d28d9;
+    --purple-soft: #f5f3ff;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(16,24,40,.06), 0 8px 24px rgba(16,24,40,.06);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; height: 100%; overflow: hidden;
+    font-family: "Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    background: #0b1220; color: var(--ink);
+  }
+  .deck { position: relative; width: 100vw; height: 100vh; }
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    padding: 56px 60px 84px;
+    background: var(--bg);
+    opacity: 0; visibility: hidden; transform: translateY(8px);
+    transition: opacity .25s ease, transform .25s ease;
+  }
+  .slide.active { opacity: 1; visibility: visible; transform: translateY(0); z-index: 2; }
+
+  .topline { display:flex; align-items:center; justify-content:space-between; margin-bottom: 12px; flex-shrink:0; }
+  .brandmark { display:flex; align-items:center; gap:8px; font-size:12px; color: var(--muted); font-weight:700; letter-spacing:.04em; }
+  .brandmark .dot { width:7px; height:7px; border-radius:50%; background: var(--accent); }
+  .badge-part {
+    display:inline-flex; align-items:center; gap:6px;
+    padding: 4px 12px; border-radius: 999px;
+    font-size: 11.5px; font-weight: 800; letter-spacing:.05em;
+  }
+  .badge-part.p1 { background: var(--warn-soft); color: var(--warn); }
+  .badge-part.p2 { background: var(--accent-soft); color: var(--accent); }
+  .badge-part.p3 { background: var(--purple-soft); color: var(--purple); }
+  .badge-part.p4 { background: var(--ok-soft); color: var(--ok); }
+  .badge-part.p5 { background: #eef2ff; color: #3730a3; }
+
+  .slide-head { flex-shrink: 0; margin-bottom: 14px; }
+  .slide-title { font-size: 27px; font-weight: 800; margin: 4px 0 5px; color: var(--ink); line-height:1.3; }
+  .slide-title b { color: var(--accent); }
+  .slide-title .tag-live { font-size:11.5px; font-weight:800; color:#fff; background:var(--danger); padding:3px 9px; border-radius:999px; vertical-align:middle; margin-left:8px; }
+  .slide-sub { font-size: 14px; color: var(--ink-soft); max-width: 92ch; line-height:1.55; margin:0; }
+  .hl-kicker { margin: 0 0 8px; font-size: 15px; line-height: 1.45; }
+  mark, .hl {
+    background: #fde68a;
+    color: #1a1f2e;
+    padding: 0.05em 0.28em;
+    border-radius: 4px;
+    font-weight: 800;
+    font-style: normal;
+    box-decoration-break: clone;
+  }
+  .callout .fn { display:block; margin-top:7px; font-size:11px; font-weight:600; line-height:1.45; opacity:.92; }
+
+  .content { flex: 1; min-height:0; display:flex; flex-direction:column; gap:12px; }
+  .content.scroll { overflow:auto; }
+
+  .cols-2 { display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .cols-3 { display:grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+  .cols-4 { display:grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+  .cols-5 { display:grid; grid-template-columns: repeat(5,1fr); gap: 10px; }
+
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 16px 18px; box-shadow: var(--shadow);
+  }
+  .card h4 { margin: 0 0 7px; font-size: 15px; color: var(--ink); display:flex; align-items:center; gap:8px; }
+  .card p { margin: 0; font-size: 13px; color: var(--ink-soft); line-height:1.55; }
+  .card ul { margin: 5px 0 0; padding-left: 1.1em; font-size: 12.5px; color: var(--ink-soft); line-height:1.6; }
+  .card .cap { margin-top:7px; font-size:11.5px; color:var(--muted); }
+
+  .icon-circle {
+    width: 34px; height: 34px; border-radius: 10px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size: 15px; font-weight: 800; color:#fff;
+  }
+  .ic-blue { background: var(--accent); } .ic-green { background: var(--ok); }
+  .ic-purple { background: var(--purple); } .ic-amber { background: #b45309; }
+  .ic-red { background: var(--danger); } .ic-navy { background: #1e3a6e; }
+
+  .callout { border-radius: 11px; padding: 11px 16px; font-size: 13.5px; line-height:1.55; flex-shrink:0; }
+  .callout.info { background: var(--accent-soft); color: #163a8a; }
+  .callout.ok { background: var(--ok-soft); color: #0b5c38; }
+  .callout.warn { background: var(--warn-soft); color: #7a5200; }
+  .callout.danger { background: var(--danger-soft); color: #8f1d14; }
+
+  /* ===== Hero / Divider (간지) ===== */
+  .hero-slide {
+    background: linear-gradient(160deg, #10192f 0%, #1a2f5c 45%, #23499e 100%);
+    color: #fff; justify-content:center;
+  }
+  .hero-slide .eyebrow { font-size:12.5px; letter-spacing:.14em; text-transform:uppercase; color:#93c5fd; margin-bottom:14px; font-weight:700; }
+  .hero-slide h1 { font-size: 44px; font-weight: 800; margin: 0 0 16px; line-height:1.28; }
+  .hero-slide .sub { font-size:16px; color:#cfe0ff; max-width:70ch; line-height:1.6; margin:0 0 24px; }
+  .hero-chip { background: rgba(255,255,255,.12); color:#fff; padding:7px 14px; border-radius:999px; font-size:13px; display:inline-block; }
+  .hero-slide .big-quote { font-size: 27px; font-weight:700; line-height:1.55; max-width:74ch; }
+  .hero-slide .big-quote em { color:#93c5fd; font-style:normal; }
+
+  .divider { justify-content:center; }
+  .divider .part-num {
+    font-size: 15px; font-weight: 800; letter-spacing:.2em; color:#93c5fd; margin-bottom: 14px;
+  }
+  .divider h1 { font-size: 54px; margin-bottom: 18px; }
+  .divider .rule { width: 76px; height: 5px; background:#3b82f6; border-radius:99px; margin-bottom: 24px; }
+  .divider .agenda { display:flex; gap:10px; flex-wrap:wrap; max-width: 76ch; }
+  .divider .agenda span {
+    background: rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.18);
+    color:#e2e8f0; padding:8px 15px; border-radius:10px; font-size:13.5px;
+  }
+  .divider.accent-green .part-num { color:#86efac; }
+  .divider.accent-green .rule { background:#22c55e; }
+  .divider.accent-purple .part-num { color:#d8b4fe; }
+  .divider.accent-purple .rule { background:#a855f7; }
+  .divider.accent-amber .part-num { color:#fcd34d; }
+  .divider.accent-amber .rule { background:#f59e0b; }
+
+  /* ===== Screenshot layouts ===== */
+  .use-layout { flex:1; min-height:0; display:grid; grid-template-columns: 1.25fr 1fr; gap: 20px; }
+  .use-layout.wide-shot { grid-template-columns: 1.75fr 1fr; }
+  .use-layout.narrow-shot { grid-template-columns: 1fr 1.1fr; }
+  .use-layout.shot-right { grid-template-columns: 0.82fr 1.48fr; }
+  .shot-frame {
+    min-height:0; display:flex; align-items:center; justify-content:center;
+    background:#fff; border:1px solid var(--line); border-radius: 12px; padding: 10px;
+    box-shadow: var(--shadow); position:relative;
+  }
+  .shot-frame img {
+    max-width:100%; max-height:100%; width:auto; height:auto;
+    object-fit:contain; object-position:center top;
+    display:block; border-radius:6px;
+    image-rendering: auto;
+  }
+  .shot-frame.tall { align-items:flex-start; }
+  .shot-frame.tall img {
+    width: 100%;
+    max-height: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: top center;
+  }
+  .shot-tag {
+    position:absolute; top:-10px; left:14px; background:var(--ink); color:#fff;
+    font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; z-index:3;
+  }
+  .stack-shot { flex:1; min-height:0; display:flex; flex-direction:column; gap:12px; }
+  .shot-reset {
+    min-height:0;
+    display:grid;
+    grid-template-columns: 0.78fr 1.22fr;
+    grid-template-rows: 1.2fr 0.8fr;
+    gap: 12px;
+  }
+  .shot-reset .s1 { grid-row: 1 / 3; }
+  .shot-reset .shot-frame { min-height:0; align-items:flex-start; }
+  .shot-reset .shot-frame img {
+    width:100%; max-height:100%; object-fit:contain; object-position:top center;
+  }
+
+  .notes { min-height:0; overflow:auto; display:flex; flex-direction:column; gap:10px; }
+  .steps-list { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  .steps-list li { display:flex; gap:10px; align-items:flex-start; font-size:13.5px; color:var(--ink-soft); line-height:1.5; }
+  .steps-list li .n {
+    flex-shrink:0; width:21px; height:21px; border-radius:50%; background:var(--accent); color:#fff;
+    font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; margin-top:1px;
+  }
+  .steps-list li b { color: var(--ink); }
+  .note-box { border:1px solid var(--line); border-radius:11px; padding:12px 14px; background:#fff; }
+  .note-box h5 { margin:0 0 6px; font-size:13px; color:var(--ink); display:flex; align-items:center; gap:6px; }
+  .note-box p, .note-box ul { margin:0; font-size:12.5px; color:var(--ink-soft); line-height:1.55; }
+  .note-box ul { padding-left:1.05em; }
+
+  /* ===== Flow / stepper ===== */
+  .flow-row { display:flex; align-items:stretch; }
+  .flow-step { flex:1; background:#fff; border:1px solid var(--line); border-radius:12px; padding: 13px 10px; text-align:center; }
+  .flow-step .n { display:inline-flex; width:25px; height:25px; border-radius:50%; background:var(--accent); color:#fff; align-items:center; justify-content:center; font-size:12px; font-weight:800; margin-bottom:6px; }
+  .flow-step strong { display:block; font-size:13px; color:var(--ink); margin-bottom:2px; }
+  .flow-step span { font-size:11px; color:var(--muted); }
+  .flow-arrow { display:flex; align-items:center; justify-content:center; width:28px; color:var(--muted); font-size:17px; }
+
+  .stepper-bar { display:flex; border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#fff; flex-shrink:0; }
+  .stepper-bar span { flex:1; text-align:center; padding:11px 6px; font-size:12px; color:#6b7280; border-right:1px solid #f3f4f6; }
+  .stepper-bar span:last-child { border-right:0; }
+  .stepper-bar span b { display:block; font-size:13px; font-weight:700; margin-bottom:2px; color:var(--ink); }
+  .stepper-bar span.on { color:#c2410c; background:#fff7ed; }
+  .stepper-bar span.on b { color:#c2410c; }
+
+  .c-table { width:100%; border-collapse:collapse; font-size:13px; }
+  .c-table th, .c-table td { border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top; }
+  .c-table th { background:#f8fafc; font-weight:700; color:var(--ink); }
+  .c-table td { color: var(--ink-soft); }
+  .cls-launch { list-style:none; padding:0; margin:0; }
+  .cls-launch li { margin:0; }
+  .cls-open {
+    display:flex; align-items:center; gap:6px; width:100%;
+    padding:5px 8px; margin:1px 0; border:0; border-radius:8px;
+    background:transparent; text-align:left; cursor:pointer;
+    font: inherit; font-size:12.5px; color:var(--ink-soft); line-height:1.45;
+  }
+  .cls-open:hover, .cls-open:focus-visible { background:var(--accent-soft); color:var(--ink); outline:none; }
+  .cls-open b { color:var(--accent); min-width:1.8em; }
+  .cls-open .hint { margin-left:auto; font-size:10.5px; font-weight:700; color:var(--accent); opacity:.85; }
+  .cls-modal {
+    position:fixed; inset:0; z-index:80; display:none;
+    align-items:center; justify-content:center; padding:24px 28px 78px;
+  }
+  .cls-modal.open { display:flex; }
+  .cls-modal-bg { position:absolute; inset:0; background:rgba(11,18,32,.55); }
+  .cls-modal-panel {
+    position:relative; width:min(1080px, 96vw); height:min(780px, calc(100vh - 110px));
+    display:flex; flex-direction:column; background:#fff; border-radius:16px;
+    box-shadow:0 24px 60px rgba(11,18,32,.28); overflow:hidden;
+  }
+  .cls-modal-head {
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:16px 20px 12px; border-bottom:1px solid var(--line); flex-shrink:0;
+  }
+  .cls-modal-head h3 { margin:0; font-size:18px; font-weight:800; color:var(--ink); }
+  .cls-modal-head p { margin:3px 0 0; font-size:12.5px; color:var(--muted); }
+  .cls-close {
+    width:36px; height:36px; border:1px solid var(--line); border-radius:10px;
+    background:#fff; font-size:20px; line-height:1; cursor:pointer; color:var(--ink-soft);
+  }
+  .cls-close:hover { background:#f8fafc; color:var(--ink); }
+  .cls-tabs { display:flex; gap:6px; padding:10px 16px; border-bottom:1px solid var(--line); flex-shrink:0; background:#f8fafc; }
+  .cls-tab {
+    flex:1; padding:8px 6px; border:1px solid var(--line); border-radius:9px;
+    background:#fff; cursor:pointer; font:inherit; font-size:12px; font-weight:700; color:var(--ink-soft);
+  }
+  .cls-tab.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .cls-tree { flex:1; overflow:auto; padding:14px 18px 20px; }
+  .cls-group { margin:0 0 10px; }
+  .cls-gname { font-size:13px; font-weight:800; color:var(--ink); margin:0 0 6px; }
+  .cls-group.d1 { margin:0 0 14px; padding:12px 14px; border:1px solid var(--line); border-radius:12px; background:#fafbfc; }
+  .cls-group.d2 { margin:8px 0 0; padding:8px 0 0; border:0; background:transparent; }
+  .cls-group.d2 > .cls-gname { font-size:12.5px; color:#1e3a6e; }
+  .cls-group.d3 { margin:6px 0 0 10px; }
+  .cls-group.d3 > .cls-gname, .cls-group.d4 > .cls-gname { font-size:12px; font-weight:700; color:var(--ink-soft); }
+  .cls-leaves { display:flex; flex-wrap:wrap; gap:6px; }
+  .cls-leaf {
+    display:inline-flex; padding:4px 9px; border-radius:999px; background:#fff;
+    border:1px solid #dbe3ef; font-size:11.5px; color:#334155; font-weight:650;
+  }
+  .cls-modal-panel.fit { height:auto; max-height:min(780px, calc(100vh - 110px)); }
+  .cls-modal-body { flex:1; overflow:auto; padding:16px 22px 22px; display:flex; flex-direction:column; gap:14px; }
+  .cls-modal-body .slide-sub { max-width:none; }
+  .ref-btn {
+    display:flex; align-items:center; justify-content:center; width:100%;
+    margin-top:8px; padding:9px 12px; border:1px solid #93c5fd; border-radius:10px;
+    background:var(--accent-soft); color:#163a8a; font:inherit; font-size:12.5px; font-weight:800;
+    cursor:pointer;
+  }
+  .ref-btn:hover, .ref-btn:focus-visible { background:#dbeafe; outline:none; }
+
+  .pdca-mini-grid { display:grid; grid-template-columns: repeat(4,1fr); gap:10px; flex-shrink:0; }
+  .pdca-mini { border:1px solid var(--line); border-radius:10px; padding:11px 13px; background:#fff; }
+  .pdca-mini .phase { display:inline-flex; width:22px; height:22px; border-radius:6px; align-items:center; justify-content:center; color:#fff; font-size:11px; font-weight:800; margin-bottom:5px; }
+  .pdca-mini .phase.p { background:#2563eb; } .pdca-mini .phase.d { background:#0891b2; }
+  .pdca-mini .phase.c { background:#7c3aed; } .pdca-mini .phase.a { background:#059669; }
+  .pdca-mini h5 { margin:0 0 3px; font-size:12.5px; color:var(--ink); }
+  .pdca-mini p { margin:0; font-size:11px; color:var(--muted); line-height:1.45; }
+
+  /* ===== Structure diagrams ===== */
+  .decision-box { border:2px solid var(--accent); border-radius:12px; padding:14px 22px; background:var(--accent-soft); color:#163a8a; font-weight:700; font-size:15px; text-align:center; }
+  .branch-box { border:1px solid var(--line); border-radius:12px; padding:14px 18px; background:#fff; flex:1; box-shadow:var(--shadow); }
+  .branch-box.yes { border-color:#93c5fd; } .branch-box.no { border-color:#e9d5ff; }
+  .branch-box h5 { margin:0 0 6px; font-size:14px; }
+  .branch-box p { margin:0; font-size:12.5px; color:var(--ink-soft); line-height:1.55; }
+
+  .pc-diagram { display:flex; align-items:center; justify-content:center; gap: 30px; }
+  .pc-parent { background:#1e3a6e; color:#fff; border-radius:12px; padding:18px 24px; text-align:center; min-width:230px; }
+  .pc-parent .t { font-size:11px; opacity:.8; margin-bottom:4px; }
+  .pc-parent .n { font-size:15px; font-weight:800; }
+  .pc-children { display:flex; flex-direction:column; gap:9px; }
+  .pc-child { border:1px solid var(--line); border-radius:10px; padding:9px 16px; background:#fff; font-size:12.5px; color:var(--ink-soft); min-width:250px; }
+  .pc-child b { color:var(--ink); }
+
+  .stat-grid { display:grid; grid-template-columns: repeat(4,1fr); gap:10px; flex-shrink:0; }
+  .stat-card { background:#fff; border:1px solid var(--line); border-radius:10px; padding:10px 12px; }
+  .stat-card .k { font-size:11px; color:var(--muted); font-weight:700; }
+  .stat-card .v { margin-top:4px; text-align:right; font-size:16px; font-weight:800; font-variant-numeric: tabular-nums; color:var(--ink); }
+  .stat-card .v.ok { color: var(--ok); }
+  .money-box { flex:1; background:#fff; border:1px solid var(--line); border-radius:12px; padding:12px 10px; text-align:center; box-shadow: var(--shadow); }
+  .money-box .n { display:inline-flex; width:22px; height:22px; border-radius:50%; background:var(--accent); color:#fff; align-items:center; justify-content:center; font-size:11px; font-weight:800; margin-bottom:6px; }
+  .money-box strong { display:block; font-size:13px; color:var(--ink); margin-bottom:3px; }
+  .money-box span { font-size:11px; color:var(--muted); line-height:1.45; }
+  .pd-table { width:100%; border-collapse:collapse; font-size:12px; background:#fff; }
+  .pd-table th { background:#f8fafc; padding:7px 8px; text-align:left; font-size:11px; color:#6b7280; border-bottom:1px solid var(--line); }
+  .pd-table td { padding:7px 8px; border-bottom:1px solid #f1f5f9; color:#111827; }
+  .pd-table .r { text-align:right; font-variant-numeric: tabular-nums; font-weight:700; }
+  .pd-head { font-size:12.5px; font-weight:800; color:var(--ink); margin:0 0 6px; display:flex; justify-content:space-between; align-items:center; }
+
+  .pdca-ex { width:100%; border-collapse:separate; border-spacing:0; font-size:12.5px; background:#fff; border:1px solid var(--line); border-radius:12px; overflow:hidden; box-shadow:var(--shadow); }
+  .pdca-ex th { background:#f8fafc; padding:8px 10px; text-align:left; font-size:11.5px; color:#6b7280; font-weight:700; border-bottom:1px solid var(--line); }
+  .pdca-ex td { padding:5px 10px; border-bottom:1px solid #eef2f7; color:#111827; vertical-align:middle; }
+  .pdca-ex tr:last-child td { border-bottom:0; }
+  .pdca-ex .r { text-align:right; font-variant-numeric:tabular-nums; font-weight:800; white-space:nowrap; }
+  .pdca-ex .date { font-variant-numeric:tabular-nums; white-space:nowrap; color:#334155; font-weight:650; width:7.6em; }
+  .pdca-ex .ph { text-align:center; font-weight:800; color:#fff; width:3.4em; line-height:1.25; border-bottom:1px solid rgba(255,255,255,.22); }
+  .pdca-ex .ph span { display:block; font-size:15px; letter-spacing:.02em; }
+  .pdca-ex .ph small { display:block; font-size:10px; font-weight:700; opacity:.9; }
+  .pdca-ex tr.p .ph { background:#2563eb; }
+  .pdca-ex tr.d .ph { background:#0891b2; }
+  .pdca-ex tr.c .ph { background:#7c3aed; }
+  .pdca-ex tr.a .ph { background:#059669; }
+  .pdca-ex tr.p td:not(.ph) { background:#eff6ff; }
+  .pdca-ex tr.d td:not(.ph) { background:#ecfeff; }
+  .pdca-ex tr.c td:not(.ph) { background:#f5f3ff; }
+  .pdca-ex tr.a td:not(.ph) { background:#ecfdf5; }
+  .pdca-ex .yn { display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:800; }
+  .pdca-ex .yn.yes { background:#dbeafe; color:#1e40af; }
+  .pdca-ex .yn.no { background:#f1f5f9; color:#64748b; }
+  .pdca-ex .na { color:#94a3b8; font-weight:650; }
+
+  .checklist { display:grid; grid-template-columns: 1fr 1fr; gap: 4px 22px; list-style:none; margin:0; padding:0; }
+  .checklist li { display:flex; align-items:flex-start; gap:10px; font-size:13.5px; color:var(--ink-soft); padding:8px 0; border-bottom:1px dashed var(--line); }
+  .checklist li .num { flex-shrink:0; width:21px; height:21px; border-radius:50%; background:var(--accent-soft); color:var(--accent); font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; }
+
+  .faq-item { border:1px solid var(--line); border-radius:11px; padding:12px 15px; background:#fff; }
+  .faq-item .q { font-size:13.5px; font-weight:700; color:var(--ink); margin-bottom:4px; }
+  .faq-item .a { font-size:12.5px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ===== Bottom nav ===== */
+  .nav-bar {
+    position: fixed; left:0; right:0; bottom:0; height: 58px;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 0 24px; background: rgba(255,255,255,.9); backdrop-filter: blur(6px);
+    border-top: 1px solid var(--line); z-index: 20;
+  }
+  .nav-btn {
+    display:inline-flex; align-items:center; gap:6px; padding:8px 15px; border-radius:8px;
+    border:1px solid var(--line); background:#fff; font-size:13px; font-weight:700; color:var(--ink); cursor:pointer;
+  }
+  .nav-btn:hover { background:#f8fafc; }
+  .nav-btn:disabled { opacity:.35; cursor:default; }
+  .nav-center { flex:1; display:flex; align-items:center; justify-content:center; gap:14px; }
+  .progress-track { width: 400px; height:5px; background:#e5e7eb; border-radius:999px; overflow:hidden; }
+  .progress-fill { height:100%; background:var(--accent); width:0%; transition: width .25s ease; }
+  .page-jump {
+    display:inline-flex; align-items:center; gap:5px;
+    font-size:12.5px; color:var(--muted); font-weight:700;
+  }
+  .page-jump input {
+    width:42px; height:28px; padding:0 4px; text-align:center;
+    border:1px solid var(--line); border-radius:7px; background:#fff;
+    font-size:12.5px; font-weight:700; color:var(--ink); font-family:inherit;
+  }
+  .page-jump input:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+  .page-jump input::-webkit-outer-spin-button,
+  .page-jump input::-webkit-inner-spin-button { -webkit-appearance:none; margin:0; }
+  .page-jump input[type=number] { -moz-appearance:textfield; appearance:textfield; }
+  .nav-hint { position:fixed; right:24px; bottom:66px; font-size:11px; color:#94a3b8; z-index:20; }
+  .ver-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 30;
+    height: 32px; display: flex; align-items: center; justify-content: center; gap: 14px;
+    background: #0f766e; color: #fff; font-size: 12px; font-weight: 800; letter-spacing: .02em;
+  }
+  .ver-bar a { color: #99f6e4; text-decoration: none; }
+  .ver-bar a:hover { text-decoration: underline; }
+  .cause-tree { background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
+  .cause-tree .q { font-weight:800; margin-bottom:8px; font-size:14px; }
+  .cause-tree ul { margin:0; padding-left:1.15em; font-size:13.5px; color:var(--ink-soft); }
+  .pdc-budget { display:grid; grid-template-columns: repeat(3,1fr); gap:12px; }
+  .pdc-budget .box { background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px 16px; box-shadow:var(--shadow); }
+  .pdc-budget .box .k { font-size:12px; color:var(--muted); font-weight:700; }
+  .pdc-budget .box .v { margin-top:4px; font-size:22px; font-weight:800; }
+  .pdc-budget .box p { margin:6px 0 0; font-size:12.5px; color:var(--ink-soft); }
+
+  @media print {
+    .slide { position:relative; opacity:1 !important; visibility:visible !important; height:100vh; page-break-after: always; }
+    .nav-bar, .nav-hint, .cls-modal { display:none; }
+  }
+</style>
+</head>
+<body>
+<div class="ver-bar">개정 v2 · 부서 피드백 반영 — PDC 단순화 · 분류는 맨 마지막 <a href="./AION_설명회_발표자료.html">기존 장표 보기</a></div>
+
+<div class="deck">
+
+<!-- ============ 1. 표지 ============ -->
+<section class="slide hero-slide active">
+  <div class="eyebrow">AION Briefing Session · 개정 v2</div>
+  <h1>AION 통합 성과관리 체계<br>설명회 <span style="color:#5eead4;font-size:28px;">개정안</span></h1>
+  <p class="sub">부서 담당자 피드백을 반영했습니다. <b style="color:#fff">PDC는 원인행위 · 실행계획 · 결과보고</b>로 단순화하고,<br>사업분류(C1~C5)는 내용을 쓴 뒤 AI 초안을 고치는 방식으로 바꿉니다.</p>
+  <div style="display:flex; gap:10px; flex-wrap:wrap;">
+    <span class="hero-chip">대상 · 사업담당자 전체</span>
+    <span class="hero-chip">개정 · PDC 단순화 · 분류 후순위</span>
+    <span class="hero-chip">[발표일자] · [발표자명]</span>
+    <span class="hero-chip">주관 · 기획처</span>
+  </div>
+</section>
+
+<!-- ============ 2. 간지 PART 1 ============ -->
+<section class="slide hero-slide divider accent-amber">
+  <div class="part-num">PART 1</div>
+  <h1>왜 지금 이 시스템인가</h1>
+  <div class="rule"></div>
+  <div class="agenda">
+    <span>외부 환경의 구조적 위기</span>
+    <span>내부 관리체계의 모순</span>
+    <span>실무에서 겪는 문제 3가지</span>
+    <span>무엇이 바뀌는가</span>
+  </div>
+</section>
+
+<!-- ============ 3. 이중고 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p1">PART 1 · 필요성</span>
+    <span class="brandmark"><span class="dot"></span>AION 통합 성과관리 체계</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">지금 대학은 <b>이중고</b>에 직면해 있습니다</div>
+    <p class="slide-sub">외부에서 오는 구조적 위기와, 내부의 관행적 비효율이 동시에 커지고 있습니다.</p>
+  </div>
+  <div class="content">
+    <div class="cols-2" style="flex:1; min-height:0;">
+      <div class="card">
+        <h4><span class="icon-circle ic-amber">외</span>외부 환경의 구조적 위기</h4>
+        <ul>
+          <li>학령인구 감소가 <b>실질적 재정 타격</b>으로 이어짐</li>
+          <li>교육부, 2027학년부터 지방 국립대 신입생 <b>등록금 0원</b>(전액 장학금) 추진 — 사립대 신입생 유치 경쟁 심화</li>
+          <li>교육부 <b>재정위기대학 관리</b> 본격 시행 (2026.8.15)<br>— 구조조정·통폐합을 전제로 한 국가 차원의 조치</li>
+          <li>평가 패러다임 전환: <b>예산 집행률 → 핵심지표 달성도·환류(PDCA)</b></li>
+          <li>중장기 발전계획과 예산의 연계를 <b>데이터로 증명</b>하지 못하면 외부 재원 수주 불가</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4><span class="icon-circle ic-red">내</span>내부 관리체계의 모순</h4>
+        <ul>
+          <li>"전년도 진행 사업"이라는 이유로 반복되는 <b>항례적 예산 배정</b></li>
+          <li>사업 실적과 성과지표의 <b>인과관계 단절</b> — 추적·검증 불가</li>
+          <li>교비·국비·지자체 <b>재원별 분절 관리</b> → 중복투자·투자 사각지대</li>
+          <li>하나의 예산사업을 여러 세부사업으로 쪼개는 <b>중층구조</b> 만연 → 전용·혼용, 책임 소재 불분명</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout warn">
+      <b>결론.</b> 관행적 예산 집행과 파편화된 사업 운영으로는 지속 가능성을 담보할 수 없습니다. 데이터·지표 기반의 사업계획과 합목적성에 입각한 예산관리로의 전환이 시급합니다.
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. 문제 3가지 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p1">PART 1 · 필요성</span>
+    <span class="brandmark"><span class="dot"></span>AION 통합 성과관리 체계</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">실무에서 실제로 겪는 문제 3가지</div>
+    <p class="slide-sub">사업담당자가 매년 사업계획을 쓸 때 반복적으로 마주치는 현실입니다.</p>
+  </div>
+  <div class="content">
+    <div class="cols-3" style="flex:1; min-height:0;">
+      <div class="card">
+        <h4><span class="icon-circle ic-blue">1</span>타당성 검토 부재</h4>
+        <p>사업의 효과성·수요자 중심성·지표 연관성을 따지지 않고, <mark>"작년에도 했으니까"</mark> 관행적으로 예산을 신청합니다.</p>
+        <div class="cap">→ 내용적 타당성이 아니라 <b>예산액 규모</b> 중심의 단편적 검토만 반복</div>
+      </div>
+      <div class="card">
+        <h4><span class="icon-circle ic-purple">2</span>사업–지표 인과관계 단절</h4>
+        <p>사업은 사업대로, 지표는 지표대로 겉돕니다. 이 사업이 어떤 지표에 얼마나 기여했는지 추적할 데이터가 없습니다.</p>
+        <div class="cap">→ <mark>사후 검증조차 어려운 구조적 모순</mark></div>
+      </div>
+      <div class="card">
+        <h4><span class="icon-circle ic-red">3</span>중층 사업구조</h4>
+        <p>하나의 예산사업 안에 여러 세부사업을 임의로 쪼개 운영하면서 <mark>예산 전용·혼용이 심해집니다.</mark></p>
+        <div class="cap">→ 승인받은 사업의 목적이 흐려지고 <b>책임 소재</b>가 사라짐</div>
+      </div>
+    </div>
+    <div class="callout info">
+      세 문제는 서로 연결되어 있습니다. <b>사업계획을 쓰는 시점에 지표·목표·예산을 함께 확정하지 않으면</b>, 이후 평가·성과관리 단계에서는 되돌릴 수 없습니다.
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. 무엇이 바뀌나 ============ -->
+<section class="slide hero-slide">
+  <p class="eyebrow">그래서, 무엇이 바뀌나</p>
+  <div class="big-quote">
+    이제부터 사업계획을 작성할 때<br>
+    <em>추진계획 · 성과지표 · 예산</em>을<br>
+    반드시 함께 입력합니다.
+  </div>
+  <div style="display:flex; gap:16px; margin-top:32px; max-width:960px">
+    <div style="flex:1; background:rgba(255,255,255,.08); border-radius:12px; padding:16px 18px;">
+      <div style="font-size:12px; color:#93c5fd; font-weight:800; margin-bottom:8px; letter-spacing:.08em;">BEFORE</div>
+      <div style="font-size:14px; color:#e2e8f0; line-height:1.7;">예산액 규모 중심 검토<br>사업과 지표를 각각 따로 관리<br>세부사업 임의 분할·전용</div>
+    </div>
+    <div style="flex:1; background:rgba(255,255,255,.15); border-radius:12px; padding:16px 18px; border:1px solid rgba(255,255,255,.32)">
+      <div style="font-size:12px; color:#bbf7d0; font-weight:800; margin-bottom:8px; letter-spacing:.08em;">AFTER · AION</div>
+      <div style="font-size:14px; color:#fff; line-height:1.7;">사업–지표 인과관계 필수 입력<br>대내외 지표를 통합 DB로 일원화<br>부모–자녀 예산 구조로 목적 명확화</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. 간지 PART 2 ============ -->
+<section class="slide hero-slide divider">
+  <div class="part-num">PART 2</div>
+  <h1>시스템의 목적과 개요</h1>
+  <div class="rule"></div>
+  <div class="agenda">
+    <span>이 시스템이 해결하려는 것 5가지</span>
+    <span>AION의 위치 — 무엇을 대체하지 않는가</span>
+  </div>
+</section>
+
+<!-- ============ 7. 목적 5가지 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p2">PART 2 · 목적·개요</span>
+    <span class="brandmark"><span class="dot"></span>AION 통합 성과관리 체계</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">이 시스템의 목적 5가지</div>
+    <p class="slide-sub">앞서 본 필요성에 따라, AION 사업관리 체계는 다음 5가지를 실현하도록 설계되었습니다.</p>
+  </div>
+  <div class="content">
+    <div class="cols-5" style="flex:1; min-height:0;">
+      <div class="card">
+        <h4><span class="icon-circle ic-blue">1</span></h4>
+        <p><b>사업–지표 인과관계 연결</b></p>
+        <div class="cap">사업계획 작성 시 성과지표와 목표값을 반드시 함께 등록</div>
+      </div>
+      <div class="card">
+        <h4><span class="icon-circle ic-purple">2</span></h4>
+        <p><b>대내외 지표 통합 DB</b></p>
+        <div class="cap">중장기발전계획 12개 지수, 기관평가인증 4개 영역 및 국고사업성과관리지표 등을 하나로</div>
+      </div>
+      <div class="card">
+        <h4><span class="icon-circle ic-green">3</span></h4>
+        <p><b>직접·연계 이원화 등록</b></p>
+        <div class="cap">사업의 목적과 산출물을 사전에 명확히 구분</div>
+      </div>
+      <div class="card">
+        <h4><span class="icon-circle ic-amber">4</span></h4>
+        <p><b>타당성 자기점검</b></p>
+        <div class="cap">산출식·기준값·전년 실적과 목표값을 비교하며 스스로 검토</div>
+      </div>
+      <div class="card">
+        <h4><span class="icon-circle ic-navy">5</span></h4>
+        <p><b>AI 활용 기반 마련</b></p>
+        <div class="cap">축적 데이터로 AI 초안·성과 대시보드·환류 체계 구축</div>
+      </div>
+    </div>
+    <div class="callout ok">
+      <b>종합.</b> 관행적인 중층 사업구조를 해체하고, <b>데이터 기반의 사업기획</b>과 <b>합목적성에 부합하는 투명한 예산관리</b>로 체질을 개선하는 것이 최종 목적입니다.
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. AION의 위치 (실제 이미지) ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p2">PART 2 · 목적·개요</span>
+    <span class="brandmark"><span class="dot"></span>AION 통합 성과관리 체계</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">AION은 무엇을 대체하지 <b>않는가</b></div>
+    <p class="slide-sub">AION은 예산 시스템(SU-WINGS)과 결재 시스템(그룹웨어)을 대체하지 않고 <b>연결</b>합니다.</p>
+  </div>
+  <div class="content">
+    <div class="shot-frame" style="flex:1; min-height:0;">
+      <img src="guide-assets/intro-system-diagram.png" alt="AION 시스템 관계도">
+    </div>
+    <div class="cols-3">
+      <div class="callout info">예산 정보가 다르면 <b>기준은 항상 SU-WINGS</b>
+        <span class="fn">*신규부모사업의 경우 예산팀에 공문발송을 통해 신설필요</span></div>
+      <div class="callout info">결재는 <b>그룹웨어</b>에서 진행 → 결과가 AION에 반영
+        <span class="fn">*현재 연동준비 중이며, 예산신청, 사업계획 수정 및 향후 모든 공문에 대한 작성가능예정</span></div>
+      <div class="callout info">지출청구 자체는 AION의 범위가 아님
+        <span class="fn">* 예산 신청에 따른 지출청구 기능 확대 예정</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9. 간지 PART 3 ============ -->
+<section class="slide hero-slide divider accent-purple">
+  <div class="part-num">PART 3</div>
+  <h1>사업관리 구조</h1>
+  <div class="rule"></div>
+  <div class="agenda">
+    <span>전체 구조 4층위</span>
+    <span>부모사업 ↔ 자녀사업</span>
+    <span>성과지표 이원화 로직</span>
+  </div>
+</section>
+
+<!-- ============ 10. 전체 구조 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p3">PART 3 · 사업관리 구조</span>
+    <span class="brandmark"><span class="dot"></span>AION 통합 성과관리 체계</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">사업관리 구조, 한눈에 보기</div>
+    <p class="slide-sub">4개 층위가 순서대로, 그리고 순환하며 맞물려 작동합니다.</p>
+  </div>
+  <div class="content">
+    <div class="flow-row">
+      <div class="flow-step"><div class="n">1</div><strong>예산 연동 구조</strong><span>부모(SU-WINGS)–자녀(AION)</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="n">2</div><strong>사업계획 5단계</strong><span>기본정보 ~ 검토·제출</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="n">3</div><strong>성과지표 이원화</strong><span>직접지표 / 연계지표</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="n">4</div><strong>PDCA 순환</strong><span>제출→결재→시행→평가→환류</span></div>
+    </div>
+    <div class="cols-2" style="flex:1; min-height:0;">
+      <div class="card">
+        <h4>왜 이렇게 설계했나</h4>
+        <ul>
+          <li>부모–자녀 구조로 <b>예산 중층화</b>를 원천 차단</li>
+          <li>5단계 순서로 <b>목적 → 방법 → 지표 → 예산</b>이 자연히 연결</li>
+          <li>직접/연계 구분으로 <b>사업의 목적성</b>을 사전에 명확화</li>
+          <li>PDCA 순환으로 <b>성과가 다음 계획에 재투입</b>되는 환류 체계 확보</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>오늘 설명 순서</h4>
+        <ul>
+          <li>이어지는 두 장에서 <b>①부모–자녀 구조</b>와 <b>③지표 이원화 로직</b>을 조금 더 자세히</li>
+          <li>그다음 <b>PART 4 사용방법</b>에서 실제 화면으로 5단계를 처음부터 끝까지 따라갑니다</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11. 부모-자녀 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p3">PART 3 · 사업관리 구조</span>
+    <span class="brandmark"><span class="dot"></span>AION 통합 성과관리 체계</span>
+  </div>
+  <div class="slide-head">
+    <p class="hl-kicker"><mark>부모–자녀 구조로 예산 중층화를 원천 차단</mark></p>
+    <div class="slide-title">부모사업 ↔ 자녀사업 — 가장 헷갈리기 쉬운 개념</div>
+    <p class="slide-sub">AION에서 만드는 실행 사업(자녀사업)은 SU-WINGS 예산 사업(부모사업) <b>하나</b>에 반드시 연결됩니다.</p>
+  </div>
+  <div class="content">
+    <div class="pc-diagram" style="flex:1; min-height:0; align-items:center;">
+      <div class="pc-parent">
+        <div class="t">SU-WINGS 예산 사업 (부모)</div>
+        <div class="n">2026000746<br>대학생 유학생 마약류 예방교육</div>
+      </div>
+      <div style="font-size:20px; color:var(--muted)">◀ 연결</div>
+      <div class="pc-children">
+        <div class="pc-child"><b>자녀사업 A</b> — 유학생 대상 예방교육 운영</div>
+        <div class="pc-child"><b>자녀사업 B</b> — 예방교육 콘텐츠 개발</div>
+        <div class="pc-child"><b>자녀사업 C</b> — 캠퍼스 안전문화 캠페인</div>
+      </div>
+    </div>
+    <div class="callout warn">
+      <b>중요.</b> 자녀사업 총액의 <b>합계 = 부모사업(SU-WINGS) 예산</b>입니다. 총액은 Step2에서 P/D/C 각 한 칸으로, Step4에서 계정과목으로 쪼갭니다. 세부사업 예산을 느슨하게 쓰면 부모사업 전체가 흔들립니다.
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12. 지표 이원화 로직 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p3">PART 3 · 사업관리 구조</span>
+    <span class="brandmark"><span class="dot"></span>AION 통합 성과관리 체계</span>
+  </div>
+  <div class="slide-head">
+    <p class="hl-kicker"><mark>직접/연계 구분으로 사업의 목적성을 사전에 명확화</mark></p>
+    <div class="slide-title">성과지표 이원화 로직</div>
+    <p class="slide-sub">모든 사업은 성과지표 등록 시, 딱 한 번 아래 질문에 답하면 됩니다.</p>
+  </div>
+  <div class="content" style="justify-content:center; gap:18px;">
+    <div style="display:flex; justify-content:center;">
+      <div class="decision-box">이 사업이 대내외 성과관리 지수에 <b>직접</b> 기여하는가?</div>
+    </div>
+    <div style="text-align:center; font-size:18px; color:var(--muted)">↙ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ↘</div>
+    <div style="display:flex; gap:22px;">
+      <div class="branch-box yes">
+        <h5 style="color:#1d4ed8;">YES → 평가/성과관리지표</h5>
+        <p>등록 방식에서 왼쪽 카드 선택 → <b>성과관리지수</b> 드롭다운 → 지표명 · 단위 · 목표값 입력</p>
+      </div>
+      <div class="branch-box no">
+        <h5 style="color:#7c3aed;">NO → 연계지표</h5>
+        <p>등록 방식에서 오른쪽 카드 선택 → <b>연계 성과체계</b>(내부/외부) 선택 → 지표명 · 단위 · 목표값 · 연계 설명</p>
+      </div>
+    </div>
+    <div class="callout danger">
+      <b>주의.</b> 평가/성과관리지표로 이미 올린 내용을 연계지표에 중복 등록하지 마세요. 간접 서포트가 분명하지 않으면 등록하지 않아도 됩니다.
+    </div>
+  </div>
+</section>
+
+<!-- ============ 13. ★ 간지 PART 4 사용방법 ============ -->
+<section class="slide hero-slide divider accent-green">
+  <div class="part-num">PART 4</div>
+  <h1>사용방법</h1>
+  <div class="rule"></div>
+  <p class="sub" style="margin-bottom:22px">지금부터는 실제 AION 화면을 그대로 보면서, 사업계획을 처음부터 제출까지 따라가 봅니다.</p>
+  <div class="agenda">
+    <span>로그인 · 비밀번호 재설정 · 대시보드 · 작성방식</span>
+    <span>위자드 ①부모사업 → ②사업명 → ③조건 → ④예산 → ⑤목적 → ⑥AI생성 → ⑦편집전환</span>
+    <span>Step1~4 작성 후 <b>AI 분류 초안</b> → 담당자 수정 · 제출</span>
+    <span>제출 → 내부공문(기획처)</span>
+  </div>
+</section>
+
+<!-- ============ 14. 전체 흐름 5단계 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>AION 통합 성과관리 체계</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">사업계획서는 이 5단계로 작성합니다 <span class="tag-live">개정</span></div>
+    <p class="slide-sub">분류는 1단계가 아닙니다. 내용을 쓴 뒤 AI가 초안을 만들고, 담당자가 마지막에 고칩니다.</p>
+  </div>
+  <div class="content" style="justify-content:center; gap:24px;">
+    <div class="stepper-bar" style="font-size:14px">
+      <span><b>1 기본 정보</b>재원 · 기간 · 부서</span>
+      <span><b>2 상세 계획</b>개요 · 목적 · PDC</span>
+      <span><b>3 성과 지표</b>직접 · 연계 KPI</span>
+      <span><b>4 예산 계획</b>P/D/C 각 한 칸</span>
+      <span><b>5 분류·제출</b>AI 분류 초안 → 제출</span>
+    </div>
+    <div class="cols-3">
+      <div class="card"><h4><span class="icon-circle ic-blue">A</span>시작하기</h4><p>로그인 → 대시보드 → 새 사업 → 작성 방식 선택(보통 AI 위자드)</p></div>
+      <div class="card"><h4><span class="icon-circle ic-purple">B</span>위자드 → 작성</h4><p>부모사업·사업명·조건·예산·목적 → AI초안 → Step1~4에서 PDC·지표·예산을 검수</p></div>
+      <div class="card"><h4><span class="icon-circle ic-green">C</span>분류 후 제출</h4><p>AI가 C1~C5 초안을 채움 → 담당자 수정 → 제출 → <b>내부공문(기획처)</b></p></div>
+    </div>
+    <div class="callout warn"><b>임시저장 ≠ 제출.</b> 임시저장은 중간 저장일 뿐입니다. <b>제출</b>해야 승인용 내부공문(기획처) 흐름으로 넘어갑니다.</div>
+  </div>
+</section>
+
+<!-- ============ 15. 로그인 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>STEP 0 · 로그인</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">① 로그인 — 그룹웨어와 동일한 사번·비밀번호</div>
+    <p class="slide-sub">브라우저에서 <mark>https://suai.cloud</mark>로 접속하면 로그인 화면이 열립니다.</p>
+  </div>
+  <div class="content">
+    <div class="use-layout">
+      <div class="shot-frame"><span class="shot-tag">실제 화면 · 로그인</span>
+        <img src="guide-assets/dashboard-01-login.png" alt="AION 로그인 화면">
+      </div>
+      <div class="notes">
+        <ol class="steps-list">
+          <li><span class="n">1</span><span>주소창에 <mark>https://suai.cloud</mark> 입력</span></li>
+          <li><span class="n">2</span><span><b>사번</b> 입력 — 그룹웨어 계정과 동일합니다</span></li>
+          <li><span class="n">3</span><span><b>비밀번호</b> 입력</span></li>
+          <li><span class="n">4</span><span>파란색 <b>[로그인]</b> 클릭 → 대시보드로 이동</span></li>
+        </ol>
+        <div class="note-box">
+          <h5>이럴 때는</h5>
+          <ul>
+            <li>로그인 실패 시 사번·비밀번호를 다시 확인하세요.</li>
+            <li>비밀번호를 잊으면 다음 장 <b>재설정 5단계</b>를 따라가세요.</li>
+            <li>계정 문의는 그룹웨어 계정 담당 부서로 문의합니다.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 16. 비밀번호 재설정 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>STEP 0 · 비밀번호 재설정</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">비밀번호를 잊었을 때 — <b>재설정 링크</b>로 받기</div>
+    <p class="slide-sub">로그인 화면에서 「비밀번호를 잊으셨나요?」를 누르면, SU-WINGS 인사정보에 등록된 메일로 링크가 갑니다.</p>
+  </div>
+  <div class="content">
+    <div class="use-layout shot-right" style="grid-template-columns: 0.72fr 1.58fr;">
+      <div class="notes">
+        <ol class="steps-list">
+          <li><span class="n">1</span><span>AION에서 <b>비밀번호를 잊으셨나요?</b> 클릭</span></li>
+          <li><span class="n">2</span><span><b>사번</b>·<b>이메일</b>을 넣고 <b>재설정 링크 보내기</b></span></li>
+          <li><span class="n">3</span><span>메일에서 <b>비밀번호 재설정하기</b> 클릭</span></li>
+          <li><span class="n">4</span><span><b>새 비밀번호</b>를 설정 (8자 이상)</span></li>
+          <li><span class="n">5</span><span>AION으로 돌아가 <b>로그인</b></span></li>
+        </ol>
+        <div class="callout info">이메일은 <b>SU-WINGS → 인사정보 → 개인정보변경등록</b>에 등록된 주소여야 합니다. 링크는 <b>제한 시간 안에 한 번만</b> 사용할 수 있습니다.</div>
+        <div class="note-box">
+          <h5>메일이 안 오면</h5>
+          <ul>
+            <li>사번과 이메일이 SU-WINGS 인사정보와 같은지 확인하세요.</li>
+            <li>스팸함도 함께 확인하세요. 발신: <b>no-reply@suai.cloud</b></li>
+          </ul>
+        </div>
+      </div>
+      <div class="shot-reset">
+        <div class="shot-frame s1"><span class="shot-tag">1~2 · 재설정 요청</span>
+          <img src="guide-assets/login-02-reset-request.png" alt="비밀번호를 잊으셨나요 — 사번·이메일로 재설정 링크 보내기">
+        </div>
+        <div class="shot-frame"><span class="shot-tag">3 · 메일 확인</span>
+          <img src="guide-assets/login-03-reset-email.png" alt="비밀번호 재설정 안내 메일">
+        </div>
+        <div class="shot-frame"><span class="shot-tag">4 · 새 비밀번호</span>
+          <img src="guide-assets/login-04-new-password.png" alt="새 비밀번호 설정 화면">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 17. 대시보드 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>STEP 0 · 대시보드</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">② 대시보드 — 내 업무를 한눈에, 여기서 시작</div>
+    <p class="slide-sub">로그인하면 담당사업·집행률·결재대기·일정이 한 화면에 보입니다. 새 사업은 좌측 <b>사업관리</b> 메뉴에서 시작합니다.</p>
+  </div>
+  <div class="content">
+    <div class="use-layout wide-shot">
+      <div class="shot-frame"><span class="shot-tag">실제 화면 · 대시보드</span>
+        <img src="guide-assets/dashboard-03-overview.png" alt="AION 대시보드 화면">
+      </div>
+      <div class="notes">
+        <div class="note-box">
+          <h5>상단 요약 카드</h5>
+          <ul>
+            <li><b>담당 사업</b> · <b>집행률</b> · <b>결재 대기</b> · <b>마감 임박</b> 건수</li>
+          </ul>
+        </div>
+        <div class="note-box">
+          <h5>주요 영역</h5>
+          <ul>
+            <li><b>AI today 브리핑</b> — 오늘 처리할 업무 요약</li>
+            <li><b>일정 캘린더</b> — 업무일정 / 학사일정</li>
+            <li><b>사업현황</b> — 내가 맡은 사업과 진행 단계(계획 0% 등)</li>
+            <li><b>성과관리</b> — 실적 입력률·예산 집행률, 중점관리 대표사업</li>
+          </ul>
+        </div>
+        <div class="callout info" style="font-size:12.5px">새 사업: 좌측 메뉴 <b>사업관리 → 새 사업</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 17. 작성 방식 선택 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>STEP 0 · 작성 방식</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">③ 작성 방식 선택 — 세 가지 중 하나만 고르면 됩니다</div>
+    <p class="slide-sub">처음이거나 초안이 없다면 <b>AI 사업기획 위자드</b>를 권장합니다.</p>
+  </div>
+  <div class="content">
+    <div class="use-layout">
+      <div class="shot-frame"><span class="shot-tag">실제 화면 · 작성 방식 선택</span>
+        <img src="guide-assets/plan-ai-01-select.png" alt="사업 작성 방식 선택 화면">
+      </div>
+      <div class="notes">
+        <div class="note-box">
+          <h5><span class="icon-circle ic-navy" style="width:22px;height:22px;font-size:11px;">1</span> AI 사업기획 위자드 <span style="color:var(--accent)">(추천)</span></h5>
+          <p>사업 내용이 아직 정리되지 않았을 때. AI와 대화하며 부모사업·사업명·조건·예산·목적을 채운 뒤 5단계 편집화면으로 넘어갑니다. <b>분류는 맨 마지막</b>입니다.</p>
+        </div>
+        <div class="note-box">
+          <h5><span class="icon-circle ic-blue" style="width:22px;height:22px;font-size:11px;">2</span> 직접 작성</h5>
+          <p>이미 사업계획 문구·예산·KPI가 정리되어 있을 때. 바로 5단계 양식으로 진입합니다.</p>
+        </div>
+        <div class="note-box">
+          <h5><span class="icon-circle ic-green" style="width:22px;height:22px;font-size:11px;">3</span> 기존 사업 불러오기</h5>
+          <p>작년·유사 사업을 복사해 고칠 때. 연차사업에 유리합니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 18. 개정 안내 · 분류는 나중에 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>개정 · 위자드 순서</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">④ 위자드 — <b>분류는 맨 마지막</b>에 합니다</div>
+    <p class="slide-sub">예전에는 C1~C5를 고르기 전에는 다음으로 가지 못했습니다. 개정안에서는 내용을 먼저 쓰고, AI가 분류 초안을 채운 뒤 담당자가 고칩니다.</p>
+  </div>
+  <div class="content">
+    <div class="cols-2" style="flex:1; min-height:0;">
+      <div class="card now" style="border-left:4px solid #94a3b8;">
+        <h4>기존</h4>
+        <p>① 분류 C1~C5 → ② 부모사업 → … → 작성. 분류가 입구를 막습니다.</p>
+      </div>
+      <div class="card" style="border-left:4px solid var(--accent);">
+        <h4>개정</h4>
+        <p>① 부모사업부터 작성 → PDC · 지표 · 예산 → <b>AI 분류 초안</b> → 담당자 수정 · 확정.</p>
+      </div>
+    </div>
+    <div class="flow-row" style="flex-shrink:0;">
+      <div class="flow-step"><div class="n">1</div><strong>부모사업</strong><span>SU-WINGS 연결</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="n">2</div><strong>사업명·조건·예산</strong><span>총액만</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="n">3</div><strong>목적 → AI 초안</strong><span>PDC 포함</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="n">4</div><strong>PDC·지표·계정</strong><span>검수·보완</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="n">5</div><strong>AI 분류</strong><span>초안을 수정</span></div>
+    </div>
+    <div class="callout ok">C1~C5 체계는 그대로입니다. 바꾸는 것은 <b>언제, 누가 초안을 만드느냐</b>입니다. 상세 항목은 뒤쪽 「분류 확정」 장에서 봅니다.</div>
+  </div>
+</section>
+
+<!-- ============ 19. 부모사업 연결 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>위자드 1단계 · 부모사업</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">⑤ 부모사업 연결 — 위자드에서 <b>가장 먼저</b> 하는 일</div>
+    <p class="slide-sub">SU-WINGS 예산사업을 검색해 하나 선택합니다. <b>자녀 사업은 부모 사업 하나에만 연결</b>됩니다.</p>
+  </div>
+  <div class="content">
+    <div class="use-layout">
+      <div class="shot-frame"><span class="shot-tag">실제 화면 · 부모 사업 선택</span>
+        <img src="guide-assets/plan-02-detail-parent.png" alt="부모사업(SU-WINGS 예산사업) 선택 팝업">
+      </div>
+      <div class="notes">
+        <ol class="steps-list">
+          <li><span class="n">1</span><span>검색창에 <b>사업명 또는 사업코드</b> 입력</span></li>
+          <li><span class="n">2</span><span>목록에서 해당 예산사업 체크</span></li>
+          <li><span class="n">3</span><span>우측 하단 <b>[선택]</b> 클릭 → "선택 완료" 카드 표시</span></li>
+          <li><span class="n">4</span><span>잘못 골랐으면 카드 옆 <b>[수정]</b>으로 다시 선택</span></li>
+        </ol>
+        <div class="callout warn" style="font-size:12.5px"><b>왜 필요한가.</b> 부모사업을 연결해야 편성액·집행액·잔액을 이 사업에서 볼 수 있습니다. 예산의 최종 기준은 항상 SU-WINGS입니다.</div>
+        <button type="button" class="ref-btn" data-pc-open>부모–자녀 구조 다시 보기 ›</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 위자드 3단계 · 사업명 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>위자드 2단계 · 사업명</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">⑥ 사업명 정하기 — 제안 선택 또는 직접 입력</div>
+    <p class="slide-sub">부모사업 선택 직후, AI가 사업명을 고르거나 직접 입력하라고 안내합니다.</p>
+  </div>
+  <div class="content">
+    <div class="use-layout">
+      <div class="shot-frame"><span class="shot-tag">실제 화면 · 위자드 사업명</span>
+        <img src="guide-assets/wizard-03-name-full.png" alt="위자드 사업명 설정 화면">
+      </div>
+      <div class="notes">
+        <ol class="steps-list">
+          <li><span class="n">1</span><span>AI 안내: 「사업명을 선택하거나 직접 입력해 주세요.」</span></li>
+          <li><span class="n">2</span><span><b>제안된 이름 카드</b>를 고르거나, 입력칸에 직접 작성 후 <b>[전송]</b></span></li>
+          <li><span class="n">3</span><span>부모사업명과 같게 쓰거나, 실행 단위에 맞게 <b>더 구체적인 이름</b>으로 바꿀 수 있습니다</span></li>
+          <li><span class="n">4</span><span>확정 후 바꾸려면 카드 옆 <b>[수정]</b></span></li>
+        </ol>
+        <div class="note-box">
+          <h5>예시</h5>
+          <p>부모와 동일: 「(국고)대학 박물관 진흥지원 사업」<br>
+          실행명으로 바꾸기: 「AI 기반 대학 연구단지 모델 구축 및 운영」</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 위자드 4단계 · 사업 조건 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>위자드 3단계 · 사업 조건</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">⑦ 사업 조건 설정 — 재원·부서·기간·원인행위·대상</div>
+    <p class="slide-sub">사업명이 끝나면 회색 박스에서 기본 조건을 입력합니다. 이후 Step1에도 그대로 반영됩니다.</p>
+  </div>
+  <div class="content">
+    <div class="use-layout shot-right" style="grid-template-columns: 0.72fr 1.58fr;">
+      <div class="notes">
+        <div class="note-box"><h5>재원 구분 *</h5><p>등록금(교비), 국고, 지자체 등</p></div>
+        <div class="note-box"><h5>책임 부서 *</h5><p>사업을 맡은 부서/사업단</p></div>
+        <div class="note-box"><h5>시작일·종료일 *</h5><p>사업 수행 기간</p></div>
+        <div class="note-box"><h5>원인행위</h5><p>원인행위 필수 / 고정비(의무지출)</p></div>
+        <div class="note-box"><h5>사업 대상 *</h5><p>재학생, 교직원 등</p></div>
+      </div>
+      <div class="stack-shot">
+        <div class="shot-frame" style="flex:1.25;"><span class="shot-tag">실제 화면 · 조건 입력 폼</span>
+          <img src="guide-assets/wizard-04-condition-form.png" alt="사업 조건 입력 폼">
+        </div>
+        <div class="shot-frame" style="flex:1;"><span class="shot-tag">입력 후 요약 카드</span>
+          <img src="guide-assets/wizard-04-condition-full.png" alt="조건 입력 후 요약 카드">
+        </div>
+      </div>
+    </div>
+    <div class="callout warn" style="flex-shrink:0; margin:0; font-size:12.5px"><b>중요.</b> 지출원인행위 구분은 선택하신 내용을 참고하여 규정에 따라 기획처에서 수정될 수 있습니다. 또한 재원 구분의 경우에도 조정과정을 통해 수정될 수 있습니다.</div>
+  </div>
+</section>
+
+<!-- ============ 위자드 5단계 · 예산 규모 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>위자드 4단계 · 예산 규모</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">⑧ 예산 규모 선택 — AI 제안 카드 또는 직접 입력</div>
+    <p class="slide-sub">여기서는 이 자녀사업의 <b>총액</b>만 잡습니다. 이후 Step2에서 <b>P / D / C 각 한 칸</b>으로 나누고, Step4에서 계정과목으로 쪼갭니다.</p>
+  </div>
+  <div class="content">
+    <div class="use-layout">
+      <div class="shot-frame"><span class="shot-tag">실제 화면 · 예산 규모 제안</span>
+        <img src="guide-assets/wizard-05-budget-full.png" alt="위자드 예산 규모 선택 화면">
+      </div>
+      <div class="notes">
+        <ol class="steps-list">
+          <li><span class="n">1</span><span>AI가 제안한 카드 중 선택<br><span style="color:var(--muted); font-size:12px">보수적 · 표준 · 적극적 · 최대</span></span></li>
+          <li><span class="n">2</span><span>마음에 안 들면 <b>[다시 제안받기]</b></span></li>
+          <li><span class="n">3</span><span>카드에 없는 금액이면 <b>[직접 입력]</b></span></li>
+        </ol>
+        <div class="callout info" style="font-size:12.5px"><b>흐름.</b> 자녀 총액(여기) → Step2에서 P·D·C 각 한 칸 배정 → Step4 계정과목 산출내역 → 자녀 합계 = 부모사업(SU-WINGS) 예산. 단위는 <b>천원</b>입니다.</div>
+        <div class="note-box">
+          <h5>예시</h5>
+          <p>보수적 2,000만 / 표준 4,000만 / 적극적 7,000만 / 최대 1억 중 선택</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 위자드 6~7단계 · 목적·방향 → AI 생성 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>위자드 5~6단계 · 목적 · AI생성</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">⑨ 목적·방향 입력 → <b>AI 계획서 초안 생성</b></div>
+    <p class="slide-sub">핵심 목적과 연차사업 여부를 답한 뒤 [AI 계획서 생성 시작]을 누르면, 개요·추진계획·성과지표·예산 초안이 만들어집니다.</p>
+  </div>
+  <div class="content">
+    <div class="use-layout">
+      <div class="shot-frame"><span class="shot-tag">실제 화면 · 목적 입력 · AI 생성</span>
+        <img src="guide-assets/wizard-06-purpose.png" alt="위자드 목적·방향 입력 화면">
+      </div>
+      <div class="notes">
+        <ol class="steps-list">
+          <li><span class="n">6</span><span><b>목적·방향</b> — AI 제안 중 고르거나 직접 입력<br>연차사업 여부도 함께 답합니다</span></li>
+          <li><span class="n">7</span><span><b>[AI 계획서 생성 시작]</b> 클릭<br>개요 · 추진계획 · 성과지표 · 예산 초안이 생성됩니다</span></li>
+          <li><span class="n">8</span><span>생성이 끝나면 <b>5단계 편집 화면</b>으로 전환됩니다</span></li>
+        </ol>
+        <div class="callout danger" style="font-size:12.5px"><b>AI는 초안입니다.</b> 사업명·KPI·예산·본문은 담당자가 반드시 확인·수정한 뒤 제출하세요.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 위자드 8단계 · 편집 전환 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>위자드 7단계 · 편집 전환</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">⑩ 편집 전환 — 이제부터는 5단계 계획서 화면</div>
+    <p class="slide-sub">위자드에서 채운 값이 Step1~5에 미리 들어가 있습니다. 지금부터는 <b>검수·보완</b>이 본업입니다.</p>
+  </div>
+  <div class="content">
+    <div class="use-layout wide-shot">
+      <div class="shot-frame"><span class="shot-tag">실제 화면 · 5단계 진행바 (Step1 활성)</span>
+        <img src="guide-assets/wizard-08-edit-switch.png" alt="사업 수정 5단계 진행바 — Step1 기본정보">
+      </div>
+      <div class="notes">
+        <div class="note-box">
+          <h5>위자드 → 5단계로 이어지는 흐름</h5>
+          <ul>
+            <li>①부모사업 ~ ⑥AI생성까지 끝 → <b>⑦편집 전환</b></li>
+            <li>화면 상단에 <b>1기본정보 → 2상세계획 → 3성과지표 → 4예산 → 5검토제출</b> 진행바 표시</li>
+          </ul>
+        </div>
+        <div class="note-box">
+          <h5>여기서 하는 일</h5>
+          <ul>
+            <li><b>확인</b> — 부모사업·사업명·기간·부서·원인행위가 위자드 입력과 같은지 (분류는 아직 비워 둡니다)</li>
+            <li><b>수정</b> — 틀린 값·빠진 값 고치기</li>
+            <li><b>임시저장</b> — 중간 저장 (아직 제출 아님)</li>
+            <li><b>다음 &gt;</b> — Step2 상세계획으로 이동</li>
+          </ul>
+        </div>
+        <div class="callout ok" style="font-size:12.5px">위자드 중간에서도 오른쪽 <b>[직접 편집]</b>으로 이 화면으로 바로 올 수 있습니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Step1 기본정보 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>STEP 1 · 기본 정보</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">Step 1. 기본 정보 — 위자드 값을 검수·확정</div>
+    <p class="slide-sub">위자드에서 고른 사업명·재원·기간·부서 등이 자동으로 채워져 있습니다. <b>분류(C1~C5)는 아직 비워 두고</b>, 틀린 값·빠진 값만 고치면 됩니다.</p>
+  </div>
+  <div class="content">
+    <div class="use-layout">
+      <div class="shot-frame"><span class="shot-tag">실제 화면 · Step1 기본 정보</span>
+        <img src="guide-assets/plan-01-basic.png" alt="Step1 기본 정보 입력 화면">
+      </div>
+      <div class="notes">
+        <div class="note-box">
+          <h5>확인·입력 항목</h5>
+          <ul>
+            <li><b>선택된 분류</b> — 개정안에서는 비워 둡니다. 뒤쪽 「AI 분류 초안」에서 채웁니다</li>
+            <li><b>사업명 *</b> — [AI 제안] 버튼 활용 가능</li>
+            <li><b>사업 연도 / 재원 구분 *</b> — 예: 2026년 / 지자체(혁신지원)</li>
+            <li><b>시작일 / 종료일 *</b></li>
+            <li><b>책임 부서 *</b> · <b>사업 대상 *</b></li>
+            <li><b>지출원인행위 구분 *</b> — 원인행위 필수 / 고정비(의무지출)</li>
+            <li>주담당자 및 부담당자 입력</li>
+          </ul>
+        </div>
+        <div class="callout ok" style="font-size:12.5px"><b>연차사업 여부</b>를 체크하고 환류 대상 사업을 선택하면, <b>전년도 미흡요인·성과지표 참고자료가 자동 연동</b>됩니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 21. Step2 상세계획 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>STEP 2 · 상세 계획</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">Step 2. 상세 계획 — 개요 · 목적 · 추진 방법</div>
+    <p class="slide-sub">AI가 만든 초안이 들어와 있는 경우가 많습니다. 반드시 읽고 검수한 뒤 넘어가세요.</p>
+  </div>
+  <div class="content">
+    <div class="use-layout wide-shot">
+      <div class="shot-frame"><span class="shot-tag">실제 화면 · Step2 상세 계획</span>
+        <img src="guide-assets/plan-02-detail-overview.png" alt="Step2 상세계획 개요·목적·추진방법 화면">
+      </div>
+      <div class="notes">
+        <div class="note-box">
+          <h5>사업 개요 *</h5>
+          <p>누가·무엇을·언제·어떻게 하는 사업인지 전체 그림. <b>추진 배경·필요성</b>도 함께 작성합니다. (2~4문단)</p>
+        </div>
+        <div class="note-box">
+          <h5>사업 목적 *</h5>
+          <p>"왜"가 아니라 <b>무엇을 이룰지</b>. 이 사업으로 달성하려는 상태를 작성합니다.</p>
+        </div>
+        <div class="note-box">
+          <h5>추진 방법 *</h5>
+          <p>어떻게 실행할지(방식·절차·협업). <b>AI가 비워두는 경우가 많으니 직접 작성</b>해야 합니다.</p>
+        </div>
+        <div class="callout danger" style="font-size:12.5px">오른쪽 <b>[AI 제안]</b>으로 초안을 받을 수 있지만, 받은 뒤 <b>반드시 검수</b>하세요.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 22. Step2 PDC ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>STEP 2 · 추진계획(PDC)</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">Step 2. 추진 계획은 <b>P · D · C</b> 세 구역만 씁니다 <span class="tag-live">개정</span></div>
+    <p class="slide-sub">활동 행을 계속 늘리지 않습니다. <b>P는 원인행위, D는 실행 사업계획, C는 결과보고</b>만. 예산은 각 구역에 한 번만 배정합니다.</p>
+  </div>
+  <div class="content">
+    <div class="pdca-mini-grid">
+      <div class="pdca-mini"><span class="phase p">P</span><h5>원인행위만</h5><p>500만 원 기준 · 위원회 또는 부서 내부기안</p></div>
+      <div class="pdca-mini"><span class="phase d">D</span><h5>실행 사업계획</h5><p>홍보 · 운영 · 결과보고회 · 세금 · 인건비 · 청구</p></div>
+      <div class="pdca-mini"><span class="phase c">C</span><h5>결과보고서만</h5><p>사업 종료 후 2주 이내 작성</p></div>
+      <div class="pdca-mini"><span class="phase a">A</span><h5>환류는 C에</h5><p>별도 행을 두지 않고 결과보고에 포함</p></div>
+    </div>
+    <div class="pdc-budget">
+      <div class="box"><div class="k">P 배정 (한 칸)</div><div class="v">원인행위</div><p>기안·위원회 관련 비용이 있으면 여기에만</p></div>
+      <div class="box"><div class="k">D 배정 (한 칸)</div><div class="v">실행</div><p>홍보·운영·지급·청구 등 본 사업비</p></div>
+      <div class="box"><div class="k">C 배정 (한 칸)</div><div class="v">결과보고</div><p>필요 시. 없으면 0천원</p></div>
+    </div>
+    <div class="callout danger"><b>규칙.</b> P 배정 + D 배정 + C 배정 = 총예산. 행마다 금액을 나누지 않습니다. 단위는 <b>천원</b>입니다.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>STEP 2 · P 원인행위</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">P — <b>원인행위만</b> 작성합니다</div>
+    <p class="slide-sub">요구조사·설계·입찰을 여러 행으로 쪼개지 않습니다. 이 사업을 집행하기 위한 기안·위원회만 적습니다.</p>
+  </div>
+  <div class="content">
+    <div class="cols-2" style="flex:1;min-height:0;">
+      <div class="cause-tree">
+        <div class="q">원인행위 경로 (사업 총액, 원 단위)</div>
+        <ul>
+          <li><b>500만 원 이상</b> (5,000천원) → <b>위원회</b></li>
+          <li><b>500만 원 미만</b>
+            <ul>
+              <li>학생 행사 등 <b>주요 안건</b> → <b>위원회</b></li>
+              <li>그 외 → <b>부서 내부기안 필수</b></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="notes">
+        <div class="note-box">
+          <h5>P 칸에 적을 것</h5>
+          <ul>
+            <li>위원회 / 부서 내부기안 중 어느 경로인지</li>
+            <li>안건명 · 예상 상정 시기</li>
+            <li>P 예산 한 칸 (없으면 0천원)</li>
+          </ul>
+        </div>
+        <div class="callout warn" style="font-size:12.5px">지출원인행위 구분은 담당자 선택을 참고하되, 규정에 따라 기획처에서 조정될 수 있습니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>STEP 2 · D·C</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">D는 실행 계획, C는 <b>종료 후 2주</b> 결과보고</div>
+    <p class="slide-sub">D가 본문입니다. 세부 일정은 행을 늘리지 않고 D 안에서 시기별로 적어도 됩니다.</p>
+  </div>
+  <div class="content">
+    <div class="cols-2" style="flex:1;min-height:0;">
+      <div class="card">
+        <h4><span class="phase d">D</span> 실행 사업계획에 넣을 것</h4>
+        <ul>
+          <li><b>사업 홍보</b> — 대상, 채널, 시기</li>
+          <li><b>운영</b> — 일정, 장소, 인력, 진행 방식</li>
+          <li><b>결과보고회</b> — 개최 여부·시기</li>
+          <li><b>세금 납부</b> — 해당 시 원천세 등</li>
+          <li><b>인건비 지급</b> — 해당 시 대상·시기</li>
+          <li><b>청구</b> — SU-WINGS·그룹웨어 지출 청구 시점</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4><span class="phase c">C</span> 결과보고서만</h4>
+        <ul>
+          <li>만족도·KPI·검수를 미리 여러 행으로 쪼개지 않습니다</li>
+          <li><b>결과보고서 작성</b>이 C의 할 일</li>
+          <li>기한: <mark>사업 종료 후 2주 이내</mark></li>
+          <li>환류·차년도 시사점도 C에 함께 적습니다</li>
+          <li>C 예산은 필요 시 한 칸, 없으면 0천원</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout info">예시 총예산 50천원 → P 0 · D 50 · C 0 처럼 <b>세 숫자만</b> 맞추면 됩니다. 홍보 6 + 구축 28처럼 행마다 나누지 않습니다.</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>STEP 2·4 · 예산 편성</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">예산은 <b>P / D / C 각 한 칸</b>으로 쪼갭니다 <span class="tag-live">개정</span></div>
+    <p class="slide-sub">자녀사업 총액 → PDC 구역별 한 칸 → Step4에서 각 배정액을 계정과목으로 산출 → 자녀 합계가 부모사업 예산과 맞아야 합니다. 단위는 <b>천원</b>입니다.</p>
+  </div>
+  <div class="content">
+    <div class="flow-row">
+      <div class="money-box"><div class="n">1</div><strong>자녀 총예산</strong><span>위자드·기본정보에서<br>잡은 이 사업의 총액</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="money-box"><div class="n">2</div><strong>P / D / C 한 칸</strong><span>Step2에서 구역마다<br>금액 한 번만 배정</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="money-box"><div class="n">3</div><strong>계정과목 산출</strong><span>Step4에서 각 배정액을<br>계정과목으로 쪼개기</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="money-box"><div class="n">4</div><strong>부모사업 예산</strong><span>자녀사업 합계 =<br>SU-WINGS 부모 예산</span></div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="k">총예산</div><div class="v">50천원</div></div>
+      <div class="stat-card"><div class="k">P 배정</div><div class="v">0천원</div></div>
+      <div class="stat-card"><div class="k">D 배정</div><div class="v ok">50천원</div></div>
+      <div class="stat-card"><div class="k">C 배정</div><div class="v">0천원</div></div>
+    </div>
+    <div class="callout danger">행을 추가해도 금액 칸을 늘리지 않습니다. <b>세 칸 합 = 총예산</b>이어야 다음으로 갑니다.</div>
+  </div>
+</section>
+
+<!-- ============ 23. Step3 목록 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>STEP 3 · 성과 지표</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">Step 3. 성과 지표 — 목록에서 추가·수정</div>
+    <p class="slide-sub">정량 지표를 카드 목록으로 관리합니다. 추가하거나 연필을 누르면 <b>성과지표 수정</b> 창이 열립니다.</p>
+  </div>
+  <div class="content">
+    <div class="use-layout shot-right">
+      <div class="notes">
+        <ol class="steps-list">
+          <li><span class="n">1</span><span><b>[AI 제안]</b>으로 초안을 받거나, 아래 <b>[+ 성과지표 추가]</b>로 직접 넣습니다</span></li>
+          <li><span class="n">2</span><span>카드마다 <b>일반지표</b> 배지 · 지표명 · 목표값이 보입니다</span></li>
+          <li><span class="n">3</span><span>오른쪽 <b>연필</b>은 수정, 복사는 복제, 휴지통은 삭제입니다</span></li>
+          <li><span class="n">4</span><span>수정 창에서 <b>평가/성과관리지표</b> 또는 <b>연계지표</b>를 고릅니다</span></li>
+          <li><span class="n">5</span><span>목록 아래 <b>정성 지표</b>에 숫자로 재기 어려운 목표를 서술합니다</span></li>
+        </ol>
+        <div class="callout info" style="font-size:12.5px">안내: <b>전년도 유사 사업 데이터를 참고해 현실적인 목표</b>를 잡으세요. 지표명과 목표값은 필수입니다.</div>
+      </div>
+      <div class="shot-frame tall"><span class="shot-tag">실제 화면 · Step3 성과 지표 목록</span>
+        <img src="guide-assets/plan-03-kpi-list.png" alt="Step3 성과 지표 설정 — 정량 지표 카드 목록">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 24. Step3 평가/성과관리지표 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>STEP 3 · 평가/성과관리지표</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">Step 3. 평가/성과관리지표 등록 <span class="tag-live">핵심</span></div>
+    <p class="slide-sub">사업이 대내외 성과관리 지수에 <b>직접 기여</b>하면 왼쪽 카드를 고릅니다. 지수를 선택한 뒤 지표명 · 단위 · 목표값을 적습니다.</p>
+  </div>
+  <div class="content">
+    <div class="use-layout shot-right">
+      <div class="notes">
+        <ol class="steps-list">
+          <li><span class="n">1</span><span><b>등록 방식</b> — 「평가/성과관리지표」 선택</span></li>
+          <li><span class="n">2</span><span><b>성과관리지수 선택</b> — 드롭다운에서 고릅니다<br><span style="color:var(--muted); font-size:12px">대외: 기관평가인증 1~4영역 · 내부: MVP Edu-Framework 혁신 지수 등 12개</span></span></li>
+          <li><span class="n">3</span><span><b>성과지표 입력</b> — 지표명 · 단위(명/회/건/점/%/원/천원/㎡/시간) · 목표값<br><span style="color:var(--muted); font-size:12px">예: 재학생 공간 만족도 / 점 / 4.3</span></span></li>
+        </ol>
+        <div class="callout danger" style="font-size:12.5px"><b>필수.</b> 지표명과 목표값이 비면 수정 완료가 되지 않습니다. 선택한 내용은 성과지표 항목에 함께 저장됩니다.</div>
+      </div>
+      <div class="shot-frame tall"><span class="shot-tag">실제 화면 · 성과지표 수정 · 평가/성과관리지표</span>
+        <img src="guide-assets/plan-03-kpi-direct.png" alt="성과지표 수정 창 — 평가/성과관리지수 드롭다운과 지표명·단위·목표값">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 25. Step3 연계지표 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>STEP 3 · 연계지표</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">Step 3. 연계지표 등록 <span class="tag-live">핵심</span></div>
+    <p class="slide-sub">직접 실적으로 올리기 어렵고, 대학 성과체계를 <b>보조</b>하는 사업이 사용합니다.</p>
+  </div>
+  <div class="content">
+    <div class="use-layout shot-right">
+      <div class="notes">
+        <ol class="steps-list">
+          <li><span class="n">1</span><span><b>등록 방식</b> — 「연계지표」 선택</span></li>
+          <li><span class="n">2</span><span><b>연계 성과체계</b> — 예: 내부 「중장기발전계획」<br><span style="color:var(--muted); font-size:12px">내부: 중장기발전계획 · 대학혁신지원 · SW중심대학 · 글로컬 · 자체평가 · 핵심역량 · 전공교육성과<br>외부: 기관인증평가 · 국제화역량진단 · QS지표</span></span></li>
+          <li><span class="n">3</span><span><b>연계할 구성지표 선택</b> — 드롭다운에서 연결할 성과관리지수를 고릅니다</span></li>
+          <li><span class="n">4</span><span><b>성과지표 입력</b> — 지표명 · 단위 · 목표값 · 연계 설명(선택)</span></li>
+        </ol>
+        <div class="callout danger" style="font-size:12.5px"><b>주의.</b> 평가/성과관리지표로 이미 올린 내용을 연계지표에 중복하지 마세요. 간접 서포트가 분명하지 않으면 등록하지 않아도 됩니다.</div>
+      </div>
+      <div class="shot-frame tall"><span class="shot-tag">실제 화면 · 성과지표 수정 · 연계지표</span>
+        <img src="guide-assets/plan-03-kpi-link.png" alt="성과지표 수정 창 — 연계지표, 중장기발전계획, 구성지표 드롭다운">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 26. Step4 예산 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>STEP 4 · 예산 계획</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">Step 4. 예산 소요 계획 — <b>P / D / C 각 배정액</b>을 계정과목으로</div>
+    <p class="slide-sub">2단계에서 나눈 <b>세 칸</b> 금액에 맞춰 계정과목을 적습니다. 화면이 아직 Plan/Do 두 표여도, 개정 규칙은 P·D·C 배정액과 맞추는 것입니다.</p>
+  </div>
+  <div class="content">
+    <div class="shot-frame tall" style="flex:1; min-height:0;"><span class="shot-tag">참고 화면 · 계정과목 편성 (개정 전 레이아웃일 수 있음)</span>
+      <img src="guide-assets/plan-04-budget.png" alt="Step 4 예산 소요 계획">
+    </div>
+    <div class="callout danger">한 줄 규칙: <b>P 계정 합 = P 배정</b>, <b>D 계정 합 = D 배정</b>, <b>C 계정 합 = C 배정</b>, <b>자녀 총액 합 = 부모사업 예산</b>. 단위는 <b>천원</b>.</div>
+  </div>
+</section>
+
+<!-- ============ 분류 확정 (맨 마지막) ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>STEP 5 직전 · 사업분류</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">이제 분류합니다 — <b>AI 초안을 고치면</b> 됩니다 <span class="tag-live">개정</span></div>
+    <p class="slide-sub">지금까지 쓴 사업명·목적·P(원인행위)·D(실행)·C(결과보고)를 AI가 읽고 C1~C5를 대략 채웁니다. 틀린 칸만 수정·확정하세요.</p>
+  </div>
+  <div class="content">
+    <div class="use-layout">
+      <div class="shot-frame"><span class="shot-tag">참고 · 분류 화면 (초안이 채워진 뒤 수정)</span>
+        <img src="guide-assets/plan-ai-02-input.png" alt="사업분류 C1~C5 화면">
+      </div>
+      <div class="notes">
+        <ol class="steps-list">
+          <li><span class="n">1</span><span>AI가 C1~C5 초안을 채워 보여 줍니다</span></li>
+          <li><span class="n">2</span><span>틀린 항목만 끄거나 추가합니다</span></li>
+          <li><span class="n">3</span><span>담당자가 <b>확정</b>해야 제출로 갈 수 있습니다</span></li>
+        </ol>
+        <div class="note-box">
+          <h5>C1~C5 다시 보기</h5>
+          <ul class="cls-launch">
+            <li><button type="button" class="cls-open" data-cls="C1"><b>C1</b> 대상(내부·외부 주체)<span class="hint">전체 보기 ›</span></button></li>
+            <li><button type="button" class="cls-open" data-cls="C2"><b>C2</b> 환경 및 지역 특성<span class="hint">전체 보기 ›</span></button></li>
+            <li><button type="button" class="cls-open" data-cls="C3"><b>C3</b> 시점 및 주기<span class="hint">전체 보기 ›</span></button></li>
+            <li><button type="button" class="cls-open" data-cls="C4"><b>C4</b> 목적(정책·지표 방어)<span class="hint">전체 보기 ›</span></button></li>
+            <li><button type="button" class="cls-open" data-cls="C5"><b>C5</b> 사업 방법<span class="hint">전체 보기 ›</span></button></li>
+          </ul>
+        </div>
+        <div class="callout warn" style="font-size:12.5px">분류 체계는 그대로입니다. 빈 화면에서 처음부터 찍지 않아도 됩니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 27. Step5 검토·제출 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>STEP 5 · 검토 및 제출</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">Step 5. 검토 및 제출 — AI 완성도 진단 후 제출</div>
+    <p class="slide-sub">기본정보·상세계획·성과지표·예산 요약을 마지막으로 확인하고 제출합니다.</p>
+  </div>
+  <div class="content">
+    <div class="use-layout wide-shot">
+      <div class="shot-frame"><span class="shot-tag">실제 화면 · Step5 검토 및 제출</span>
+        <img src="guide-assets/plan-05-review-submit.jpg" alt="Step5 검토 및 제출 화면">
+      </div>
+      <div class="notes">
+        <ol class="steps-list">
+          <li><span class="n">1</span><span>요약된 <b>사업명·기간·부서·담당자</b>가 맞는지 확인</span></li>
+          <li><span class="n">2</span><span><b>[분석 실행]</b>으로 AI 완성도 진단(0~100점) 확인 — 점수가 낮으면 이전 Step으로 돌아가 보완</span></li>
+          <li><span class="n">3</span><span>상세계획·성과지표·예산 요약을 스크롤하며 확인</span></li>
+          <li><span class="n">4</span><span>문제 없으면 <b>[제출]</b> 클릭</span></li>
+        </ol>
+        <div class="callout danger" style="font-size:12.5px"><b>제출 직전 마지막 점검.</b> 결재가 시작되면 수정이 어려워집니다. 숫자(예산·KPI·기간)는 한 번 더 확인하세요.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 28. 제출 후 내부공문(기획처) ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p4">PART 4 · 사용방법</span>
+    <span class="brandmark"><span class="dot"></span>제출 직후 · 내부공문(기획처)</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">제출 직후 — <b>내부공문(기획처)</b>까지 이어가야 끝납니다</div>
+    <p class="slide-sub">사업계획 "작성"은 제출로 끝나지만, <b>승인</b>을 받으려면 내부공문(기획처) 결재를 올려야 합니다.</p>
+  </div>
+  <div class="content">
+    <div class="use-layout">
+      <div class="shot-frame"><span class="shot-tag">실제 화면 · 제출 완료 안내</span>
+        <img src="guide-assets/plan-05-review-submit-doc.png" alt="사업계획서 제출 완료 모달">
+      </div>
+      <div class="notes">
+        <div class="note-box">
+          <h5>[상세로 이동]</h5>
+          <p>제출된 사업 상세 화면으로 갑니다. 내용을 다시 보거나 나중에 기안할 때 사용합니다.</p>
+        </div>
+        <div class="note-box" style="border-color:#93c5fd; background:#f8fbff;">
+          <h5 style="color:var(--accent)">[내부공문(기획처) 작성] ← 바로 결재를 올리려면 이것</h5>
+          <p>사업계획 승인용 내부공문(기획처) 작성 화면으로 이동합니다. 작성 후 그룹웨어에서 결재가 진행됩니다.</p>
+        </div>
+        <div class="callout ok" style="font-size:12.5px"><b>결재 루프.</b> AION에서 문서 작성 → 그룹웨어에서 결재 → 승인/반려 결과가 다시 AION 사업 상태에 반영됩니다. 반려되면 사유를 확인해 보완 후 재제출합니다.</div>
+        <div class="callout warn" style="font-size:12.5px">아직 기안을 안 썼다면 사업 상세 상단에 <b>「내부공문 작성필요」</b> 노란 배너가 남아 있습니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 29. 간지 PART 5 ============ -->
+<section class="slide hero-slide divider">
+  <div class="part-num">PART 5</div>
+  <h1>마무리</h1>
+  <div class="rule"></div>
+  <div class="agenda">
+    <span>한 장 요약 체크리스트</span>
+    <span>자주 묻는 질문</span>
+    <span>문의처</span>
+  </div>
+</section>
+
+<!-- ============ 30. 체크리스트 ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p5">PART 5 · 마무리</span>
+    <span class="brandmark"><span class="dot"></span>AION 통합 성과관리 체계</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">한 장 요약 — 사업담당자 체크리스트</div>
+    <p class="slide-sub">개정안에서 담당자가 하는 일을 순서대로 정리하면 아래와 같습니다.</p>
+  </div>
+  <div class="content" style="justify-content:center;">
+    <ul class="checklist">
+      <li><span class="num">1</span>로그인한다 (그룹웨어와 동일한 사번·비밀번호)</li>
+      <li><span class="num">2</span>사업관리 → 새 사업 → <b>AI 위자드</b>를 고른다</li>
+      <li><span class="num">3</span>위자드: 부모사업 → 사업명 → 조건 → 예산규모 → 목적 → AI생성</li>
+      <li><span class="num">4</span>Step2에서 <b>P 원인행위 · D 실행계획 · C 결과보고</b>만 쓰고, 예산은 각 한 칸</li>
+      <li><span class="num">5</span>P는 500만 원·주요 안건 기준으로 위원회 / 부서 내부기안</li>
+      <li><span class="num">6</span>Step3 지표 등록 · Step4에서 P/D/C 배정액을 계정과목과 맞춘다</li>
+      <li><span class="num">7</span><b>AI 분류 초안</b>을 수정·확정한다 (C1~C5)</li>
+      <li><span class="num">8</span>제출 후 <b>내부공문(기획처)</b>을 올려 승인까지 받는다</li>
+    </ul>
+    <div class="callout warn" style="margin-top:14px">자주 <b>임시저장</b>하세요. 그리고 <b>제출 ≠ 승인</b>이라는 점을 꼭 기억하세요.</div>
+  </div>
+</section>
+
+<!-- ============ 31. FAQ ============ -->
+<section class="slide">
+  <div class="topline">
+    <span class="badge-part p5">PART 5 · 마무리</span>
+    <span class="brandmark"><span class="dot"></span>AION 통합 성과관리 체계</span>
+  </div>
+  <div class="slide-head">
+    <div class="slide-title">자주 묻는 질문 &amp; 문의처</div>
+  </div>
+  <div class="content">
+    <div class="cols-2" style="flex:1; min-height:0;">
+      <div class="faq-item"><div class="q">Q. 임시저장만 했는데 사업이 승인되나요?</div><div class="a">아니요. <b>제출</b>하고 <b>내부공문(기획처) 결재 승인</b>까지 받아야 합니다.</div></div>
+      <div class="faq-item"><div class="q">Q. 부모사업을 꼭 연결해야 하나요?</div><div class="a">예. SU-WINGS 예산사업을 부모로 연결합니다. <b>자녀사업 총액의 합</b>이 부모사업 예산과 맞아야 합니다.</div></div>
+      <div class="faq-item"><div class="q">Q. 평가/성과관리지표와 연계지표를 둘 다 등록할 수 있나요?</div><div class="a">가능합니다. 다만 <b>같은 내용을 두 방식에 중복</b>해서 넣지 마세요.</div></div>
+      <div class="faq-item"><div class="q">Q. AI가 써 준 내용을 그대로 제출해도 되나요?</div><div class="a">AI 결과는 초안입니다. 사실관계·예산·일정·성과지표는 담당자가 최종 확인·수정해야 합니다.</div></div>
+      <div class="faq-item"><div class="q">Q. 지출청구도 AION에서 끝나나요?</div><div class="a">아닙니다. 실제 예산·청구는 SU-WINGS·그룹웨어 흐름을 따릅니다.</div></div>
+      <div class="faq-item"><div class="q">Q. 분류는 맨 처음에 해야 하나요?</div><div class="a">아니요. 개정안에서는 내용을 쓴 뒤 <b>AI 초안을 수정</b>합니다. 담당자 확정 없이 제출할 수 없습니다.</div></div>
+      <div class="faq-item"><div class="q">Q. P·D·C 금액 합이 총예산과 다르면?</div><div class="a">다음 단계로 갈 수 없습니다. Step2에서 P+D+C=총예산, Step4에서 각 계정 합=각 배정액이어야 합니다. 단위는 <b>천원</b>입니다.</div></div>
+      <div class="faq-item"><div class="q">Q. 비밀번호를 잊으면 어떻게 하나요?</div><div class="a">로그인 화면에서 <b>비밀번호를 잊으셨나요?</b> → 사번·이메일을 넣고 링크를 받습니다. 메일의 <b>비밀번호 재설정하기</b>로 새 비밀번호(8자 이상)를 설정한 뒤 다시 로그인하세요.</div></div>
+      <div class="faq-item"><div class="q">Q. 승인 후 예산을 크게 바꾸려면?</div><div class="a">새 버전을 만들고 <b>수정 내부공문(기획처)</b>을 다시 올려야 합니다.</div></div>
+    </div>
+    <div class="callout ok" style="text-align:center; font-size:14.5px;">
+      문의: 기획처 [내선/이메일: 3395(adventistcho@syu.ac.kr), 3396(syu9121@syu.ac.kr)]
+    </div>
+  </div>
+</section>
+
+</div>
+
+<div id="clsModal" class="cls-modal" aria-hidden="true">
+  <div class="cls-modal-bg" data-cls-close></div>
+  <div class="cls-modal-panel" role="dialog" aria-modal="true" aria-labelledby="clsModalTitle">
+    <div class="cls-modal-head">
+      <div>
+        <h3 id="clsModalTitle">사업 분류기준 전체</h3>
+        <p>AI 초안을 고칠 때 보는 C1~C5 하위 항목입니다. 탭을 눌러 전체를 확인하세요.</p>
+      </div>
+      <button type="button" class="cls-close" data-cls-close aria-label="닫기">×</button>
+    </div>
+    <div class="cls-tabs" id="clsTabs"></div>
+    <div class="cls-tree" id="clsTree"></div>
+  </div>
+</div>
+
+<div id="pcModal" class="cls-modal" aria-hidden="true">
+  <div class="cls-modal-bg" data-cls-close></div>
+  <div class="cls-modal-panel fit" role="dialog" aria-modal="true" aria-labelledby="pcModalTitle">
+    <div class="cls-modal-head">
+      <div>
+        <h3 id="pcModalTitle">부모사업 ↔ 자녀사업 — 가장 헷갈리기 쉬운 개념</h3>
+        <p>11페이지 · 부모–자녀 구조</p>
+      </div>
+      <button type="button" class="cls-close" data-cls-close aria-label="닫기">×</button>
+    </div>
+    <div class="cls-modal-body">
+      <p class="hl-kicker"><mark>부모–자녀 구조로 예산 중층화를 원천 차단</mark></p>
+      <p class="slide-sub">AION에서 만드는 실행 사업(자녀사업)은 SU-WINGS 예산 사업(부모사업) <b>하나</b>에 반드시 연결됩니다.</p>
+      <div class="pc-diagram" style="align-items:center; padding:8px 0;">
+        <div class="pc-parent">
+          <div class="t">SU-WINGS 예산 사업 (부모)</div>
+          <div class="n">2026000746<br>대학생 유학생 마약류 예방교육</div>
+        </div>
+        <div style="font-size:20px; color:var(--muted)">◀ 연결</div>
+        <div class="pc-children">
+          <div class="pc-child"><b>자녀사업 A</b> — 유학생 대상 예방교육 운영</div>
+          <div class="pc-child"><b>자녀사업 B</b> — 예방교육 콘텐츠 개발</div>
+          <div class="pc-child"><b>자녀사업 C</b> — 캠퍼스 안전문화 캠페인</div>
+        </div>
+      </div>
+      <div class="callout warn" style="margin:0">
+        <b>중요.</b> 자녀사업 총액의 <b>합계 = 부모사업(SU-WINGS) 예산</b>입니다. 총액은 Step2에서 P/D/C 각 한 칸으로, Step4에서 계정과목으로 쪼갭니다. 세부사업 예산을 느슨하게 쓰면 부모사업 전체가 흔들립니다.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn">‹ 이전</button>
+  <div class="nav-center">
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <form class="page-jump" id="pageJumpForm" autocomplete="off">
+      <input type="number" id="pageJump" min="1" step="1" inputmode="numeric" aria-label="이동할 페이지 번호">
+      <span id="pageTotal">/ 37</span>
+    </form>
+  </div>
+  <button class="nav-btn" id="nextBtn">다음 ›</button>
+</div>
+<div class="nav-hint">← → 방향키 · 번호 입력 후 Enter · F11 전체화면</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  const jumpInput = document.getElementById('pageJump');
+  let idx = 0;
+
+  jumpInput.max = String(total);
+  document.getElementById('pageTotal').textContent = '/ ' + total;
+
+  function show(i) {
+    idx = Math.max(0, Math.min(total - 1, i));
+    slides.forEach((s, n) => s.classList.toggle('active', n === idx));
+    if (document.activeElement !== jumpInput) jumpInput.value = String(idx + 1);
+    document.getElementById('progress-fill').style.width = ((idx + 1) / total * 100) + '%';
+    document.getElementById('prevBtn').disabled = idx === 0;
+    document.getElementById('nextBtn').disabled = idx === total - 1;
+    location.hash = 'p' + (idx + 1);
+  }
+
+  function goToTypedPage() {
+    const n = parseInt(jumpInput.value, 10);
+    if (Number.isInteger(n)) show(n - 1);
+    else jumpInput.value = String(idx + 1);
+    jumpInput.blur();
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', () => show(idx + 1));
+  document.getElementById('prevBtn').addEventListener('click', () => show(idx - 1));
+  document.getElementById('pageJumpForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    goToTypedPage();
+  });
+  jumpInput.addEventListener('blur', goToTypedPage);
+
+  const CLASS_TREE = {
+    C1: {
+      tab: 'C1 대상',
+      title: 'C1 대상 1: 내부 및 외부 주체',
+      items: [
+        { n: '내부 기본 신분', c: ['외국인','신입생','재학생','휴학생','졸업생(미취업)','전임교원','비전임교원','강사','조교','직원(정규직)','직원(계약직)','외부인'] },
+        { n: '학년/과정', c: ['1학년(신입)','2학년','3학년','4학년(졸업예정)','초과학기생','석사과정','박사과정','한국어연수과정'] },
+        { n: '외부 협력 주체', c: ['산업체','지자체(서울시)','지자체(남양주시)','지자체(구리시)','교회/교단','타 대학','정부부처','지역사회기관'] }
+      ]
+    },
+    C2: {
+      tab: 'C2 환경',
+      title: 'C2 대상 2: 환경 및 지역 특성',
+      items: [
+        { n: '거주 환경', c: [
+          { n: '기숙사', c: ['에덴관','신학숙관','시온관','살렘관','브니엘관'] },
+          { n: '지역', c: ['서울','구리','남양주','경기권','지방거주'] }
+        ]},
+        { n: '행정적 특성', c: ['SDA 교인','학사경고자','미적응자','리더학생','가계곤란자','장애학생','금연/금주 희망자'] }
+      ]
+    },
+    C3: {
+      tab: 'C3 시점',
+      title: 'C3 시점 및 주기',
+      items: [
+        { n: '학사 타임라인', c: ['학기 전','학기 초','학기 중','학기 말','방학 중'] },
+        { n: '사업 주기', c: ['매일(Daily)','매주(Weekly)','매월(Monthly)','학기별','상시','단회'] }
+      ]
+    },
+    C4: {
+      tab: 'C4 목적',
+      title: 'C4 목적: 정책 및 지표 방어',
+      items: [
+        { n: '대학 정체성', c: ['교인 학생 관리','선교 및 복음 전파','ESG 경영','금연·금주 및 건강','인성 교육 (SU-MVP+)'] },
+        { n: '국제화 인증(IES)', c: ['유학생 불법 체류율','유학생 중도탈락률','유학생 언어능력 (TOPIK)','의무 교육 (성폭력/법령)','유학생 상담/보험/만족도'] },
+        { n: '학생충원', c: ['재학생 충원율','신입학 수시 경쟁률','기숙사 수용률','신입생 충원율'] },
+        { n: '교육 및 취업', c: ['졸업생 취업률','장학금 지급률','교육비 환원율','도서관 인프라'] }
+      ]
+    },
+    C5: {
+      tab: 'C5 방법',
+      title: 'C5 사업 방법',
+      items: [
+        { n: 'I. 교육 혁신 및 품질', c: [
+          { n: '전공 교육 (Major)', c: [
+            { n: '단일전공 과정', c: ['교과목 신규개발','운영 및 관리','졸업'] },
+            { n: '다전공(융합)과정', c: ['신규개발','운영 및 관리','제도'] },
+            { n: '전공인프라', c: ['실험실습 환경 구축','시스템'] },
+            { n: '전공 성과 및 품질 관리', c: ['인증','CQI','강의 만족도'] }
+          ]},
+          { n: '교양 교육 (General)', c: [
+            { n: '핵심 및 기초교양', c: ['교과목 신규개발','운영 및 관리','시스템'] },
+            { n: '채플 및 인성 (Identity)', c: ['채플','인성교육'] }
+          ]},
+          { n: '비교과 교육', c: [
+            { n: '비교과 교육', c: ['학습역량지원','진로지원','상담지원','취업지원','창업지원','학생활동지원','시스템','인증'] }
+          ]}
+        ]},
+        { n: 'II. 학생 가치 및 지원', c: [
+          { n: '학생 서비스 및 복지', c: [
+            { n: '상담 및 장학', c: ['장학금(내부)','장학금(외부)','심리상담','진로상담'] },
+            { n: '생활 및 환경 지원', c: ['식당(학교)','식당(외주)','학생 편의시설','교내 안전'] }
+          ]}
+        ]},
+        { n: 'III. 연구 및 산학 협력', c: [
+          { n: '연구 성과 (IP)', c: [
+            { n: '논문', c: ['연구재단 등재지(후보포함)','SCI급/SCOPUS','저역서'] },
+            { n: '연구', c: ['교내연구비','연구소 운영','위원회 및 센터 운영','연구윤리'] }
+          ]}
+        ]},
+        { n: 'IV. 인적 자원 및 행정 고도화', c: [
+          { n: '교원역량강화', c: ['교수지원','교수교육'] },
+          { n: '교원임용처우', c: ['채용','보수','환경(연구실 등)'] },
+          { n: '직원조직관리', c: ['인사','교육','보수'] },
+          { n: '직원조직문화', c: ['복지','환경(소모품 포함)'] },
+          { n: '보안관리', c: ['보안','관리(네트워크, 소프트웨어 등)'] },
+          { n: '내부거버넌스', c: [{ n: '내부거버넌스', c: ['위원회 운영'] }] },
+          { n: '외부거버넌스', c: [{ n: '외부거버넌스', c: ['대외협력','동문회'] }] },
+          { n: '정보화 시스템', c: [{ n: '정보화 시스템', c: ['시스템 고도화','유지보수'] }] },
+          { n: '브랜드 관리', c: [
+            { n: '대내외홍보', c: ['대외 홍보물 제작','미디어 광고','교단 홍보','홈페이지'] },
+            { n: '기부자 관리', c: ['기부자 관리'] },
+            { n: '재정지원사업 추진', c: ['재정지원사업 추진'] }
+          ]},
+          { n: '캠퍼스 환경 조성', c: [
+            { n: '건축물', c: ['유지보수','건축 및 재건축','리모델링'] },
+            { n: '교육기자재', c: ['구매','유지보수'] },
+            { n: '제세공과금', c: ['전기','수도','가스','기타'] },
+            { n: '환경미화', c: ['청소','조경'] },
+            { n: '안전관리', c: ['교육','보안시스템','개인정보보안'] }
+          ]}
+        ]}
+      ]
+    }
+  };
+
+  const clsModal = document.getElementById('clsModal');
+  const clsTabs = document.getElementById('clsTabs');
+  const clsTree = document.getElementById('clsTree');
+  const clsOrder = ['C1','C2','C3','C4','C5'];
+  let clsKey = 'C1';
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  }
+  function isLeafList(arr) {
+    return arr.length && arr.every((x) => typeof x === 'string');
+  }
+  function renderNode(node, depth) {
+    if (typeof node === 'string') return `<span class="cls-leaf">${esc(node)}</span>`;
+    const kids = node.c || [];
+    if (isLeafList(kids)) {
+      return `<div class="cls-group d${depth}"><div class="cls-gname">${esc(node.n)}</div><div class="cls-leaves">${kids.map((k) => `<span class="cls-leaf">${esc(k)}</span>`).join('')}</div></div>`;
+    }
+    return `<div class="cls-group d${depth}"><div class="cls-gname">${esc(node.n)}</div><div class="cls-kids">${kids.map((k) => renderNode(k, depth + 1)).join('')}</div></div>`;
+  }
+  function renderCls(key) {
+    clsKey = CLASS_TREE[key] ? key : 'C1';
+    const data = CLASS_TREE[clsKey];
+    clsTabs.innerHTML = clsOrder.map((k) => `<button type="button" class="cls-tab${k===clsKey?' on':''}" data-cls-tab="${k}">${esc(CLASS_TREE[k].tab)}</button>`).join('');
+    clsTree.innerHTML = `<div class="cls-gname" style="font-size:15px;margin-bottom:12px">${esc(data.title)}</div>` + data.items.map((n) => renderNode(n, 1)).join('');
+    clsTree.scrollTop = 0;
+  }
+  function closeAllModals() {
+    document.querySelectorAll('.cls-modal.open').forEach((el) => {
+      el.classList.remove('open');
+      el.setAttribute('aria-hidden', 'true');
+    });
+  }
+  function clsOpen(key) {
+    closeAllModals();
+    renderCls(key || 'C1');
+    clsModal.classList.add('open');
+    clsModal.setAttribute('aria-hidden', 'false');
+  }
+  function clsClose() {
+    closeAllModals();
+  }
+  function clsIsOpen() {
+    return !!document.querySelector('.cls-modal.open');
+  }
+  function pcOpen() {
+    closeAllModals();
+    const modal = document.getElementById('pcModal');
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+  }
+
+  document.addEventListener('click', (e) => {
+    const openBtn = e.target.closest('.cls-open');
+    if (openBtn) { e.preventDefault(); clsOpen(openBtn.dataset.cls); return; }
+    if (e.target.closest('[data-pc-open]')) { e.preventDefault(); pcOpen(); return; }
+    const tabBtn = e.target.closest('[data-cls-tab]');
+    if (tabBtn) { clsOpen(tabBtn.getAttribute('data-cls-tab')); return; }
+    if (e.target.closest('[data-cls-close]')) clsClose();
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.target === jumpInput) return;
+    if (clsIsOpen()) {
+      if (e.key === 'Escape') { e.preventDefault(); clsClose(); }
+      else if (clsModal.classList.contains('open') && (e.key === 'ArrowRight' || e.key === 'ArrowDown')) {
+        e.preventDefault();
+        clsOpen(clsOrder[(clsOrder.indexOf(clsKey) + 1) % clsOrder.length]);
+      }
+      else if (clsModal.classList.contains('open') && (e.key === 'ArrowLeft' || e.key === 'ArrowUp')) {
+        e.preventDefault();
+        clsOpen(clsOrder[(clsOrder.indexOf(clsKey) + clsOrder.length - 1) % clsOrder.length]);
+      }
+      else if (['PageDown',' ','PageUp','ArrowRight','ArrowDown','ArrowLeft','ArrowUp'].includes(e.key)) e.preventDefault();
+      return;
+    }
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(idx + 1); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); show(idx - 1); }
+    else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(total - 1); }
+  });
+
+  const start = parseInt((location.hash || '').replace('#p', ''), 10);
+  show(Number.isInteger(start) && start > 0 ? start - 1 : 0);
+</script>
+
+</body>
+</html>

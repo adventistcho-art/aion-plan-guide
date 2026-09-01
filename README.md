@@ -15,6 +15,14 @@
 - GitHub Pages: https://adventistcho-art.github.io/aion-plan-guide/briefing.html
 - 로컬: `AION_설명회_발표자료.html` (또는 `briefing.html`로 접속)
 
+### 개정 v2 (부서 피드백 반영)
+
+기존 장표·가이드는 그대로 두고, PDC 단순화·분류 후순위를 반영한 별도 버전입니다.
+
+- 설명회 v2: https://aion-plan-guide.vercel.app/briefing-v2
+- 가이드 v2: https://aion-plan-guide.vercel.app/guide-v2
+- 개선 제안서: https://aion-plan-guide.vercel.app/proposal
+
 ## 스택
 
 | 구분 | 용도 |
