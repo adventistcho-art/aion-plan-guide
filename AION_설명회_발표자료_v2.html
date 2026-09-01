@@ -43,6 +43,31 @@
     transition: opacity .25s ease, transform .25s ease;
   }
   .slide.active { opacity: 1; visibility: visible; transform: translateY(0); z-index: 2; }
+  .slide.rev {
+    background: #f0fdfa;
+    box-shadow: inset 0 0 0 7px #0f766e, inset 0 0 0 12px #99f6e4;
+  }
+  .slide.rev.hero-slide {
+    box-shadow: inset 0 0 0 7px #5eead4, inset 0 0 0 12px rgba(94,234,212,.28);
+  }
+  .slide.rev::after {
+    content: "개정";
+    position: absolute;
+    top: 36px;
+    right: 16px;
+    z-index: 6;
+    background: #0f766e;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    padding: 5px 12px;
+    border-radius: 0 0 0 10px;
+  }
+  .slide.rev.hero-slide::after {
+    background: #5eead4;
+    color: #134e4a;
+  }
 
   .topline { display:flex; align-items:center; justify-content:space-between; margin-bottom: 12px; flex-shrink:0; }
   .brandmark { display:flex; align-items:center; gap:8px; font-size:12px; color: var(--muted); font-weight:700; letter-spacing:.04em; }
@@ -400,7 +425,7 @@
 <div class="deck">
 
 <!-- ============ 1. 표지 ============ -->
-<section class="slide hero-slide active">
+<section class="slide hero-slide rev active">
   <div class="eyebrow">AION Briefing Session · 개정 v2</div>
   <h1>AION 통합 성과관리 체계<br>설명회 <span style="color:#5eead4;font-size:28px;">개정안</span></h1>
   <p class="sub">부서 담당자 피드백을 반영했습니다. <b style="color:#fff">PDC는 원인행위 · 실행계획 · 결과보고</b>로 단순화하고,<br>사업분류(C1~C5)는 내용을 쓴 뒤 AI 초안을 고치는 방식으로 바꿉니다.</p>
@@ -651,7 +676,7 @@
 </section>
 
 <!-- ============ 11. 부모-자녀 ============ -->
-<section class="slide">
+<section class="slide rev">
   <div class="topline">
     <span class="badge-part p3">PART 3 · 사업관리 구조</span>
     <span class="brandmark"><span class="dot"></span>AION 통합 성과관리 체계</span>
@@ -713,7 +738,7 @@
 </section>
 
 <!-- ============ 13. ★ 간지 PART 4 사용방법 ============ -->
-<section class="slide hero-slide divider accent-green">
+<section class="slide hero-slide divider accent-green rev">
   <div class="part-num">PART 4</div>
   <h1>사용방법</h1>
   <div class="rule"></div>
@@ -727,13 +752,13 @@
 </section>
 
 <!-- ============ 14. 전체 흐름 5단계 ============ -->
-<section class="slide">
+<section class="slide rev">
   <div class="topline">
     <span class="badge-part p4">PART 4 · 사용방법</span>
     <span class="brandmark"><span class="dot"></span>AION 통합 성과관리 체계</span>
   </div>
   <div class="slide-head">
-    <div class="slide-title">사업계획서는 이 5단계로 작성합니다 <span class="tag-live">개정</span></div>
+    <div class="slide-title">사업계획서는 이 5단계로 작성합니다</div>
     <p class="slide-sub">분류는 1단계가 아닙니다. 내용을 쓴 뒤 AI가 초안을 만들고, 담당자가 마지막에 고칩니다.</p>
   </div>
   <div class="content" style="justify-content:center; gap:24px;">
@@ -870,7 +895,7 @@
 </section>
 
 <!-- ============ 17. 작성 방식 선택 ============ -->
-<section class="slide">
+<section class="slide rev">
   <div class="topline">
     <span class="badge-part p4">PART 4 · 사용방법</span>
     <span class="brandmark"><span class="dot"></span>STEP 0 · 작성 방식</span>
@@ -903,7 +928,7 @@
 </section>
 
 <!-- ============ 18. 개정 안내 · 분류는 나중에 ============ -->
-<section class="slide">
+<section class="slide rev">
   <div class="topline">
     <span class="badge-part p4">PART 4 · 사용방법</span>
     <span class="brandmark"><span class="dot"></span>개정 · 위자드 순서</span>
@@ -939,7 +964,7 @@
 </section>
 
 <!-- ============ 19. 부모사업 연결 ============ -->
-<section class="slide">
+<section class="slide rev">
   <div class="topline">
     <span class="badge-part p4">PART 4 · 사용방법</span>
     <span class="brandmark"><span class="dot"></span>위자드 1단계 · 부모사업</span>
@@ -1032,7 +1057,7 @@
 </section>
 
 <!-- ============ 위자드 5단계 · 예산 규모 ============ -->
-<section class="slide">
+<section class="slide rev">
   <div class="topline">
     <span class="badge-part p4">PART 4 · 사용방법</span>
     <span class="brandmark"><span class="dot"></span>위자드 4단계 · 예산 규모</span>
@@ -1090,7 +1115,7 @@
 </section>
 
 <!-- ============ 위자드 8단계 · 편집 전환 ============ -->
-<section class="slide">
+<section class="slide rev">
   <div class="topline">
     <span class="badge-part p4">PART 4 · 사용방법</span>
     <span class="brandmark"><span class="dot"></span>위자드 7단계 · 편집 전환</span>
@@ -1128,7 +1153,7 @@
 </section>
 
 <!-- ============ Step1 기본정보 ============ -->
-<section class="slide">
+<section class="slide rev">
   <div class="topline">
     <span class="badge-part p4">PART 4 · 사용방법</span>
     <span class="brandmark"><span class="dot"></span>STEP 1 · 기본 정보</span>
@@ -1196,7 +1221,7 @@
 </section>
 
 <!-- ============ 22. Step2 PDC ============ -->
-<section class="slide">
+<section class="slide rev">
   <div class="topline">
     <span class="badge-part p4">PART 4 · 사용방법</span>
     <span class="brandmark"><span class="dot"></span>STEP 2 · 추진계획(PDC)</span>
@@ -1221,7 +1246,7 @@
   </div>
 </section>
 
-<section class="slide">
+<section class="slide rev">
   <div class="topline">
     <span class="badge-part p4">PART 4 · 사용방법</span>
     <span class="brandmark"><span class="dot"></span>STEP 2 · P 원인행위</span>
@@ -1259,7 +1284,7 @@
   </div>
 </section>
 
-<section class="slide">
+<section class="slide rev">
   <div class="topline">
     <span class="badge-part p4">PART 4 · 사용방법</span>
     <span class="brandmark"><span class="dot"></span>STEP 2 · D·C</span>
@@ -1297,7 +1322,7 @@
   </div>
 </section>
 
-<section class="slide">
+<section class="slide rev">
   <div class="topline">
     <span class="badge-part p4">PART 4 · 사용방법</span>
     <span class="brandmark"><span class="dot"></span>STEP 2·4 · 예산 편성</span>
@@ -1411,7 +1436,7 @@
 </section>
 
 <!-- ============ 26. Step4 예산 ============ -->
-<section class="slide">
+<section class="slide rev">
   <div class="topline">
     <span class="badge-part p4">PART 4 · 사용방법</span>
     <span class="brandmark"><span class="dot"></span>STEP 4 · 예산 계획</span>
@@ -1429,7 +1454,7 @@
 </section>
 
 <!-- ============ 분류 확정 (맨 마지막) ============ -->
-<section class="slide">
+<section class="slide rev">
   <div class="topline">
     <span class="badge-part p4">PART 4 · 사용방법</span>
     <span class="brandmark"><span class="dot"></span>STEP 5 직전 · 사업분류</span>
@@ -1537,7 +1562,7 @@
 </section>
 
 <!-- ============ 30. 체크리스트 ============ -->
-<section class="slide">
+<section class="slide rev">
   <div class="topline">
     <span class="badge-part p5">PART 5 · 마무리</span>
     <span class="brandmark"><span class="dot"></span>AION 통합 성과관리 체계</span>
@@ -1562,7 +1587,7 @@
 </section>
 
 <!-- ============ 31. FAQ ============ -->
-<section class="slide">
+<section class="slide rev">
   <div class="topline">
     <span class="badge-part p5">PART 5 · 마무리</span>
     <span class="brandmark"><span class="dot"></span>AION 통합 성과관리 체계</span>
