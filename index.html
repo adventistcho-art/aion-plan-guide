@@ -96,6 +96,10 @@
   }
   .main { padding: 40px 48px 80px; max-width: 920px; }
   .hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
     background: linear-gradient(160deg, #12203d 0%, #1e3a6e 55%, #2450a8 100%);
     color: #fff;
     border-radius: 18px;
@@ -103,6 +107,7 @@
     margin-bottom: 28px;
     box-shadow: var(--shadow);
   }
+  .hero-copy { min-width: 0; flex: 1; }
   .hero .eyebrow {
     font-size: 12px;
     letter-spacing: .1em;
@@ -117,6 +122,41 @@
     font-weight: 750;
   }
   .hero p { margin: 0; color: #dbeafe; font-size: 15.5px; max-width: 62ch; }
+  .hero-qr {
+    flex: 0 0 auto;
+    width: 128px;
+    margin: 0;
+    padding: 10px 10px 8px;
+    border: 0;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 8px 22px rgba(8, 18, 40, .22);
+    cursor: pointer;
+    text-align: center;
+  }
+  .hero-qr img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+  }
+  .hero-qr span {
+    display: block;
+    margin-top: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    color: #1e3a6e;
+  }
+  .hero-qr:hover { filter: brightness(1.03); }
+  .hero-qr:focus-visible {
+    outline: 2px solid #93c5fd;
+    outline-offset: 3px;
+  }
+  @media (max-width: 720px) {
+    .hero { flex-direction: column; align-items: flex-start; }
+    .hero-qr { width: 112px; align-self: flex-end; }
+  }
   .meta-row {
     display: flex;
     flex-wrap: wrap;
@@ -1481,6 +1521,23 @@
     width: 100%;
     height: auto;
   }
+  .guide-modal-box.qr {
+    width: min(440px, 100%);
+    padding: 48px 28px 24px;
+    text-align: center;
+  }
+  .guide-modal-box.qr h2 {
+    margin: 0 0 16px;
+    font-size: 18px;
+  }
+  .guide-modal-box.qr img {
+    display: block;
+    width: min(360px, 100%);
+    height: auto;
+    margin: 0 auto 14px;
+  }
+  .guide-modal-box.qr p { margin: 0; font-size: 13.5px; }
+  .guide-modal-box.qr a { word-break: break-all; }
   .shot-zoom {
     display: block;
     width: 100%;
@@ -2069,40 +2126,6 @@
     .mini-grid { grid-template-columns: 1fr; }
     .toc-inline { columns: 1; }
   }
-  .copy-editor {
-    position: fixed;
-    right: 18px;
-    bottom: 18px;
-    z-index: 40;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 12px;
-    border-radius: 999px;
-    background: #12203d;
-    color: #fff;
-    box-shadow: 0 8px 24px rgba(16,24,40,.22);
-    font-size: 13px;
-  }
-  .copy-editor button {
-    border: 0;
-    border-radius: 999px;
-    padding: 7px 12px;
-    font: inherit;
-    font-weight: 700;
-    cursor: pointer;
-    background: #3b82f6;
-    color: #fff;
-  }
-  .copy-editor button.ghost {
-    background: rgba(255,255,255,.12);
-  }
-  .copy-editor #ceMsg { color: #93c5fd; max-width: 360px; line-height: 1.4; }
-  .is-editing {
-    outline: 2px dashed #93c5fd;
-    outline-offset: 3px;
-    border-radius: 4px;
-  }
 </style>
 </head>
 <body>
@@ -2143,8 +2166,14 @@
 <main class="main">
 
   <header class="hero">
-    <div class="eyebrow">Business Plan Guide for Managers</div>
-    <h2>사업담당자를 위한<br>AION 사업계획 작성 가이드</h2>
+    <div class="hero-copy">
+      <div class="eyebrow">Business Plan Guide for Managers</div>
+      <h2>사업담당자를 위한<br>AION 사업계획 작성 가이드</h2>
+    </div>
+    <button type="button" class="hero-qr" id="heroQrBtn" aria-haspopup="dialog" aria-controls="qrModal">
+      <img src="guide-assets/guide-site-qr.png" alt="배포 사이트 바로가기 QR 코드">
+      <span>사이트 바로가기</span>
+    </button>
   </header>
 
   <!-- INTRO -->
@@ -3281,6 +3310,14 @@
     <img id="imgModalPic" alt="">
   </div>
 </div>
+<div class="guide-modal" id="qrModal" hidden>
+  <div class="guide-modal-box qr" role="dialog" aria-modal="true" aria-labelledby="qrModalTitle">
+    <button type="button" class="guide-modal-close" id="qrModalClose" aria-label="닫기">×</button>
+    <h2 id="qrModalTitle">가이드 바로가기</h2>
+    <img src="guide-assets/guide-site-qr.png" alt="AION 사업계획 작성 가이드 배포 사이트 QR 코드">
+    <p><a href="https://adventistcho-art.github.io/aion-plan-guide/" target="_blank" rel="noopener">adventistcho-art.github.io/aion-plan-guide</a></p>
+  </div>
+</div>
 <div class="guide-modal" id="pdcModal" hidden>
   <div class="guide-modal-box wide" role="dialog" aria-modal="true" aria-labelledby="pdcModalTitle">
     <button type="button" class="guide-modal-close" id="pdcModalClose" aria-label="닫기">×</button>
@@ -3334,13 +3371,6 @@
       </div>
     </div>
   </div>
-</div>
-<div class="copy-editor" id="copyEditor">
-  <button type="button" id="ceEdit">문구 수정</button>
-  <button type="button" id="ceSave" class="ghost" hidden>저장</button>
-  <button type="button" id="ceStop" class="ghost" hidden>끝내기</button>
-  <button type="button" id="ceReset" class="ghost">원본으로</button>
-  <span id="ceMsg">HTML에서 문구를 고친 뒤 저장할 수 있습니다.</span>
 </div>
 <script>
   // Neon 방문 로그 (DATABASE_URL 미설정 시 무시)
@@ -3454,6 +3484,30 @@
       if (ev.key === "Escape" && imgModal && !imgModal.hidden) closeImg();
     });
 
+    var qrModal = document.getElementById("qrModal");
+    function openQr() {
+      if (!qrModal) return;
+      qrModal.hidden = false;
+      document.body.style.overflow = "hidden";
+    }
+    function closeQr() {
+      if (!qrModal) return;
+      qrModal.hidden = true;
+      document.body.style.overflow = "";
+    }
+    var heroQrBtn = document.getElementById("heroQrBtn");
+    if (heroQrBtn) heroQrBtn.addEventListener("click", openQr);
+    var qrClose = document.getElementById("qrModalClose");
+    if (qrClose) qrClose.addEventListener("click", closeQr);
+    if (qrModal) {
+      qrModal.addEventListener("click", function (ev) {
+        if (ev.target === qrModal) closeQr();
+      });
+    }
+    document.addEventListener("keydown", function (ev) {
+      if (ev.key === "Escape" && qrModal && !qrModal.hidden) closeQr();
+    });
+
     var pdcModal = document.getElementById("pdcModal");
     function openPdc() {
       if (!pdcModal) return;
@@ -3482,193 +3536,6 @@
     document.addEventListener("keydown", function (ev) {
       if (ev.key === "Escape" && pdcModal && !pdcModal.hidden) closePdc();
     });
-  })();
-
-  (function () {
-    var SEL = [
-      ".sidebar h1", ".sidebar .sub", ".sidebar nav a",
-      ".hero .eyebrow", ".hero h2", ".hero p",
-      ".main h2", ".main h3", ".main h4",
-      ".main p", ".main li", ".main td", ".main th",
-      ".main .jump-title", ".main .jump-desc",
-      ".main .shot-cap", ".main .howto-do .label",
-      ".main .callout", ".main .flow .item span",
-      ".page-foot"
-    ].join(",");
-    var fileHandle = null;
-    var fileName = decodeURIComponent((location.pathname.split("/").pop() || "AION_사업계획_가이드.html"));
-    var draftKey = "aion-guide-draft-20260914:" + fileName;
-    var editing = false;
-    var editBtn = document.getElementById("ceEdit");
-    var saveBtn = document.getElementById("ceSave");
-    var stopBtn = document.getElementById("ceStop");
-    var resetBtn = document.getElementById("ceReset");
-    var msg = document.getElementById("ceMsg");
-
-    function targets() {
-      var nodes = Array.prototype.slice.call(document.querySelectorAll(SEL));
-      return nodes.filter(function (el) {
-        return !el.closest("#copyEditor") && !el.closest("#resetModal") && !el.closest("#pcModal") && !el.closest("#imgModal") && !el.closest("#pdcModal") && !nodes.some(function (other) {
-          return other !== el && other.contains(el);
-        });
-      });
-    }
-
-    function cssPath(el) {
-      if (el.id) return "#" + el.id;
-      var parts = [];
-      while (el && el.nodeType === 1 && el !== document.documentElement) {
-        var parent = el.parentElement;
-        if (!parent) break;
-        if (el.id) { parts.unshift("#" + el.id); break; }
-        var name = el.tagName.toLowerCase();
-        var idx = Array.prototype.indexOf.call(parent.children, el) + 1;
-        parts.unshift(name + ":nth-child(" + idx + ")");
-        el = parent;
-      }
-      return parts.join(" > ");
-    }
-
-    function captureDraft() {
-      return targets().map(function (el) {
-        return { path: cssPath(el), html: el.innerHTML };
-      });
-    }
-
-    function applyDraft(items) {
-      if (!items || !items.length) return 0;
-      var n = 0;
-      items.forEach(function (item) {
-        var el = null;
-        try { el = document.querySelector(item.path); } catch (e) { el = null; }
-        if (el && item.html != null) {
-          el.innerHTML = item.html;
-          n += 1;
-        }
-      });
-      return n;
-    }
-
-    function persistDraft() {
-      try {
-        localStorage.setItem(draftKey, JSON.stringify({
-          at: Date.now(),
-          items: captureDraft()
-        }));
-      } catch (e) {}
-    }
-
-    function setEditing(on) {
-      editing = on;
-      targets().forEach(function (el) {
-        if (on) {
-          el.setAttribute("contenteditable", "true");
-          el.classList.add("is-editing");
-        } else {
-          el.removeAttribute("contenteditable");
-          el.classList.remove("is-editing");
-        }
-      });
-      editBtn.hidden = on;
-      saveBtn.hidden = !on;
-      stopBtn.hidden = !on;
-      msg.textContent = on
-        ? "글을 고치면 이 브라우저에 바로 남습니다. 원본 파일은 저장을 누르세요."
-        : "HTML에서 문구를 고친 뒤 저장할 수 있습니다.";
-    }
-
-    function savableHtml() {
-      persistDraft();
-      var clone = document.documentElement.cloneNode(true);
-      clone.querySelectorAll("[contenteditable]").forEach(function (el) {
-        el.removeAttribute("contenteditable");
-        el.classList.remove("is-editing");
-      });
-      var bar = clone.querySelector("#copyEditor");
-      if (bar) {
-        var e = bar.querySelector("#ceEdit");
-        var s = bar.querySelector("#ceSave");
-        var t = bar.querySelector("#ceStop");
-        var m = bar.querySelector("#ceMsg");
-        if (e) e.hidden = false;
-        if (s) s.hidden = true;
-        if (t) t.hidden = true;
-        if (m) m.textContent = "HTML에서 문구를 고친 뒤 저장할 수 있습니다.";
-      }
-      var modal = clone.querySelector("#resetModal");
-      if (modal) {
-        modal.setAttribute("hidden", "");
-        var mb = clone.querySelector("#resetModalBody");
-        if (mb) mb.innerHTML = "";
-      }
-      clone.querySelector("body").style.overflow = "";
-      return "<!DOCTYPE html>\n" + clone.outerHTML + "\n";
-    }
-
-    function downloadHtml(html) {
-      var blob = new Blob([html], { type: "text/html;charset=utf-8" });
-      var a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = fileName;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
-    }
-
-    async function save() {
-      var html = savableHtml();
-      persistDraft();
-      try {
-        if (window.isSecureContext && window.showSaveFilePicker) {
-          if (!fileHandle) {
-            fileHandle = await window.showSaveFilePicker({
-              suggestedName: fileName,
-              types: [{ description: "HTML", accept: { "text/html": [".html"] } }]
-            });
-          }
-          var writable = await fileHandle.createWritable();
-          await writable.write(html);
-          await writable.close();
-          msg.textContent = "같은 HTML 파일에 저장했습니다. 폴더에서 이 파일을 열어 확인하세요.";
-          return;
-        }
-      } catch (err) {
-        if (err && err.name === "AbortError") {
-          msg.textContent = "저장을 취소했습니다. 이 브라우저에는 문구가 남아 있습니다.";
-          return;
-        }
-        fileHandle = null;
-      }
-      downloadHtml(html);
-      msg.textContent = "이 브라우저에는 저장했습니다. 받은 HTML을 AION_GUIDE 폴더의 같은 파일에 덮어써야 원본이 바뀝니다.";
-      alert("file:// 에서는 원본 파일을 바로 덮어쓸 수 없습니다.\n\n1) 방금 받은 " + fileName + " 을\n2) 문서\\커서도전\\AION_GUIDE 폴더의 같은 이름 파일에 덮어쓰세요.");
-    }
-
-    editBtn.addEventListener("click", function () { setEditing(true); });
-    stopBtn.addEventListener("click", function () {
-      persistDraft();
-      setEditing(false);
-    });
-    saveBtn.addEventListener("click", function () { save(); });
-    if (resetBtn) {
-      resetBtn.addEventListener("click", function () {
-        try { localStorage.removeItem(draftKey); } catch (e) {}
-        location.reload();
-      });
-    }
-    document.addEventListener("input", function (ev) {
-      if (!editing) return;
-      if (ev.target && ev.target.closest && ev.target.closest("[contenteditable]")) persistDraft();
-    });
-    document.addEventListener("keydown", function (ev) {
-      if ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === "s") {
-        ev.preventDefault();
-        if (!editing) setEditing(true);
-        save();
-      }
-    });
-
   })();
 </script>
 </body>
