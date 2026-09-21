@@ -68,7 +68,7 @@ const AION_MAP = [
   },
   {
     intent: "ir",
-    user: /(2025|2026|결과보고서|집행|잔액|실적|얼마|부서별|신규\s*사업)/,
+    user: /(2025|2026|결과보고서|집행|잔액|실적|얼마|부서별|신규\s*사업|작년|전년)/,
     sys: ["결과보고서", "집행", "2025", "2026"],
   },
 ];
@@ -86,6 +86,19 @@ const PREFER = {
   wizard: ["wizard", "wizard-direction", "mode"],
   ir: ["ir-overview", "ir-result-2025", "ir-howto-plan"],
 };
+
+const CORE_IDS = [
+  "system-terms",
+  "wizard",
+  "wizard-direction",
+  "parent-child",
+  "wizard-condition",
+  "wizard-purpose",
+  "numbers",
+  "classify",
+  "ir-howto-plan",
+  "ir-overview",
+];
 
 const STRUCTURE_PROMPT = [
   "AION 화면 구조. 사용자가 일상어로 물으면 이 구조로 바꿔 이해합니다.",
@@ -205,6 +218,52 @@ function scoreChunk(chunk, qTokens, intents) {
   return score;
 }
 
+function irSearchTokens(question) {
+  const raw = String(question || "")
+    .toLowerCase()
+    .split(/[^0-9a-zA-Z가-힣]+/)
+    .filter(Boolean);
+  const skip = new Set([
+    ...STOPWORDS,
+    ...WEAK_TOKS,
+    "방향",
+    "방향을",
+    "설정할",
+    "위자드",
+    "목적",
+    "조건",
+    "분류",
+    "화면",
+    "단계",
+    "순서",
+    "확정",
+    "개선",
+  ]);
+  return raw.filter((w) => {
+    if (w.length < 3) return false;
+    if (skip.has(w) || STOPWORDS.has(w) || WEAK_TOKS.has(w)) return false;
+    if (WEAK_TOKS.has(w.slice(0, 2))) return false;
+    return true;
+  });
+}
+
+function shouldSearchIr(question, intents) {
+  if (intents.has("password") || intents.has("login")) return false;
+  if (intents.has("ir")) return true;
+  return irSearchTokens(question).length > 0;
+}
+
+function searchIr(question, limit) {
+  const qTokens = queryTokens(question);
+  const hits = [];
+  for (const it of irKb.items || []) {
+    const score = scoreIr(it, qTokens);
+    if (score > 0) hits.push({ item: it, score });
+  }
+  hits.sort((a, b) => b.score - a.score);
+  return hits.slice(0, limit).map((h) => ({ chunk: irToChunk(h.item), score: h.score }));
+}
+
 function retrieve(question, limit) {
   const intents = detectIntents(question);
   const qTokens = queryTokens(question);
@@ -214,17 +273,9 @@ function retrieve(question, limit) {
     const score = scoreChunk(c, qTokens, intents);
     if (score > 0) ranked.push({ chunk: c, score });
   }
-  const wantIr = intents.has("ir") || (!intents.size && qTokens.some((t) => t.length >= 3));
-  if (wantIr && !intents.has("direction") && !intents.has("password") && !intents.has("login")) {
-    const irHits = [];
-    for (const it of irKb.items || []) {
-      const score = scoreIr(it, qTokens);
-      if (score > 0) irHits.push({ item: it, score });
-    }
-    irHits.sort((a, b) => b.score - a.score);
-    for (const h of irHits.slice(0, 8)) {
-      ranked.push({ chunk: irToChunk(h.item), score: h.score });
-    }
+  const skipIrRetrieve = !shouldSearchIr(question, intents);
+  if (!skipIrRetrieve) {
+    for (const hit of searchIr(question, 8)) ranked.push(hit);
   }
   ranked.sort((a, b) => b.score - a.score);
   const out = [];
@@ -238,6 +289,31 @@ function retrieve(question, limit) {
   }
   if (out.length) return out;
   return (kb.chunks || []).filter((c) => c.id === "system-terms" || c.id === "wizard").slice(0, 3);
+}
+
+function chunkById(id) {
+  return (kb.chunks || []).find((c) => c.id === id);
+}
+
+function packContext(question) {
+  const intents = detectIntents(question);
+  const packed = [];
+  const seen = new Set();
+  const add = (chunk) => {
+    if (!chunk || seen.has(chunk.id)) return;
+    seen.add(chunk.id);
+    packed.push(chunk);
+  };
+  const skipIrCore = intents.has("password") || intents.has("login");
+  for (const id of CORE_IDS) {
+    if (skipIrCore && String(id).startsWith("ir-")) continue;
+    add(chunkById(id));
+  }
+  for (const chunk of retrieve(question, 8)) add(chunk);
+  if (shouldSearchIr(question, intents)) {
+    for (const hit of searchIr(question, 6)) add(hit.chunk);
+  }
+  return packed.slice(0, 16);
 }
 
 function won(n) {
@@ -345,39 +421,15 @@ function llmBases(model) {
   return bases;
 }
 
-async function llmAnswer(question, history, chunks) {
-  const key = process.env.OPENAI_API_KEY;
-  if (!key) return null;
-  const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
-  const context = chunks
-    .map((c) => `- (${c.guideAnchor || ""}) ${c.title}: ${c.answer || c.text}`)
-    .join("\n");
-  const sys = [
-    "당신은 삼육대학교 AION 사업계획 작성 가이드 도우미입니다.",
-    "사용자의 말을 먼저 AION 화면 용어·단계로 바꾼 뒤, 아래 지식만 사용해 한국어로 짧게 답합니다.",
-    STRUCTURE_PROMPT,
-    "사업계획 작성과 2025 결과보고서·2025/2026 SU-WINGS 예산 참고만 다룹니다.",
-    "지식에 없으면 추측하지 말고, 잘 모르겠다고 한 뒤 가이드의 관련 장으로 안내합니다.",
-    "지식에 있는 금액은 원 단위입니다. AION 입력은 천원입니다. 2026 집행은 현재 기준입니다.",
-    "제출은 승인이 아닙니다. AION은 SU-WINGS·그룹웨어를 대체하지 않습니다.",
-    "답 끝에 필요하면 가이드 앵커를 한 줄로 적어 주세요. 예: 자세히: #wizard-next",
-    "",
-    "지식:",
-    context,
-  ].join("\n");
-  const messages = [{ role: "system", content: sys }];
-  (history || []).slice(-8).forEach((m) => {
-    if (m && (m.role === "user" || m.role === "assistant") && m.content) {
-      messages.push({ role: m.role, content: String(m.content).slice(0, 2000) });
-    }
-  });
-  messages.push({ role: "user", content: String(question).slice(0, 2000) });
+function clip(s, n) {
+  const t = String(s || "");
+  return t.length > n ? t.slice(0, n) + "…" : t;
+}
 
-  const payload = { model, temperature: 0.2, max_tokens: 700, messages };
-  if (/glm/i.test(model)) payload.thinking = { type: "disabled" };
-
-  let lastErr = "";
-  for (const base of llmBases(model)) {
+async function postLlm(base, payload, key) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 12000);
+  try {
     const resp = await fetch(`${base}/chat/completions`, {
       method: "POST",
       headers: {
@@ -385,24 +437,77 @@ async function llmAnswer(question, history, chunks) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
+      signal: ctrl.signal,
     });
     const raw = await resp.text();
-    if (!resp.ok) {
-      lastErr = `LLM ${resp.status}: ${raw.slice(0, 300)}`;
-      continue;
-    }
-    let data = {};
-    try {
-      data = JSON.parse(raw);
-    } catch {
-      lastErr = "LLM JSON parse failed";
-      continue;
-    }
-    const text = llmText(data);
-    if (text) return text;
-    lastErr = "LLM empty content";
+    return { ok: resp.ok, status: resp.status, raw };
+  } catch (err) {
+    return { ok: false, status: 0, raw: err.message || "fetch failed" };
+  } finally {
+    clearTimeout(timer);
   }
-  throw new Error(lastErr || "LLM failed");
+}
+
+async function llmAnswer(question, history, chunks) {
+  const key = process.env.OPENAI_API_KEY;
+  if (!key) return { text: null, error: "no-key" };
+  const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
+  const context = chunks
+    .map((c) => `- (${c.guideAnchor || ""}) ${c.title}: ${clip(c.answer || c.text, 900)}`)
+    .join("\n");
+  const sys = [
+    "당신은 삼육대학교 AION 사업계획 작성 가이드 도우미입니다.",
+    "단어 일치로 FAQ를 골라 붙이지 마세요. 사용자 글의 뜻을 먼저 해석하고, 아래 지식을 폭넓게 연결해 답하세요.",
+    "순서: 1) 이 질문이 AION의 어느 화면·단계인지 파악 2) 관련 화면 절차를 설명 3) 전년 결과보고서·2025/2026 예산이 있으면 그 내용도 이어서 설명.",
+    STRUCTURE_PROMPT,
+    "사업계획 작성과 2025 결과보고서·2025/2026 SU-WINGS 예산 참고만 다룹니다.",
+    "지식에 없으면 추측하지 말고, 잘 모르겠다고 한 뒤 가이드의 관련 장으로 안내합니다.",
+    "지식에 있는 금액은 원 단위입니다. AION 입력은 천원입니다. 2026 집행은 현재 기준입니다.",
+    "제출은 승인이 아닙니다. AION은 SU-WINGS·그룹웨어를 대체하지 않습니다.",
+    "답은 한국어로, 필요한 절차와 근거만 짧게. 끝에 가이드 앵커 한 줄. 예: 자세히: #wizard-next",
+    "",
+    "지식:",
+    context,
+  ].join("\n");
+  const messages = [{ role: "system", content: sys }];
+  (history || []).slice(-6).forEach((m) => {
+    if (m && (m.role === "user" || m.role === "assistant") && m.content) {
+      messages.push({ role: m.role, content: String(m.content).slice(0, 1500) });
+    }
+  });
+  messages.push({
+    role: "user",
+    content: `질문: ${String(question).slice(0, 2000)}\n\n이 질문의 맥락을 AION 화면 구조로 해석한 다음, 관련 지식(화면 절차·전년 실적·예산)을 연결해 답하세요.`,
+  });
+
+  const basePayload = { model, temperature: 0.2, max_tokens: 900, messages };
+  const variants = [basePayload];
+  if (/glm/i.test(model)) {
+    variants.unshift({ ...basePayload, thinking: { type: "disabled" } });
+  }
+
+  let lastErr = "";
+  for (const base of llmBases(model)) {
+    for (const payload of variants) {
+      const resp = await postLlm(base, payload, key);
+      if (!resp.ok) {
+        lastErr = `LLM ${resp.status}: ${String(resp.raw).slice(0, 180)}`;
+        if (resp.status === 429) break;
+        continue;
+      }
+      let data = {};
+      try {
+        data = JSON.parse(resp.raw);
+      } catch {
+        lastErr = "LLM JSON parse failed";
+        continue;
+      }
+      const text = llmText(data);
+      if (text) return { text, error: null };
+      lastErr = "LLM empty content";
+    }
+  }
+  return { text: null, error: lastErr || "LLM failed" };
 }
 
 export default async function handler(req, res) {
@@ -421,23 +526,32 @@ export default async function handler(req, res) {
       return res.status(400).json({ ok: false, error: "질문이 없습니다." });
     }
 
-    const chunks = retrieve(question, 5);
+    const chunks = retrieve(question, 6);
+    const llmChunks = packContext(question);
     const history = messages.filter((m) => m !== lastUser);
     let answer = null;
     let mode = "extract";
+    let aiError = null;
     try {
-      answer = await llmAnswer(question, history, chunks);
-      if (answer) mode = "llm";
+      const llm = await llmAnswer(question, history, llmChunks);
+      aiError = llm.error || null;
+      if (llm.text) {
+        answer = llm.text;
+        mode = "llm";
+      }
     } catch (e) {
+      aiError = e.message || "LLM failed";
       console.error(e);
     }
     if (!answer) answer = extractiveAnswer(chunks);
 
+    const shown = mode === "llm" ? llmChunks.slice(0, 6) : chunks;
     return res.status(200).json({
       ok: true,
       answer,
       mode,
-      sources: chunks.map((c) => ({
+      aiError,
+      sources: shown.map((c) => ({
         id: c.id,
         title: c.title,
         guideAnchor: c.guideAnchor || "",
@@ -449,4 +563,4 @@ export default async function handler(req, res) {
   }
 }
 
-export { retrieve, detectIntents };
+export { retrieve, detectIntents, packContext };
