@@ -1,15 +1,135 @@
 import kb from "./chat-kb.js";
+import irKb from "./ir-index.js";
 
 const STOPWORDS = new Set([
   "어떻게", "하나요", "인가요", "받나요", "받냐고", "뭐야", "좀",
   "해주세요", "해줘", "궁금", "해서", "하는", "된거야", "되나요",
   "어디", "어디서", "뭐임", "알려줘", "알려주세요", "좀요",
+  "하면", "됨", "할때", "때", "것을", "것은", "있나", "있는지",
+  "해야", "해야함", "하는법", "좀", "요", "그리고", "이번", "지금",
 ]);
+
+const WEAK_TOKS = new Set([
+  "사업", "설정", "하면", "내용", "계획", "작성", "하는", "있는",
+  "대한", "위한", "통해", "관련", "부분", "이번", "지금", "그리고",
+  "것을", "것은", "방법", "다음", "이후",
+]);
+
+const AION_MAP = [
+  {
+    intent: "password",
+    user: /(비번|비밀번호|패스워드|암호|재설정\s*링크|잊으셨)/,
+    sys: ["비밀번호", "재설정"],
+  },
+  {
+    intent: "login",
+    user: /(로그인|접속|사번|아이디)/,
+    sys: ["로그인", "사번"],
+  },
+  {
+    intent: "direction",
+    user: /(방향|비전|성격\s*파악|성격파악|이방향|무엇을\s*할지|어떤\s*사업|사업\s*내용|명확화|명확히)/,
+    sys: ["사업방향", "성격파악", "이방향으로확정", "개선", "결과보고서"],
+  },
+  {
+    intent: "name",
+    user: /(사업명|이름\s*정하|이름\s*짓)/,
+    sys: ["사업명"],
+  },
+  {
+    intent: "condition",
+    user: /(조건|재원|원인행위|사업\s*대상|책임\s*부서|기간|시작일|종료일)/,
+    sys: ["사업조건", "재원", "원인행위", "사업대상"],
+  },
+  {
+    intent: "budget-scale",
+    user: /(총예산|예산\s*규모|얼마\s*쓸|보수적|적극적)/,
+    sys: ["예산규모", "천원", "전년도지출"],
+  },
+  {
+    intent: "purpose",
+    user: /(목적|왜\s*하나|달성하려는)/,
+    sys: ["사업목적"],
+  },
+  {
+    intent: "parent",
+    user: /(부모사업|자녀사업|자식사업|중층)/,
+    sys: ["부모사업", "자녀사업"],
+  },
+  {
+    intent: "classify",
+    user: /(분류|C1|C2|C3|C4|C5|누구를\s*위해)/,
+    sys: ["사업분류", "C1"],
+  },
+  {
+    intent: "wizard",
+    user: /(위자드|단계|순서|초안)/,
+    sys: ["위자드"],
+  },
+  {
+    intent: "ir",
+    user: /(2025|2026|결과보고서|집행|잔액|실적|얼마|부서별|신규\s*사업)/,
+    sys: ["결과보고서", "집행", "2025", "2026"],
+  },
+];
+
+const PREFER = {
+  password: ["password", "login"],
+  login: ["login", "access", "password"],
+  direction: ["wizard-direction", "wizard", "parent-child", "system-terms"],
+  name: ["wizard-name", "wizard"],
+  condition: ["wizard-condition", "wizard"],
+  "budget-scale": ["wizard-budget", "budget", "numbers"],
+  purpose: ["wizard-purpose", "wizard", "step2-pdc"],
+  parent: ["parent-child", "wizard"],
+  classify: ["classify", "wizard"],
+  wizard: ["wizard", "wizard-direction", "mode"],
+  ir: ["ir-overview", "ir-result-2025", "ir-howto-plan"],
+};
+
+const STRUCTURE_PROMPT = [
+  "AION 화면 구조. 사용자가 일상어로 물으면 이 구조로 바꿔 이해합니다.",
+  "1) 로그인·비밀번호 재설정 — 비번/암호/비밀번호라고 물었을 때만.",
+  "2) 사업관리 → 새 사업 → 작성 방식(AI 위자드 / 직접 작성 / 기존 불러오기).",
+  "3) 위자드: 부모사업 선택 → 「1. AI와 사업성격파악하기」(전년 결과보고서 연동, 사업 방향 검토, 확인 필요 칸은 「개선」, 맞으면 「이방향으로 확정」) → 사업명 → 사업 조건(재원·책임부서·기간·원인행위·대상) → 예산 규모(천원, 전년도 지출 기준) → 사업목적 → 사업계획 초안 생성 → 편집.",
+  "4) 이후 Step2 상세·PDC → Step3 성과지표 → Step4 예산 세분 → 마지막 사업분류 C1~C5 → Step5 검토·제출 → 내부기안.",
+  "「사업의 방향을 설정/정한다」는 비밀번호가 아니라 위자드 사업 방향 검토입니다. 「설정」이라는 말만으로 비밀번호를 답하지 마세요.",
+  "지식에 없는 화면·금액·실적은 추측하지 않습니다.",
+].join("\n");
+
+function detectIntents(question) {
+  const q = String(question || "");
+  const intents = new Set();
+  for (const row of AION_MAP) {
+    if (row.user.test(q)) intents.add(row.intent);
+  }
+  if (
+    /(어떻게|하면|화면|눌러|단계|순서|어디)/.test(q) &&
+    !intents.has("ir") &&
+    !intents.has("password")
+  ) {
+    intents.add("howto");
+  }
+  return intents;
+}
+
+function mappedSysTokens(question) {
+  const q = String(question || "");
+  const extra = [];
+  for (const row of AION_MAP) {
+    if (row.user.test(q)) extra.push(...row.sys);
+  }
+  return extra;
+}
 
 function expandWord(w) {
   const out = [w];
   if (w.startsWith("비번") || w.startsWith("패스워드") || w === "암호") out.push("비밀번호");
   if (w.startsWith("아이디")) out.push("사번");
+  if (w.startsWith("방향")) out.push("사업방향", "성격파악", "이방향으로확정");
+  if (w.startsWith("목적")) out.push("사업목적");
+  if (w.startsWith("조건")) out.push("사업조건", "재원", "원인행위");
+  if (w.includes("분류")) out.push("사업분류", "C1");
   return out;
 }
 
@@ -19,44 +139,153 @@ function queryTokens(question) {
     .split(/[^0-9a-zA-Z가-힣]+/)
     .filter(Boolean);
   const words = [];
-  for (const w of raw) {
-    if (STOPWORDS.has(w)) continue;
+  for (const w of raw.concat(mappedSysTokens(question))) {
+    if (STOPWORDS.has(w) || WEAK_TOKS.has(w)) continue;
     for (const e of expandWord(w)) {
-      if (!STOPWORDS.has(e)) words.push(e);
+      if (!STOPWORDS.has(e) && !WEAK_TOKS.has(e)) words.push(e);
     }
   }
   const grams = [];
   for (const w of words) {
     if (w.length >= 2) {
-      for (let i = 0; i <= w.length - 2; i++) grams.push(w.slice(i, i + 2));
+      for (let i = 0; i <= w.length - 2; i++) {
+        const g = w.slice(i, i + 2);
+        if (!WEAK_TOKS.has(g) && !STOPWORDS.has(g)) grams.push(g);
+      }
     }
   }
   return words.concat(grams);
 }
 
-function scoreChunk(chunk, qTokens) {
+function chunkAllowed(chunk, question, intents) {
+  const id = chunk.id || "";
+  const hasPw = intents.has("password");
+  if (id === "password" && !hasPw) return false;
+  if (id === "login" && !hasPw && !intents.has("login")) return false;
+  if (id === "checklist" && (intents.has("direction") || intents.has("condition") || intents.has("purpose") || intents.has("name"))) {
+    return false;
+  }
+  const uiIntent =
+    intents.has("direction") ||
+    intents.has("condition") ||
+    intents.has("purpose") ||
+    intents.has("name") ||
+    intents.has("login") ||
+    intents.has("password") ||
+    intents.has("wizard") ||
+    intents.has("howto");
+  if ((id.startsWith("ir-item-") || id.startsWith("ir-")) && uiIntent && !intents.has("ir")) {
+    return false;
+  }
+  return true;
+}
+
+function scoreChunk(chunk, qTokens, intents) {
   const hay = `${chunk.title} ${chunk.keywords || ""} ${chunk.answer || ""} ${chunk.text}`.toLowerCase();
   let score = 0;
   for (const tok of qTokens) {
     if (!tok || tok.length < 2) continue;
     if (hay.includes(tok)) {
-      score += 2;
+      score += tok.length >= 4 ? 4 : 2;
       if ((chunk.title || "").toLowerCase().includes(tok)) score += 3;
       if ((chunk.keywords || "").toLowerCase().includes(tok)) score += 2;
     }
+  }
+  const irGeneric = new Set(["2025", "2026", "집행", "잔액", "실적", "예산", "결과보고서", "얼마", "원", "부서별", "신규"]);
+  const hasSpecific = qTokens.some((t) => t.length >= 3 && !irGeneric.has(t) && !WEAK_TOKS.has(t));
+  for (const intent of intents) {
+    const ids = PREFER[intent] || [];
+    if (!ids.includes(chunk.id)) continue;
+    if (intent === "ir" && hasSpecific) {
+      if (chunk.id === "ir-howto-plan") score += 8;
+      continue;
+    }
+    score += 28;
   }
   return score;
 }
 
 function retrieve(question, limit) {
+  const intents = detectIntents(question);
   const qTokens = queryTokens(question);
-  const ranked = (kb.chunks || [])
-    .map((c) => ({ chunk: c, score: scoreChunk(c, qTokens) }))
-    .filter((x) => x.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, limit);
-  if (ranked.length) return ranked.map((x) => x.chunk);
-  return (kb.chunks || []).slice(0, 3);
+  const ranked = [];
+  for (const c of kb.chunks || []) {
+    if (!chunkAllowed(c, question, intents)) continue;
+    const score = scoreChunk(c, qTokens, intents);
+    if (score > 0) ranked.push({ chunk: c, score });
+  }
+  const wantIr = intents.has("ir") || (!intents.size && qTokens.some((t) => t.length >= 3));
+  if (wantIr && !intents.has("direction") && !intents.has("password") && !intents.has("login")) {
+    const irHits = [];
+    for (const it of irKb.items || []) {
+      const score = scoreIr(it, qTokens);
+      if (score > 0) irHits.push({ item: it, score });
+    }
+    irHits.sort((a, b) => b.score - a.score);
+    for (const h of irHits.slice(0, 8)) {
+      ranked.push({ chunk: irToChunk(h.item), score: h.score });
+    }
+  }
+  ranked.sort((a, b) => b.score - a.score);
+  const out = [];
+  const seen = new Set();
+  for (const x of ranked) {
+    const id = x.chunk.id;
+    if (seen.has(id)) continue;
+    seen.add(id);
+    out.push(x.chunk);
+    if (out.length >= limit) break;
+  }
+  if (out.length) return out;
+  return (kb.chunks || []).filter((c) => c.id === "system-terms" || c.id === "wizard").slice(0, 3);
+}
+
+function won(n) {
+  if (n == null || n === "") return "없음";
+  return Number(n).toLocaleString("ko-KR") + "원";
+}
+
+function irToChunk(item) {
+  const lines = [
+    `${item.dept} · ${item.name}`,
+    item.code25
+      ? `2025(${item.code25}) 예산 ${won(item.adj25)} / 집행 ${won(item.exe25)} (${item.rate25 ?? "-"}%) / 잔액 ${won(item.remain25)}`
+      : "2025 예산 없음",
+    item.code26
+      ? `2026(${item.code26}) 예산 ${won(item.adj26)} / 집행 ${won(item.exe26)} 현재 (${item.rate26 ?? "-"}%) / 잔액 ${won(item.remain26)}`
+      : "2026 예산 없음",
+  ];
+  if (item.filled && item.summary) lines.push(`2025 결과보고서: ${item.summary}`);
+  else lines.push("2025 결과보고서 본문은 없습니다. 없는 내용은 추측하지 않습니다.");
+  lines.push("금액은 원입니다. AION 입력은 천원(÷1,000). 2026 집행·잔액은 현재 기준입니다.");
+  const text = lines.join("\n");
+  return {
+    id: "ir-item-" + (item.code26 || item.code25 || item.irCd || item.name),
+    title: `${item.dept} ${item.name}`,
+    keywords: `${item.dept} ${item.name} ${item.irName || ""} 2025 2026 예산 집행 실적 결과보고서`,
+    answer: text,
+    text,
+    guideAnchor: "#step4",
+  };
+}
+
+function scoreIr(item, qTokens) {
+  const hay = `${item.name} ${item.dept} ${item.irName || ""} ${item.summary || ""} ${item.code25 || ""} ${item.code26 || ""}`.toLowerCase();
+  let score = 0;
+  for (const tok of qTokens) {
+    if (!tok || tok.length < 2) continue;
+    if (WEAK_TOKS.has(tok)) continue;
+    if (hay.includes(tok)) {
+      score += 2;
+      if ((item.name || "").toLowerCase().includes(tok)) score += 5;
+      if ((item.dept || "").toLowerCase().includes(tok)) score += 4;
+    }
+  }
+  if (score > 0) {
+    if (item.filled && item.summary) score += 3;
+    if (item.adj26) score += 2;
+  }
+  return score;
 }
 
 function cors(res) {
@@ -125,11 +354,13 @@ async function llmAnswer(question, history, chunks) {
     .join("\n");
   const sys = [
     "당신은 삼육대학교 AION 사업계획 작성 가이드 도우미입니다.",
-    "오직 아래 지식과 대화에 있는 사실만 사용해 한국어로 짧게 답합니다.",
-    "사업계획 작성(로그인, 위자드, 부모·자녀, KPI, 예산, 분류, 제출, 내부기안)만 다룹니다.",
+    "사용자의 말을 먼저 AION 화면 용어·단계로 바꾼 뒤, 아래 지식만 사용해 한국어로 짧게 답합니다.",
+    STRUCTURE_PROMPT,
+    "사업계획 작성과 2025 결과보고서·2025/2026 SU-WINGS 예산 참고만 다룹니다.",
     "지식에 없으면 추측하지 말고, 잘 모르겠다고 한 뒤 가이드의 관련 장으로 안내합니다.",
-    "금액 단위는 천원입니다. 제출은 승인이 아닙니다. AION은 SU-WINGS·그룹웨어를 대체하지 않습니다.",
-    "답 끝에 필요하면 가이드 앵커를 한 줄로 적어 주세요. 예: 자세히: #step3",
+    "지식에 있는 금액은 원 단위입니다. AION 입력은 천원입니다. 2026 집행은 현재 기준입니다.",
+    "제출은 승인이 아닙니다. AION은 SU-WINGS·그룹웨어를 대체하지 않습니다.",
+    "답 끝에 필요하면 가이드 앵커를 한 줄로 적어 주세요. 예: 자세히: #wizard-next",
     "",
     "지식:",
     context,
@@ -190,7 +421,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ ok: false, error: "질문이 없습니다." });
     }
 
-    const chunks = retrieve(question, 4);
+    const chunks = retrieve(question, 5);
     const history = messages.filter((m) => m !== lastUser);
     let answer = null;
     let mode = "extract";
@@ -217,3 +448,5 @@ export default async function handler(req, res) {
     return res.status(500).json({ ok: false, error: "서버 오류가 났습니다. 잠시 후 다시 물어 주세요." });
   }
 }
+
+export { retrieve, detectIntents };
