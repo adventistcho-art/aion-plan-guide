@@ -1,13 +1,26 @@
 import { readFileSync } from "fs";
-import { join } from "path";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 
 let kbCache = null;
 
 function loadKb() {
   if (kbCache) return kbCache;
-  const raw = readFileSync(join(process.cwd(), "chat-kb.json"), "utf8");
-  kbCache = JSON.parse(raw);
-  return kbCache;
+  const here = dirname(fileURLToPath(import.meta.url));
+  const candidates = [
+    join(process.cwd(), "chat-kb.json"),
+    join(here, "..", "chat-kb.json"),
+  ];
+  let lastErr;
+  for (const p of candidates) {
+    try {
+      kbCache = JSON.parse(readFileSync(p, "utf8"));
+      return kbCache;
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+  throw lastErr;
 }
 
 function tokenize(s) {
