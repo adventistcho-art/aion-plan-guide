@@ -58,4 +58,4 @@ npx vercel dev
 - GitHub Pages에서 열면 채팅·방문 로그 모두 `https://aion-plan-guide.vercel.app` API를 호출합니다.
 - 지식: `chat-kb.json` (함수 번들용 복사본 `api/chat-kb.js`)
 - (선택) Vercel → Settings → Environment Variables에 `OPENAI_API_KEY`를 넣으면 문장을 다듬어 답합니다. 키가 없어도 가이드 조각을 찾아 보여 줍니다.
-- (선택) `OPENAI_BASE_URL`, `OPENAI_MODEL` (기본 `gpt-4o-mini`)
+- (선택) `OPENAI_BASE_URL`, `OPENAI_MODEL` — GLM이면 예: `https://api.z.ai/api/paas/v4`, `glm-4.7-flash`

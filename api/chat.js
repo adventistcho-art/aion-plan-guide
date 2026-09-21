@@ -85,10 +85,40 @@ function parseBody(req) {
   return body;
 }
 
+function llmText(data) {
+  const msg = data?.choices?.[0]?.message;
+  if (!msg) return null;
+  const from = (value) => {
+    if (typeof value === "string") return value.trim();
+    if (Array.isArray(value)) {
+      return value
+        .map((part) => {
+          if (typeof part === "string") return part;
+          if (part && typeof part === "object") return part.text || part.content || "";
+          return "";
+        })
+        .join("")
+        .trim();
+    }
+    return "";
+  };
+  return from(msg.content) || from(msg.reasoning_content) || null;
+}
+
+function llmBases(model) {
+  const primary = (process.env.OPENAI_BASE_URL || "https://api.openai.com/v1").replace(/\/$/, "");
+  const bases = [primary];
+  if (/glm/i.test(model) || /z\.ai|bigmodel/i.test(primary)) {
+    for (const extra of ["https://api.z.ai/api/paas/v4", "https://open.bigmodel.cn/api/paas/v4"]) {
+      if (!bases.includes(extra)) bases.push(extra);
+    }
+  }
+  return bases;
+}
+
 async function llmAnswer(question, history, chunks) {
   const key = process.env.OPENAI_API_KEY;
   if (!key) return null;
-  const base = (process.env.OPENAI_BASE_URL || "https://api.openai.com/v1").replace(/\/$/, "");
   const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
   const context = chunks
     .map((c) => `- (${c.guideAnchor || ""}) ${c.title}: ${c.answer || c.text}`)
@@ -112,20 +142,36 @@ async function llmAnswer(question, history, chunks) {
   });
   messages.push({ role: "user", content: String(question).slice(0, 2000) });
 
-  const resp = await fetch(`${base}/chat/completions`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${key}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ model, temperature: 0.2, messages }),
-  });
-  if (!resp.ok) {
-    const errText = await resp.text();
-    throw new Error(`LLM ${resp.status}: ${errText.slice(0, 300)}`);
+  const payload = { model, temperature: 0.2, max_tokens: 700, messages };
+  if (/glm/i.test(model)) payload.thinking = { type: "disabled" };
+
+  let lastErr = "";
+  for (const base of llmBases(model)) {
+    const resp = await fetch(`${base}/chat/completions`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${key}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    const raw = await resp.text();
+    if (!resp.ok) {
+      lastErr = `LLM ${resp.status}: ${raw.slice(0, 300)}`;
+      continue;
+    }
+    let data = {};
+    try {
+      data = JSON.parse(raw);
+    } catch {
+      lastErr = "LLM JSON parse failed";
+      continue;
+    }
+    const text = llmText(data);
+    if (text) return text;
+    lastErr = "LLM empty content";
   }
-  const data = await resp.json();
-  return data.choices?.[0]?.message?.content?.trim() || null;
+  throw new Error(lastErr || "LLM failed");
 }
 
 export default async function handler(req, res) {
