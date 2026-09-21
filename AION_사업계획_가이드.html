@@ -2127,6 +2127,120 @@
     .mini-grid { grid-template-columns: 1fr; }
     .toc-inline { columns: 1; }
   }
+  .guide-chat {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 50;
+    font-family: inherit;
+  }
+  .guide-chat-toggle {
+    border: 0;
+    border-radius: 999px;
+    padding: 12px 18px;
+    background: #1e4fd6;
+    color: #fff;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(16,24,40,.22);
+  }
+  .guide-chat-panel {
+    position: absolute;
+    right: 0;
+    bottom: 56px;
+    width: min(380px, calc(100vw - 32px));
+    height: min(520px, calc(100vh - 120px));
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    box-shadow: 0 16px 40px rgba(16,24,40,.18);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .guide-chat-panel[hidden] { display: none; }
+  .guide-chat-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 12px 14px;
+    background: #12203d;
+    color: #fff;
+  }
+  .guide-chat-head strong { font-size: 14px; }
+  .guide-chat-head span { display: block; font-size: 11px; color: #93c5fd; font-weight: 500; }
+  .guide-chat-x {
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255,255,255,.12);
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  .guide-chat-log {
+    flex: 1;
+    overflow: auto;
+    padding: 12px;
+    background: #f8fafc;
+  }
+  .guide-chat-msg { margin: 0 0 10px; font-size: 13.5px; line-height: 1.55; }
+  .guide-chat-msg.bot {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 10px 12px;
+    color: #1a1f2e;
+  }
+  .guide-chat-msg.user {
+    background: #1e4fd6;
+    color: #fff;
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-left: 36px;
+  }
+  .guide-chat-src {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .guide-chat-src a {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1e4fd6;
+  }
+  .guide-chat-form {
+    display: flex;
+    gap: 8px;
+    padding: 10px;
+    border-top: 1px solid #e5e7eb;
+    background: #fff;
+  }
+  .guide-chat-form input {
+    flex: 1;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font: inherit;
+    font-size: 14px;
+  }
+  .guide-chat-form button {
+    border: 0;
+    border-radius: 10px;
+    padding: 10px 14px;
+    background: #1e4fd6;
+    color: #fff;
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+  }
+  .guide-chat-form button:disabled { opacity: .55; cursor: wait; }
+
 </style>
 </head>
 <body>
@@ -3373,6 +3487,25 @@
     </div>
   </div>
 </div>
+<div class="guide-chat" id="guideChat">
+  <button type="button" class="guide-chat-toggle" id="guideChatToggle" aria-expanded="false" aria-controls="guideChatPanel">질문하기</button>
+  <div class="guide-chat-panel" id="guideChatPanel" hidden>
+    <div class="guide-chat-head">
+      <div>
+        <strong>사업계획 도우미</strong>
+        <span>로그인·위자드·KPI·예산·제출</span>
+      </div>
+      <button type="button" class="guide-chat-x" id="guideChatClose" aria-label="닫기">×</button>
+    </div>
+    <div class="guide-chat-log" id="guideChatLog">
+      <div class="guide-chat-msg bot">사업계획 작성 중 궁금한 점을 물어 보세요. 예: 「부모사업은 꼭 연결하나요?」, 「예산은 천원인가요?」</div>
+    </div>
+    <form class="guide-chat-form" id="guideChatForm">
+      <input id="guideChatInput" type="text" autocomplete="off" placeholder="질문을 입력하세요">
+      <button type="submit" id="guideChatSend">보내기</button>
+    </form>
+  </div>
+</div>
 <script>
   // Neon 방문 로그 (DATABASE_URL 미설정 시 무시)
   fetch("/api/visit", {
@@ -3539,6 +3672,84 @@
     });
   })();
 
+  (function () {
+    var panel = document.getElementById("guideChatPanel");
+    var toggle = document.getElementById("guideChatToggle");
+    var closeBtn = document.getElementById("guideChatClose");
+    var form = document.getElementById("guideChatForm");
+    var input = document.getElementById("guideChatInput");
+    var log = document.getElementById("guideChatLog");
+    var sendBtn = document.getElementById("guideChatSend");
+    if (!panel || !toggle || !form || !input || !log) return;
+    var history = [];
+    function chatUrl() {
+      var h = location.hostname;
+      if (h === "aion-plan-guide.vercel.app" || h === "localhost" || h === "127.0.0.1") return "/api/chat";
+      return "https://aion-plan-guide.vercel.app/api/chat";
+    }
+    function openChat() {
+      panel.hidden = false;
+      toggle.setAttribute("aria-expanded", "true");
+      input.focus();
+    }
+    function closeChat() {
+      panel.hidden = true;
+      toggle.setAttribute("aria-expanded", "false");
+    }
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>]/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c];
+      });
+    }
+    function addMsg(role, text, sources) {
+      var div = document.createElement("div");
+      div.className = "guide-chat-msg " + (role === "user" ? "user" : "bot");
+      if (role === "user") div.textContent = text;
+      else div.innerHTML = escapeHtml(text).replace(/\n/g, "<br>");
+      if (sources && sources.length) {
+        var src = document.createElement("div");
+        src.className = "guide-chat-src";
+        sources.forEach(function (s) {
+          if (!s || !s.guideAnchor) return;
+          var a = document.createElement("a");
+          a.href = s.guideAnchor;
+          a.textContent = s.title || "관련 안내";
+          src.appendChild(a);
+        });
+        if (src.childNodes.length) div.appendChild(src);
+      }
+      log.appendChild(div);
+      log.scrollTop = log.scrollHeight;
+    }
+    toggle.addEventListener("click", function () {
+      if (panel.hidden) openChat();
+      else closeChat();
+    });
+    if (closeBtn) closeBtn.addEventListener("click", closeChat);
+    form.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var q = input.value.trim();
+      if (!q) return;
+      input.value = "";
+      addMsg("user", q);
+      history.push({ role: "user", content: q });
+      if (sendBtn) sendBtn.disabled = true;
+      fetch(chatUrl(), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: history })
+      }).then(function (r) { return r.json(); }).then(function (data) {
+        var ans = (data && data.answer) || (data && data.error) || "지금은 답을 가져오지 못했습니다.";
+        history.push({ role: "assistant", content: ans });
+        addMsg("bot", ans, data && data.sources);
+      }).catch(function () {
+        addMsg("bot", "네트워크 오류입니다. 잠시 후 다시 물어 주세요.");
+      }).finally(function () {
+        if (sendBtn) sendBtn.disabled = false;
+        input.focus();
+      });
+    });
+  })();
 </script>
 
 

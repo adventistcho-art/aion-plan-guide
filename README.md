@@ -49,3 +49,13 @@ npx vercel dev
 4. (선택) `sql/schema.sql`을 Neon SQL Editor에서 실행 — API가 없을 경우에도 테이블을 미리 만들 수 있음
 
 `DATABASE_URL`이 없으면 가이드 HTML은 그대로 열리고, 방문 API만 503을 반환합니다.
+
+## 사업계획 도우미 챗봇
+
+가이드 오른쪽 아래 **질문하기**에서 사업계획 작성(로그인·위자드·KPI·예산·제출)을 물어볼 수 있습니다.
+
+- API: `POST /api/chat` (Vercel)
+- GitHub Pages에서 열면 `https://aion-plan-guide.vercel.app/api/chat`을 호출합니다.
+- 지식: `chat-kb.json`
+- (선택) Vercel → Settings → Environment Variables에 `OPENAI_API_KEY`를 넣으면 문장을 다듬어 답합니다. 키가 없어도 가이드 조각을 찾아 보여 줍니다.
+- (선택) `OPENAI_BASE_URL`, `OPENAI_MODEL` (기본 `gpt-4o-mini`)
