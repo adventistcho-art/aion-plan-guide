@@ -428,7 +428,7 @@ function clip(s, n) {
 
 async function postLlm(base, payload, key) {
   const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), 12000);
+  const timer = setTimeout(() => ctrl.abort(), 8000);
   try {
     const resp = await fetch(`${base}/chat/completions`, {
       method: "POST",
@@ -446,6 +446,16 @@ async function postLlm(base, payload, key) {
   } finally {
     clearTimeout(timer);
   }
+}
+
+function llmModels(primary) {
+  const list = [primary].filter(Boolean);
+  if (/glm/i.test(primary)) {
+    for (const extra of ["glm-4.5-flash", "glm-4-flash", "glm-4.5-air"]) {
+      if (!list.includes(extra)) list.push(extra);
+    }
+  }
+  return list;
 }
 
 async function llmAnswer(question, history, chunks) {
@@ -480,32 +490,36 @@ async function llmAnswer(question, history, chunks) {
     content: `질문: ${String(question).slice(0, 2000)}\n\n이 질문의 맥락을 AION 화면 구조로 해석한 다음, 관련 지식(화면 절차·전년 실적·예산)을 연결해 답하세요.`,
   });
 
-  const basePayload = { model, temperature: 0.2, max_tokens: 900, messages };
-  const variants = [basePayload];
-  if (/glm/i.test(model)) {
-    variants.unshift({ ...basePayload, thinking: { type: "disabled" } });
-  }
+  const bases = llmBases(model);
+  const models = llmModels(model).slice(0, 3);
+  const tries = [];
+  for (const m of models) tries.push({ base: bases[0], model: m });
+  if (bases[1]) tries.push({ base: bases[1], model });
 
   let lastErr = "";
-  for (const base of llmBases(model)) {
-    for (const payload of variants) {
-      const resp = await postLlm(base, payload, key);
-      if (!resp.ok) {
-        lastErr = `LLM ${resp.status}: ${String(resp.raw).slice(0, 180)}`;
-        if (resp.status === 429) break;
-        continue;
-      }
-      let data = {};
-      try {
-        data = JSON.parse(resp.raw);
-      } catch {
-        lastErr = "LLM JSON parse failed";
-        continue;
-      }
-      const text = llmText(data);
-      if (text) return { text, error: null };
-      lastErr = "LLM empty content";
+  for (const trySpec of tries.slice(0, 3)) {
+    const payload = {
+      model: trySpec.model,
+      temperature: 0.2,
+      max_tokens: 900,
+      messages,
+    };
+    if (/glm/i.test(trySpec.model)) payload.thinking = { type: "disabled" };
+    const resp = await postLlm(trySpec.base, payload, key);
+    if (!resp.ok) {
+      lastErr = `LLM ${resp.status}: ${String(resp.raw).slice(0, 180)}`;
+      continue;
     }
+    let data = {};
+    try {
+      data = JSON.parse(resp.raw);
+    } catch {
+      lastErr = "LLM JSON parse failed";
+      continue;
+    }
+    const text = llmText(data);
+    if (text) return { text, error: null };
+    lastErr = "LLM empty content";
   }
   return { text: null, error: lastErr || "LLM failed" };
 }
