@@ -1,8 +1,30 @@
 import kb from "./chat-kb.js";
 
-function tokenize(s) {
-  const t = String(s || "").toLowerCase();
-  const words = t.split(/[^0-9a-zA-Z가-힣]+/).filter((w) => w.length >= 1);
+const STOPWORDS = new Set([
+  "어떻게", "하나요", "인가요", "받나요", "받냐고", "뭐야", "좀",
+  "해주세요", "해줘", "궁금", "해서", "하는", "된거야", "되나요",
+  "어디", "어디서", "뭐임", "알려줘", "알려주세요", "좀요",
+]);
+
+function expandWord(w) {
+  const out = [w];
+  if (w.startsWith("비번") || w.startsWith("패스워드") || w === "암호") out.push("비밀번호");
+  if (w.startsWith("아이디")) out.push("사번");
+  return out;
+}
+
+function queryTokens(question) {
+  const raw = String(question || "")
+    .toLowerCase()
+    .split(/[^0-9a-zA-Z가-힣]+/)
+    .filter(Boolean);
+  const words = [];
+  for (const w of raw) {
+    if (STOPWORDS.has(w)) continue;
+    for (const e of expandWord(w)) {
+      if (!STOPWORDS.has(e)) words.push(e);
+    }
+  }
   const grams = [];
   for (const w of words) {
     if (w.length >= 2) {
@@ -13,12 +35,12 @@ function tokenize(s) {
 }
 
 function scoreChunk(chunk, qTokens) {
-  const hay = `${chunk.title} ${chunk.keywords || ""} ${chunk.text}`.toLowerCase();
+  const hay = `${chunk.title} ${chunk.keywords || ""} ${chunk.answer || ""} ${chunk.text}`.toLowerCase();
   let score = 0;
   for (const tok of qTokens) {
-    if (!tok) continue;
+    if (!tok || tok.length < 2) continue;
     if (hay.includes(tok)) {
-      score += tok.length >= 2 ? 2 : 1;
+      score += 2;
       if ((chunk.title || "").toLowerCase().includes(tok)) score += 3;
       if ((chunk.keywords || "").toLowerCase().includes(tok)) score += 2;
     }
@@ -27,7 +49,7 @@ function scoreChunk(chunk, qTokens) {
 }
 
 function retrieve(question, limit) {
-  const qTokens = tokenize(question);
+  const qTokens = queryTokens(question);
   const ranked = (kb.chunks || [])
     .map((c) => ({ chunk: c, score: scoreChunk(c, qTokens) }))
     .filter((x) => x.score > 0)
@@ -44,8 +66,10 @@ function cors(res) {
 }
 
 function extractiveAnswer(chunks) {
-  const parts = chunks.map((c) => `【${c.title}】\n${c.text}`);
-  return parts.join("\n\n") + "\n\n더 자세한 화면 안내는 가이드의 해당 장을 봐 주세요.";
+  const c = chunks[0];
+  if (!c) return "잘 모르겠습니다. 가이드의 해당 장을 봐 주세요.";
+  if (c.answer) return c.answer;
+  return `${c.text}\n\n더 자세한 화면 안내는 아래 가이드 바로가기를 봐 주세요.`;
 }
 
 function parseBody(req) {
@@ -67,7 +91,7 @@ async function llmAnswer(question, history, chunks) {
   const base = (process.env.OPENAI_BASE_URL || "https://api.openai.com/v1").replace(/\/$/, "");
   const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
   const context = chunks
-    .map((c) => `- (${c.guideAnchor || ""}) ${c.title}: ${c.text}`)
+    .map((c) => `- (${c.guideAnchor || ""}) ${c.title}: ${c.answer || c.text}`)
     .join("\n");
   const sys = [
     "당신은 삼육대학교 AION 사업계획 작성 가이드 도우미입니다.",
@@ -120,7 +144,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ ok: false, error: "질문이 없습니다." });
     }
 
-    const chunks = retrieve(question, 6);
+    const chunks = retrieve(question, 4);
     const history = messages.filter((m) => m !== lastUser);
     let answer = null;
     let mode = "extract";
