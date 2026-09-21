@@ -3738,7 +3738,16 @@
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: history })
-      }).then(function (r) { return r.json(); }).then(function (data) {
+      }).then(function (r) {
+        return r.text().then(function (t) {
+          var data = {};
+          try { data = t ? JSON.parse(t) : {}; } catch (e) { data = {}; }
+          if (!data.answer && !data.error) {
+            data.error = "지금은 답을 가져오지 못했습니다. 잠시 후 다시 물어 주세요.";
+          }
+          return data;
+        });
+      }).then(function (data) {
         var ans = (data && data.answer) || (data && data.error) || "지금은 답을 가져오지 못했습니다.";
         history.push({ role: "assistant", content: ans });
         addMsg("bot", ans, data && data.sources);

@@ -1,5 +1,10 @@
 {
   "cleanUrls": true,
+  "functions": {
+    "api/chat.js": {
+      "includeFiles": "chat-kb.json"
+    }
+  },
   "headers": [
     {
       "source": "/guide-assets/(.*)",

@@ -1,31 +1,8 @@
-import { readFileSync } from "fs";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
-
-let kbCache = null;
-
-function loadKb() {
-  if (kbCache) return kbCache;
-  const here = dirname(fileURLToPath(import.meta.url));
-  const candidates = [
-    join(process.cwd(), "chat-kb.json"),
-    join(here, "..", "chat-kb.json"),
-  ];
-  let lastErr;
-  for (const p of candidates) {
-    try {
-      kbCache = JSON.parse(readFileSync(p, "utf8"));
-      return kbCache;
-    } catch (e) {
-      lastErr = e;
-    }
-  }
-  throw lastErr;
-}
+import kb from "./chat-kb.js";
 
 function tokenize(s) {
   const t = String(s || "").toLowerCase();
-  const words = t.split(/[^\p{L}\p{N}]+/u).filter((w) => w.length >= 1);
+  const words = t.split(/[^0-9a-zA-Z가-힣]+/).filter((w) => w.length >= 1);
   const grams = [];
   for (const w of words) {
     if (w.length >= 2) {
@@ -50,7 +27,6 @@ function scoreChunk(chunk, qTokens) {
 }
 
 function retrieve(question, limit) {
-  const kb = loadKb();
   const qTokens = tokenize(question);
   const ranked = (kb.chunks || [])
     .map((c) => ({ chunk: c, score: scoreChunk(c, qTokens) }))
@@ -70,6 +46,19 @@ function cors(res) {
 function extractiveAnswer(chunks) {
   const parts = chunks.map((c) => `【${c.title}】\n${c.text}`);
   return parts.join("\n\n") + "\n\n더 자세한 화면 안내는 가이드의 해당 장을 봐 주세요.";
+}
+
+function parseBody(req) {
+  let body = req.body;
+  if (typeof body === "string") {
+    try {
+      body = JSON.parse(body || "{}");
+    } catch {
+      body = {};
+    }
+  }
+  if (!body || typeof body !== "object") return {};
+  return body;
 }
 
 async function llmAnswer(question, history, chunks) {
@@ -123,7 +112,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const body = req.body || {};
+    const body = parseBody(req);
     const messages = Array.isArray(body.messages) ? body.messages : [];
     const lastUser = [...messages].reverse().find((m) => m && m.role === "user");
     const question = (lastUser && lastUser.content) || body.question || "";
