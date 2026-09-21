@@ -451,7 +451,7 @@ async function postLlm(base, payload, key) {
 function llmModels(primary) {
   const list = [primary].filter(Boolean);
   if (/glm/i.test(primary)) {
-    for (const extra of ["glm-4.5-flash", "glm-4-flash", "glm-4.5-air"]) {
+    for (const extra of ["glm-4.5-flash", "glm-4.7"]) {
       if (!list.includes(extra)) list.push(extra);
     }
   }
